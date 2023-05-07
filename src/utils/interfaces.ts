@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { IUserAuth } from '@/services/authSevices';
 import { FeatherIconsTypes, ThemeTypes } from './types';
+
+export interface IPageProps {
+  userAuth: IUserAuth;
+}
 
 export interface INotification {
   id: string;

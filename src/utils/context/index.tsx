@@ -1,6 +1,7 @@
 // import { useRouter } from 'next/router';
 import React from 'react';
 import { AdminLayoutCtxProvider } from './AdminLayoutContext';
+import { UserAuthCtxProvider } from './UserAuthContext';
 
 type ComponseProps = {
   providers: React.ElementType[];
@@ -19,7 +20,7 @@ export function ComposeContext(props: ComponseProps) {
 }
 
 function ComposeCtxProvider({ children }: { children: React.ReactNode }) {
-  const providers = [AdminLayoutCtxProvider];
+  const providers = [AdminLayoutCtxProvider, UserAuthCtxProvider];
 
   return <ComposeContext providers={providers}>{children}</ComposeContext>;
 }

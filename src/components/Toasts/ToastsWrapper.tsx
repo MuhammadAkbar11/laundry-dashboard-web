@@ -11,7 +11,7 @@ function ToastsWrapper({}: Props) {
   return (
     <ToastContainer
       className="toast-container-fixed pt-3 px-3 d-flex flex-column "
-      position="top-end" // position
+      position="top-center" // position
       style={{
         top: 8,
       }}

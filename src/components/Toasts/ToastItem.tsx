@@ -12,7 +12,7 @@ type Props = {
 
 const iconNames: { [key: string]: FeatherIconsTypes } = {
   success: 'Check',
-  primary: 'Check',
+  primary: 'Bell',
   warning: 'AlertTriangle',
   info: 'AlertCircle',
   danger: 'X',

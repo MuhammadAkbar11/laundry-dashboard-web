@@ -8,13 +8,12 @@ import { SSRProvider } from 'react-bootstrap';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Head from 'next/head';
-import ComposeCtxProvider from '@utils/context';
+import ComposeCtxProvider, { ComposeContext } from '@utils/context';
 import ToastsWrapper from '@components/Toasts/ToastsWrapper';
 
 const queryClient = new QueryClient();
 
 type NextPageComponentProps = NextPage & {
-  provider?: React.ComponentType;
   providers?: React.ComponentType[];
   layout?: React.ComponentType;
 };
@@ -23,10 +22,23 @@ type AppPropsWrapp = AppProps & {
   Component: NextPageComponentProps;
 };
 
+function SinglePageCtxProvider({
+  children,
+  providers,
+}: {
+  children: React.ReactNode;
+  providers: React.ElementType[];
+}) {
+  return <ComposeContext providers={providers}>{children}</ComposeContext>;
+}
+
 export default function App({ Component, pageProps }: AppPropsWrapp) {
   const Layout =
     Component.layout ||
     (({ children }: { children: React.ReactNode }) => <>{children}</>);
+
+  const singlePageProviders = Component.providers ? Component.providers : [];
+
   return (
     <>
       <Head>
@@ -50,10 +62,12 @@ export default function App({ Component, pageProps }: AppPropsWrapp) {
       <QueryClientProvider client={queryClient}>
         <SSRProvider>
           <ComposeCtxProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-            <ToastsWrapper />
+            <SinglePageCtxProvider providers={singlePageProviders}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+              <ToastsWrapper />
+            </SinglePageCtxProvider>
           </ComposeCtxProvider>
         </SSRProvider>
         <ReactQueryDevtools />

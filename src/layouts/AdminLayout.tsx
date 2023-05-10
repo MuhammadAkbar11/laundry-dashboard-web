@@ -4,6 +4,7 @@ import React from 'react';
 import Footer from '@/components/Footer/Footer';
 import Navbar from '@/components/Navbar/Navbar';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import ModalConfirmationSignOut from '@components/Modals/ModalConfirmationSignOut';
 
 type Props = {
   children: React.ReactNode;
@@ -25,9 +26,9 @@ function AdminLayout({ children }: Props) {
       <div className="main">
         <Navbar />
         <main className="content">{children}</main>
-        {/* Footer */}
         <Footer />
       </div>
+      <ModalConfirmationSignOut />
     </>
   );
 }

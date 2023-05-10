@@ -4,7 +4,8 @@ type Props = {
   duration?: number;
 };
 
-function useNotification({ duration = 10000 }: Partial<Props>) {
+function useNotification(props?: Partial<Props>) {
+  const duration = props?.duration;
   const primary = (msg: string, options?: Partial<ToastOptions>) => {
     toast(msg, {
       duration,
@@ -47,5 +48,9 @@ function useNotification({ duration = 10000 }: Partial<Props>) {
 
   return { primary, success, danger, info, warning };
 }
+
+useNotification.defaultProps = {
+  duration: 10000,
+} as Props;
 
 export default useNotification;

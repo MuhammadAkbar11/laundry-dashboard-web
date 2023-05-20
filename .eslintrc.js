@@ -27,11 +27,13 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 0,
     'react/jsx-props-no-spreading': 0,
-    '@typescript-eslint/ban-types': 0,
+    '@next/next/no-html-link-for-pages': 0,
     'no-empty-pattern': 0,
     'import/no-extraneous-dependencies': 0,
     'no-new': 0,
-    '@next/next/no-html-link-for-pages': 0,
     'jsx-a11y/label-has-associated-control': 0,
+    '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/no-empty-interface': 0,
+    '@typescript-eslint/no-unused-expressions': 0,
   },
 };

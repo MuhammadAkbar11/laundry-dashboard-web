@@ -51,6 +51,11 @@ export function uQueriesToString<T extends Record<string, any>>(queries: T) {
     .join('&');
 }
 
+export function uDelayAsync(ms: number) {
+  // eslint-disable-next-line no-promise-executor-return
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function uRupiah(value: number) {
   const result = value.toLocaleString('id', {
     style: 'currency',

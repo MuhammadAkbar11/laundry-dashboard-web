@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import { SignInInputTypes } from '@utils/schema/authSchema';
 import {
   uConvertKeysToCamelCase,
+  uDelayAsync,
   uIsNotEmptyObject,
   uTranformAxiosError,
 } from '@utils/utils';
@@ -26,7 +26,8 @@ export async function postSignInService(payload: SignInInputTypes) {
     const res = await axiosPrivate.post(`${API_URI}/auth/user/signin`, payload);
     return res.data;
   } catch (error: unknown) {
-    throw uTranformAxiosError(error);
+    const err = uTranformAxiosError(error);
+    throw err;
   }
 }
 
@@ -45,6 +46,19 @@ export async function getSessionService(
     // const errRes = uTranformAxiosError(error);
     // console.log(errRes.data);
     return false;
+  }
+}
+
+export async function postSignOutService(config?: AxiosRequestConfig) {
+  try {
+    await uDelayAsync(1000);
+    const response = await axiosPrivate.post(
+      `${API_URI}/auth/user/signout`,
+      config
+    );
+    return response.data;
+  } catch (error) {
+    throw uTranformAxiosError(error);
   }
 }
 

@@ -27,121 +27,171 @@ interface INavigation {
 
 const navigationConfigs: INavigation = {
   pages: {
-    title: 'Pages',
+    title: 'Dashboard',
     navItems: [
       {
         name: 'Dashboard',
         icon: 'Sliders',
         href: '/',
       },
+    ],
+  },
+  laundry: {
+    title: 'Laundry',
+    navItems: [
       {
-        name: 'Profile',
-        icon: 'User',
-        href: '/pages-profile',
+        name: 'Antrian',
+        icon: 'Clipboard',
+        href: '/laundry/antrian',
       },
       {
-        name: 'Auth',
+        name: 'Ruang Laundry',
+        icon: 'RefreshCcw',
+        href: '/laundry/ruang-laundry',
+      },
+      {
+        name: 'Layanan / Kategori',
+        icon: 'ShoppingBag',
+        href: '/laundry/layanan',
+      },
+      {
+        name: 'Promo',
+        icon: 'Tag',
+        href: '/laundry/promo',
+      },
+      {
+        name: 'Pelanggan',
+        icon: 'UserCheck',
+        href: '/laundry/pelanggan',
+      },
+      {
+        name: 'User',
         icon: 'Users',
-        navSubItems: [
-          {
-            name: 'Sign In',
-            href: '/pages-sign-in',
-          },
-          {
-            name: 'Sign Up',
-            href: '/pages-sign-up',
-          },
-        ],
-      },
-      {
-        name: 'Blank',
-        icon: 'Book',
-        href: '/pages-blank',
+        href: '/laundry/user',
       },
     ],
   },
-  toolsComponents: {
-    title: 'Tools & Components',
+  transactions: {
+    title: 'Transaksi & Laporan',
     navItems: [
       {
-        name: 'UI Elements',
-        icon: 'Briefcase',
+        name: 'Transaksi',
+        icon: 'File',
         navSubItems: [
           {
-            name: 'Alerts',
-            href: '/ui-alerts',
-            badge: 'Soon',
-            disabled: true,
+            name: 'Semua Transaksi',
+            href: '/transaksi',
           },
           {
-            name: 'Buttons',
-            href: '/ui-buttons',
-            badge: 'Soon',
-            disabled: true,
-          },
-          {
-            name: 'Cards',
-            href: '/ui-cards',
-            badge: 'Soon',
-            disabled: true,
+            name: 'Riwayat Transaksi',
+            href: '/transaksi/riwayat',
           },
         ],
       },
       {
-        name: 'Forms',
-        icon: 'CheckSquare',
-        badge: 'Soon',
-        disabled: true,
-        href: '/ui-forms',
+        icon: 'ShoppingCart',
+        name: 'Pengeluaran',
+        href: '/laundry/user',
       },
       {
-        name: 'Icons',
-        icon: 'Coffee',
+        name: 'Laporan',
+        icon: 'FileText',
+        navSubItems: [
+          {
+            name: 'Laporan Transaksi',
+            href: '/laundry/user',
+          },
+          {
+            name: 'Laporan Kas',
+            href: '/laundry/user',
+          },
+        ],
+      },
+    ],
+  },
 
-        href: '/ui-feather',
-      },
-    ],
-  },
-  pluginsAddons: {
-    title: 'Plugins & Addons',
-    navItems: [
-      {
-        name: 'Notification',
-        icon: 'Bell',
-        href: '/notification',
-      },
-      {
-        name: 'Table',
-        icon: 'List',
-        href: '/tables-react',
-      },
-      {
-        name: 'Charts',
-        icon: 'BarChart2',
-        href: '/charts-chartjs',
-        badge: 'Soon',
-        disabled: true,
-      },
-      {
-        name: 'Map',
-        icon: 'Map',
-        navSubItems: [
-          {
-            name: 'Google Map',
-            href: '/map-google',
-            badge: 'Soon',
-            disabled: true,
-          },
-          {
-            name: 'JVectorMap',
-            href: '/map-jvectormap',
-            badge: 'Soon',
-            disabled: true,
-          },
-        ],
-      },
-    ],
-  },
+  // toolsComponents: {
+  //   title: 'Tools & Components',
+  //   navItems: [
+  //     {
+  //       name: 'UI Elements',
+  //       icon: 'Briefcase',
+  //       navSubItems: [
+  //         {
+  //           name: 'Alerts',
+  //           href: '/ui-alerts',
+  //           badge: 'Soon',
+  //           disabled: true,
+  //         },
+  //         {
+  //           name: 'Buttons',
+  //           href: '/ui-buttons',
+  //           badge: 'Soon',
+  //           disabled: true,
+  //         },
+  //         {
+  //           name: 'Cards',
+  //           href: '/ui-cards',
+  //           badge: 'Soon',
+  //           disabled: true,
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       name: 'Forms',
+  //       icon: 'CheckSquare',
+  //       badge: 'Soon',
+  //       disabled: true,
+  //       href: '/ui-forms',
+  //     },
+  //     {
+  //       name: 'Icons',
+  //       icon: 'Coffee',
+
+  //       href: '/ui-feather',
+  //     },
+  //   ],
+  // },
+  // pluginsAddons: {
+  //   title: 'Plugins & Addons',
+  //   navItems: [
+  //     {
+  //       name: 'Notification',
+  //       icon: 'Bell',
+  //       href: '/notification',
+  //     },
+  //     {
+  //       name: 'Table',
+  //       icon: 'List',
+  //       href: '/tables-react',
+  //     },
+  //     {
+  //       name: 'Charts',
+  //       icon: 'BarChart2',
+  //       href: '/charts-chartjs',
+  //       badge: 'Soon',
+  //       disabled: true,
+  //     },
+  //     {
+  //       name: 'Map',
+  //       icon: 'Map',
+  //       navSubItems: [
+  //         {
+  //           name: 'Google Map',
+  //           href: '/map-google',
+  //           badge: 'Soon',
+  //           disabled: true,
+  //         },
+  //         {
+  //           name: 'JVectorMap',
+  //           href: '/map-jvectormap',
+  //           badge: 'Soon',
+  //           disabled: true,
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 };
 
 export default navigationConfigs;

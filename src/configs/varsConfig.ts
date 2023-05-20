@@ -1,8 +1,9 @@
+/* eslint-disable prefer-destructuring */
 import { BootstrapBreakpointsTypes } from '@utils/types';
 
 export const UNKNOWM_ERROR = 'UNKNOWM_ERROR';
 export const API_URI = process.env.NEXT_PUBLIC_API_URI;
-
+export const NODE_ENV = process.env.NODE_ENV;
 export const MAX_AVATAR_SIZE = 5000000;
 export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 

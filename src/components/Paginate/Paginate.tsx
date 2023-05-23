@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
+import FeatherIcon from '@components/Icons/FeatherIcon';
 import PaginateNumbers from './PaginateNumbers';
 
 type Props = {
@@ -25,8 +26,14 @@ function Paginate({
 }: Props) {
   return (
     <Pagination className="align-self-center my-auto">
-      <Pagination.Prev onClick={() => onPrevPage()} disabled={!isHasPrevPage}>
-        Previous
+      <Pagination.Prev
+        onClick={() => onPrevPage()}
+        className="d-flex "
+        disabled={!isHasPrevPage}
+      >
+        <div className="d-flex align-items-center  h-100 ">
+          <FeatherIcon size={14} name="ChevronLeft" />
+        </div>
       </Pagination.Prev>
       {totalPages > 0 ? (
         <PaginateNumbers
@@ -37,8 +44,14 @@ function Paginate({
         />
       ) : null}
 
-      <Pagination.Next onClick={() => onNextPage()} disabled={!isHasNextPage}>
-        Next
+      <Pagination.Next
+        onClick={() => onNextPage()}
+        className="d-flex "
+        disabled={!isHasNextPage}
+      >
+        <div className="d-flex align-items-center  h-100 ">
+          <FeatherIcon size={14} name="ChevronRight" />
+        </div>
       </Pagination.Next>
     </Pagination>
   );

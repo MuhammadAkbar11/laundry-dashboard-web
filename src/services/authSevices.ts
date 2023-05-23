@@ -33,7 +33,7 @@ export async function postSignInService(payload: SignInInputTypes) {
 
 export async function getSessionService(
   config?: AxiosRequestConfig
-): Promise<IUserAuth | boolean> {
+): Promise<IUserAuth | boolean | void> {
   try {
     const response = await axiosPrivate.get(
       `${API_URI}/auth/user/session`,
@@ -43,9 +43,10 @@ export async function getSessionService(
     const sessionData = response.data?.session;
     return uConvertKeysToCamelCase(sessionData);
   } catch (error) {
-    // const errRes = uTranformAxiosError(error);
+    const errRes = uTranformAxiosError(error);
     // console.log(errRes.data);
-    return false;
+    throw errRes;
+    // return false;
   }
 }
 

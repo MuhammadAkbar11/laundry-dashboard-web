@@ -168,7 +168,6 @@ function TablePerson({}: Props) {
 
   const rows = table?.getRowModel()?.rows;
   const headers = table.getFlatHeaders();
-
   return (
     <>
       <Alert variant="info">

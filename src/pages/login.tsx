@@ -58,7 +58,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const isAuth = await isAuthenticadedService({
     headers: { Cookie: cookies, 'User-Agent': userAgent },
   });
-
   if (isAuth) return uIsAuthRedirect();
 
   return {

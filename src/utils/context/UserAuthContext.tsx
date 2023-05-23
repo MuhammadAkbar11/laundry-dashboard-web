@@ -34,12 +34,10 @@ export function UserAuthCtxProvider({ children }: Props) {
   const [loading, setLoading] = React.useState(true);
   const [userState, setUserState] = React.useState<IUserAuth | null>(null);
 
-  const onSetUser = React.useCallback((user: IUserAuth) => {
+  const onSetUser = (user: IUserAuth) => {
     setLoading(false);
     setUserState(user);
-    // eslint-disable-next-line no-console
-    console.log('RELOAD USER AUTH');
-  }, []);
+  };
 
   const value: UserAuthContextType = React.useMemo(
     () => ({
@@ -47,7 +45,7 @@ export function UserAuthCtxProvider({ children }: Props) {
       isLoading: loading,
       onSetUser,
     }),
-    [loading, userState, onSetUser]
+    [loading, userState]
   );
 
   return (

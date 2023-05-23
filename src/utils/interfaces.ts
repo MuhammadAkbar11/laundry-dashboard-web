@@ -44,3 +44,36 @@ export interface IPerson {
   status: 'relationship' | 'complicated' | 'single';
   createdAt: Date;
 }
+
+export interface IQueriesOptions {
+  _limit: number;
+  _page: number;
+  _search?: string;
+  _sortBy?: 'asc' | 'desc' | null;
+  _orderBy?: string;
+}
+
+export interface IPaginationSorting {
+  id: string;
+  desc: boolean;
+}
+
+export interface IPaginationOptions {
+  pageIndex: number;
+  pageSize: number;
+  // sorting,
+  searchTerm: string;
+  sorting?: IPaginationSorting[];
+}
+
+export interface IServiceWithPaginateReturn<T> {
+  rows: T[];
+  entriesCount: number;
+  pageCount: number;
+}
+
+export interface IPaginateDataApiResponse<T> {
+  rows: T[];
+  totalEntries: number;
+  pageCount: number;
+}

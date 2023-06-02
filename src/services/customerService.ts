@@ -12,6 +12,7 @@ import {
   UpdateCustomerInputTypes,
 } from '@utils/schema/customerSchema';
 import {
+  runInDevAsync,
   uDelayAsync,
   uQueriesToString,
   uTranformAxiosError,
@@ -73,6 +74,8 @@ export async function getCustomersService(
     _sortBy: sortingBy,
   });
   try {
+    await runInDevAsync(() => uDelayAsync(1300));
+
     const { data } = await axiosPrivate.get(
       `${API_URI}/customer/all?${queries}`
     );
@@ -93,7 +96,7 @@ export async function postCustomerService(
   payload: CreateCustomerInputTypes
 ): Promise<{ customer: ICustomer; message: string } | void> {
   try {
-    await uDelayAsync(1000);
+    await runInDevAsync(() => uDelayAsync(1000));
 
     const { data } = await axiosPrivate.post(
       `${API_URI}/customer/all`,
@@ -110,7 +113,7 @@ export async function putCustomerService(
   payload: UpdateCustomerInputTypes
 ): Promise<{ customer: ICustomer; message: string } | void> {
   try {
-    await uDelayAsync(1000);
+    await runInDevAsync(() => uDelayAsync(1000));
     const updateData: Omit<UpdateCustomerInputTypes, 'customerId'> = {
       customerLevelId: payload.customerLevelId,
       name: payload.name,
@@ -134,7 +137,7 @@ export async function deleteCustomerService(
   payload: string
 ): Promise<{ customer: ICustomer; message: string } | void> {
   try {
-    await uDelayAsync(1000);
+    await runInDevAsync(() => uDelayAsync(1000));
 
     const { data } = await axiosPrivate.delete(
       `${API_URI}/customer/${payload}`

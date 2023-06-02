@@ -2,6 +2,7 @@ import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import { SignInInputTypes } from '@utils/schema/authSchema';
 import {
+  runInDevAsync,
   uConvertKeysToCamelCase,
   uDelayAsync,
   uIsNotEmptyObject,
@@ -44,7 +45,6 @@ export async function getSessionService(
     return uConvertKeysToCamelCase(sessionData);
   } catch (error) {
     const errRes = uTranformAxiosError(error);
-    // console.log(errRes.data);
     throw errRes;
     // return false;
   }
@@ -52,7 +52,8 @@ export async function getSessionService(
 
 export async function postSignOutService(config?: AxiosRequestConfig) {
   try {
-    await uDelayAsync(1000);
+    await runInDevAsync(() => uDelayAsync(1000));
+
     const response = await axiosPrivate.post(
       `${API_URI}/auth/user/signout`,
       config
@@ -78,6 +79,6 @@ export async function isAuthenticadedService(
   } catch (error) {
     // const errRes = uTranformAxiosError(error);
     // console.log(errRes.data);
-    return false;
+    throw uTranformAxiosError(error);
   }
 }

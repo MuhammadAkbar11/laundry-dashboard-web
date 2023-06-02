@@ -118,9 +118,12 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    return {
-      props: { errorCode: err?.statusCode, userAuth: null },
-    };
+    if (err?.statusCode === 500) {
+      return {
+        props: { errorCode: err?.statusCode, userAuth: null },
+      };
+    }
+    return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
   }
 }
 

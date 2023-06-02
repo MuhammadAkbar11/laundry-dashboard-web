@@ -2,7 +2,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
-import { Card, Col, Container, Offcanvas, Row } from 'react-bootstrap';
+import { Col, Container, Offcanvas, Row } from 'react-bootstrap';
 import AdminLayout from '@/layouts/AdminLayout';
 import { getSessionService } from '@/services/authSevices';
 import { uNotAuthRedirect } from '@utils/utils';
@@ -37,14 +37,6 @@ export default function PelangganPage({ userAuth }: Props) {
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">Pelanggan</h1>
         <Row className="row">
-          {/* <Col xs={12}>
-            <Card>
-              <Card.Header>
-                <Card.Title className=" mb-0">Pelanggan</Card.Title>
-              </Card.Header>
-              <Card.Body></Card.Body>
-            </Card>
-          </Col> */}
           <Row className="row">
             <Col xs={12}>
               <TableCustomer />
@@ -106,9 +98,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
         userAuth,
       },
     };
-  } catch (err: unknown) {
-    // return {}
-    // console.log(err);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    if (err?.statusCode === 500) {
+      return {
+        props: { errorCode: err?.statusCode, userAuth: null },
+      };
+    }
     return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
   }
 }

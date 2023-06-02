@@ -11,6 +11,7 @@ import ShowMore from '@components/Utils/ShowMore';
 import LQPayStatusBadge from '@components/Badges/LQPayStatusBadge';
 import LQStatusBadge from '@components/Badges/LQStatusBadge';
 import useDataQuery from '@hooks/useDataQuery';
+import { useLaundryQueueDeleteContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
 import { IServiceWithPaginateReturn } from '@utils/interfaces';
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
@@ -25,6 +26,7 @@ type Props = {};
 
 function TableLaundryQueue({}: Props) {
   const createLaundryQueueCtx = useLaundryQueueCreateContext();
+  const laundryQueueDelCtx = useLaundryQueueDeleteContext();
 
   const {
     sorting,
@@ -148,17 +150,15 @@ function TableLaundryQueue({}: Props) {
               >
                 <FeatherIcon name="Info" size={14} />
               </Button>
-              {/* <Button size="sm" variant="info">
-                <FeatherIcon name="Info" size={14} />
-              </Button> */}
+
               <Button
                 size="sm"
                 variant="danger"
                 onClick={() => {
-                  // customerDeleteCtx.onOpenModal({
-                  //   customerId: customerInfo.customerId,
-                  //   fetchQueryKey,
-                  // });
+                  laundryQueueDelCtx.onOpenModal({
+                    laundryQueueId: data.laundryQueueId,
+                    fetchQueryKey,
+                  });
                 }}
               >
                 <FeatherIcon name="XCircle" size={14} />
@@ -169,7 +169,7 @@ function TableLaundryQueue({}: Props) {
         enableSorting: false,
       },
     ],
-    []
+    [laundryQueueDelCtx, fetchQueryKey]
   );
 
   const table = rtb.useReactTable({

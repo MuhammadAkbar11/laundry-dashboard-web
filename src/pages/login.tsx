@@ -8,18 +8,29 @@ import { GetServerSidePropsContext } from 'next';
 import { isAuthenticadedService } from '@/services/authSevices';
 import { uIsAuthRedirect } from '@utils/utils';
 import { APP_NAME } from '@configs/varsConfig';
+import { useRouter } from 'next/router';
 
 type Props = {
   // userAuth: IUserAuth;
 };
 
 export default function PagesSignIn({}: Props) {
-  // console.log(userAuth);
+  const title = `Masuk | ${APP_NAME}`;
+
+  const router = useRouter();
+  const routerQuery = router.query;
+  const routerPathname = router.pathname;
+
+  React.useEffect(() => {
+    if (routerQuery?.redirect?.includes('/_next/data')) {
+      router.replace(routerPathname);
+    }
+  }, [routerQuery, routerPathname, router]);
 
   return (
     <>
       <Head>
-        <title>Masuk | {APP_NAME}</title>
+        <title>{title}</title>
       </Head>
       <Row className=" vh-100">
         <Col sm={10} md={8} lg={6} className=" mx-auto d-table h-100">
@@ -66,8 +77,13 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
+    if (error?.statusCode === 500) {
+      return {
+        props: { errorCode: error?.statusCode, userAuth: null },
+      };
+    }
     return {
-      props: { errorCode: error?.statusCode },
+      props: { errorCode: null },
     };
   }
 }

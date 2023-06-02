@@ -10,6 +10,7 @@ import { postSignInService } from '@/services/authSevices';
 import useNotification from '@hooks/useNotification';
 import useRouteChangeHandlers from '@hooks/useRouteChangeHandlers';
 import { NODE_ENV } from '@configs/varsConfig';
+import BoxButton from '@components/Buttons/BoxButton';
 
 type Props = {};
 
@@ -23,7 +24,7 @@ function FormSignIn({}: Props) {
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: NODE_ENV === 'development' ? 'superadmin@gmail.com' : '',
-      password: NODE_ENV === 'development' ? '123456' : '',
+      password: NODE_ENV === 'development' ? 'password123' : '',
     },
   });
 
@@ -121,15 +122,16 @@ function FormSignIn({}: Props) {
           </label>
         </div>
       </div>
-      <div className="text-center mt-3">
-        <button
+      <div className="d-flex mt-4">
+        <BoxButton
           type="submit"
-          className="btn btn-lg btn-primary"
-          disabled={loading}
+          size="lg"
+          variant="primary"
+          isLoading={loading}
+          className="w-100"
         >
           Masuk
-        </button>
-        {/* <button type="submit" class="btn btn-lg btn-primary">Sign in</button> */}
+        </BoxButton>
       </div>
     </Form>
   );

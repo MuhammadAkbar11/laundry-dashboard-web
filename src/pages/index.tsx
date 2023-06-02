@@ -9,8 +9,21 @@ import CardChartsPie from '@components/Cards/CardChartsPie';
 import CardWorldMap from '@components/Cards/CardWorldMap';
 import CardChartsBar from '@components/Cards/CardChartsBar';
 import CardProjects from '@components/Cards/CardProjects';
+import { GetServerSidePropsContext } from 'next';
+import { getSessionService } from '@/services/authSevices';
+import { uNotAuthRedirect } from '@utils/utils';
+import { IPageProps } from '@utils/interfaces';
+import { useUserAuthContext } from '@utils/context/UserAuthContext';
 
-export default function Home() {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Props extends IPageProps {}
+
+export default function Home({ userAuth }: Props) {
+  const userAuthCtx = useUserAuthContext();
+  React.useEffect(() => {
+    if (userAuth) userAuthCtx.onSetUser(userAuth);
+  }, [userAuth, userAuthCtx]);
+
   return (
     <Container fluid className="p-0">
       <h1 className="h3">
@@ -86,6 +99,29 @@ export default function Home() {
       </Row>
     </Container>
   );
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const userAgent = ctx.req.headers['user-agent'];
+  const cookies = ctx.req.headers.cookie;
+
+  try {
+    const userAuth = await getSessionService({
+      headers: { Cookie: cookies, 'User-Agent': userAgent },
+    });
+    if (!userAuth) return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+    return {
+      props: {
+        userAuth,
+        errorCode: null,
+      },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    return {
+      props: { errorCode: err?.statusCode, userAuth: null },
+    };
+  }
 }
 
 Home.layout = AdminLayout;

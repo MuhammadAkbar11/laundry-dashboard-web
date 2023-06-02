@@ -3,11 +3,11 @@ import React from 'react';
 import Head from 'next/head';
 import { Card, Col, Row } from 'react-bootstrap';
 import AuthLayout from '@layouts/AuthLayout';
-// import Image from 'next/image';
 import FormSignIn from '@components/Forms/FormSignIn';
 import { GetServerSidePropsContext } from 'next';
 import { isAuthenticadedService } from '@/services/authSevices';
 import { uIsAuthRedirect } from '@utils/utils';
+import { APP_NAME } from '@configs/varsConfig';
 
 type Props = {
   // userAuth: IUserAuth;
@@ -19,7 +19,7 @@ export default function PagesSignIn({}: Props) {
   return (
     <>
       <Head>
-        <title>Masuk | AdminKit Demo</title>
+        <title>Masuk | {APP_NAME}</title>
       </Head>
       <Row className=" vh-100">
         <Col sm={10} md={8} lg={6} className=" mx-auto d-table h-100">
@@ -55,14 +55,21 @@ export default function PagesSignIn({}: Props) {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
-  const isAuth = await isAuthenticadedService({
-    headers: { Cookie: cookies, 'User-Agent': userAgent },
-  });
-  if (isAuth) return uIsAuthRedirect();
+  try {
+    const isAuth = await isAuthenticadedService({
+      headers: { Cookie: cookies, 'User-Agent': userAgent },
+    });
+    if (isAuth) return uIsAuthRedirect();
 
-  return {
-    props: {},
-  };
+    return {
+      props: { errorCode: null },
+    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    return {
+      props: { errorCode: error?.statusCode },
+    };
+  }
 }
 
 PagesSignIn.layout = AuthLayout;

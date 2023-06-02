@@ -10,6 +10,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Head from 'next/head';
 import ComposeCtxProvider, { ComposeContext } from '@utils/context';
 import ToastsWrapper from '@components/Toasts/ToastsWrapper';
+import ErrorServerPage from '@components/Utils/ErrorServerPage';
+import { APP_NAME } from '@configs/varsConfig';
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,15 @@ export default function App({ Component, pageProps }: AppPropsWrapp) {
 
   const singlePageProviders = Component.providers ? Component.providers : [];
 
+  let appComponent = (
+    <Layout>
+      <Component {...pageProps} />
+    </Layout>
+  );
+  if (pageProps?.errorCode && pageProps?.errorCode === 500) {
+    appComponent = <ErrorServerPage statusCode={pageProps?.errorCode} />;
+  }
+
   return (
     <>
       <Head>
@@ -48,24 +59,19 @@ export default function App({ Component, pageProps }: AppPropsWrapp) {
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
-        <meta
-          name="description"
-          content="Responsive Admin & Dashboard Template based on Bootstrap 5"
-        />
+        <meta name="description" content={APP_NAME} />
         <meta name="author" content="AdminKit" />
-        <meta
+        {/* <meta
           name="keywords"
           content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
-        />
-        <title>AdminKit Demo - Bootstrap 5 Admin Template</title>
+        /> */}
+        <title>{APP_NAME}</title>
       </Head>
       <QueryClientProvider client={queryClient}>
         <SSRProvider>
           <ComposeCtxProvider>
             <SinglePageCtxProvider providers={singlePageProviders}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              {appComponent}
               <ToastsWrapper />
             </SinglePageCtxProvider>
           </ComposeCtxProvider>

@@ -183,7 +183,7 @@ function TableCustomer({}: Props) {
     }),
     [pageIndex, pageSize]
   );
-
+  // console.log();
   const table = useReactTable({
     data: dataQuery?.data?.rows ?? defaultData,
     columns: columnsDefs,

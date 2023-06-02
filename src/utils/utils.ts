@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -153,9 +154,29 @@ export function uConvertNestedObjKeysToCamelCase(obj: any): any {
 
 export function runInDev(callback: () => void) {
   if (process.env.NODE_ENV === 'development') {
+    console.log('Running in development mode...');
     callback();
+    console.log('Development mode execution completed.');
   }
 }
+
+export async function runInDevAsync<T>(
+  callback: () => Promise<T>
+): Promise<T | undefined> {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Running in development mode...');
+    try {
+      const result = await callback();
+      console.log('Development mode execution completed.');
+      return result;
+    } catch (error) {
+      console.error('Error occurred during development mode execution:', error);
+    }
+  }
+
+  return undefined;
+}
+
 export function runFakerJsInDev<T>(
   callback: (fk: Faker) => void
 ): T | void | null {

@@ -6,6 +6,13 @@ export interface IPageProps {
   userAuth: IUserAuth;
 }
 
+export interface IAxiosErrorResult {
+  name: string;
+  message: string;
+  statusCode: number;
+  [key: string]: any;
+}
+
 export interface INotification {
   id: string;
   title: string;

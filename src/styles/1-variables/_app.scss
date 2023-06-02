@@ -92,7 +92,7 @@ $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
 $black: #000 !default;
 
-$primary: $blue !default;
+$primary: $purple !default;
 $secondary: $gray-600 !default;
 $success: $green !default;
 $info: $cyan !default;
@@ -111,6 +111,9 @@ $theme-colors: (
   'light': $light,
   'dark': $dark,
   'gray': $gray-800,
+  'grey': $gray-600,
+  'slate': $gray-200,
+  'blue': $blue,
 ) !default;
 
 // Social colors

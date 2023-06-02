@@ -37,7 +37,8 @@ export function uTranformAxiosError(error: any) {
     name: error.response?.data?.name || UNKNOWM_ERROR,
     message:
       error.response?.data?.message || error?.message || 'Something Went Wrong',
-    statusCode: error.response?.data?.statusCode || 500,
+    statusCode:
+      error.response?.status || error.response?.data?.statusCode || 500,
     ...error.response?.data?.data,
   };
 }

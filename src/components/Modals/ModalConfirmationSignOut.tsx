@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Button, Modal, Spinner } from 'react-bootstrap';
+import { Modal, Spinner } from 'react-bootstrap';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';
 import { useMutation } from '@tanstack/react-query';
 import { postSignOutService } from '@/services/authSevices';
 import useNotification from '@hooks/useNotification';
 import useRouteChangeHandlers from '@hooks/useRouteChangeHandlers';
+import BoxButton from '@components/Buttons/BoxButton';
 
 function ModalConfirmationSignOut() {
   const adminLayoutCtx = useAdminLayoutContext();
@@ -53,12 +54,12 @@ function ModalConfirmationSignOut() {
       onHide={() => {
         if (!loading) adminLayoutCtx.onToggleModalSignOut();
       }}
-      contentClassName="p-2"
+      contentClassName="p-2 rounded-0"
     >
       <Modal.Header closeButton className="border-0 pb-0 ">
         <Modal.Title className="d-none">Logout</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="d-flex">
+      <Modal.Body className="d-flex  ">
         <div className="d-flex justify-content-center flex-column w-100 text-dark">
           {loading ? (
             <div
@@ -87,21 +88,21 @@ function ModalConfirmationSignOut() {
             <h4 className=" text-center text-secondary ">Harap Tunggu...</h4>
           ) : (
             <>
-              <Button
+              <BoxButton
                 variant="secondary"
                 onClick={() => adminLayoutCtx.onToggleModalSignOut()}
                 className="px-4"
               >
                 Tidak
-              </Button>
-              <Button
+              </BoxButton>
+              <BoxButton
                 variant="primary"
                 className="px-4"
                 onClick={() => onSignOut()}
                 disabled={loading}
               >
                 Ya
-              </Button>
+              </BoxButton>
             </>
           )}
         </div>

@@ -4,11 +4,15 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
+// eslint-disable @typescript-eslint/no-explicit-any
 import { FilterFn } from '@tanstack/react-table';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import { UNKNOWM_ERROR } from '@configs/varsConfig';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import { Faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker/locale/id_ID';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -30,7 +34,8 @@ export function uIsNotEmptyObject(obj: Record<string, unknown>): boolean {
 export function uTranformAxiosError(error: any) {
   return {
     name: error.response?.data?.name || UNKNOWM_ERROR,
-    message: error.response?.data?.message || 'Something Went Wrong',
+    message:
+      error.response?.data?.message || error?.message || 'Something Went Wrong',
     statusCode: error.response?.data?.statusCode || 500,
     ...error.response?.data?.data,
   };
@@ -64,36 +69,12 @@ export function uRupiah(value: number) {
   return result;
 }
 
-export function uDate(_date: string) {
-  const date = new Date(_date);
-  const weekdays = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ];
-  const months = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  const formattedDate = `${weekdays[date.getDay()]}, ${date.getDate()} ${
-    months[date.getMonth()]
-  } ${date.getFullYear()}`;
-  return formattedDate;
+export function uDate(_date?: string) {
+  if (_date) {
+    const date = new Date(_date);
+    return format(date, 'EEEE, dd/MM/yyyy hh:mm BBBB', { locale: id });
+  }
+  return null;
 }
 
 export function uHandleDuplicates<T extends Record<string, any>>(
@@ -168,4 +149,19 @@ export function uConvertNestedObjKeysToCamelCase(obj: any): any {
 
     return { ...result, [newKey]: newValue };
   }, {});
+}
+
+export function runInDev(callback: () => void) {
+  if (process.env.NODE_ENV === 'development') {
+    callback();
+  }
+}
+export function runFakerJsInDev<T>(
+  callback: (fk: Faker) => void
+): T | void | null {
+  if (process.env.NODE_ENV === 'development') {
+    return callback(faker);
+  }
+
+  return null;
 }

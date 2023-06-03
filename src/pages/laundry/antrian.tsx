@@ -18,6 +18,8 @@ import FormCreateCustomerWithLaundryQueue from '@components/Forms/FormsLaundryQu
 import { APP_NAME } from '@configs/varsConfig';
 import ModalConfirmDeleteLaundryQueue from '@components/Modals/LaundryQueue/ModalConfirmDeleteLaundryQueue';
 import { LaundryQueueDeleteProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
+import { LaundryQueueDetailProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
+import ModalDetailLaundryQueue from '@components/Modals/LaundryQueue/ModalDetailLaundryQueue';
 
 interface Props extends IPageProps {}
 
@@ -64,6 +66,7 @@ export default function AntrianPage({ userAuth }: Props) {
         </Offcanvas.Body>
       </Offcanvas>
       <ModalConfirmDeleteLaundryQueue />
+      <ModalDetailLaundryQueue />
     </>
   );
 }
@@ -96,6 +99,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 AntrianPage.providers = [
   LaundryQueueCreateProvider,
   LaundryQueueDeleteProvider,
+  LaundryQueueDetailProvider,
 ];
 
 AntrianPage.layout = AdminLayout;

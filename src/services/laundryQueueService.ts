@@ -173,3 +173,20 @@ export async function deleteLaundryQueueService(
     throw err;
   }
 }
+
+export async function getDetailLaundryQueueService(
+  payload: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<ILaundryQueue | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/laundry/queue/${payload}`
+    );
+    return data?.laundryQueue;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}

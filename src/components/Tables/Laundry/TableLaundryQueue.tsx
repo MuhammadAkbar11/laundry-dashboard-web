@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import BoxButton from '@components/Buttons/BoxButton';
@@ -13,6 +13,7 @@ import LQStatusBadge from '@components/Badges/LQStatusBadge';
 import useDataQuery from '@hooks/useDataQuery';
 import { useLaundryQueueDeleteContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
+import { useLaundryQueueDetailContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
 import { IServiceWithPaginateReturn } from '@utils/interfaces';
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
 import {
@@ -27,6 +28,7 @@ type Props = {};
 function TableLaundryQueue({}: Props) {
   const createLaundryQueueCtx = useLaundryQueueCreateContext();
   const laundryQueueDelCtx = useLaundryQueueDeleteContext();
+  const laundryQueueDetailCtx = useLaundryQueueDetailContext();
 
   const {
     sorting,
@@ -139,13 +141,10 @@ function TableLaundryQueue({}: Props) {
                 size="sm"
                 variant="blue"
                 onClick={() => {
-                  // eslint-disable-next-line no-console
-                  console.log(data);
-                  // customerPageCtx.onToggleFormActionOffCanvas({
-                  //   open: true,
-                  //   formType: 'update',
-                  //   data: { customer: customerInfo, fetchQueryKey },
-                  // });
+                  laundryQueueDetailCtx.onOpen({
+                    laundryQueueId: data.laundryQueueId,
+                    fetchQueryKey,
+                  });
                 }}
               >
                 <FeatherIcon name="Info" size={14} />
@@ -169,7 +168,7 @@ function TableLaundryQueue({}: Props) {
         enableSorting: false,
       },
     ],
-    [laundryQueueDelCtx, fetchQueryKey]
+    [laundryQueueDelCtx, fetchQueryKey, laundryQueueDetailCtx]
   );
 
   const table = rtb.useReactTable({

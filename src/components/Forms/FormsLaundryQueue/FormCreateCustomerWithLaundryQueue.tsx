@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import useNotification from '@hooks/useNotification';
 import useGetCustomerLevels from '@hooks/useGetCustomerLevels';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
 import BoxButton from '@components/Buttons/BoxButton';
 import {
@@ -28,14 +28,14 @@ const formDefaultValues = {
   phone:
     runFakerJsInDev<string>((fk) => fk.phone.number('+628 #### #### ##')) || '',
   address: runFakerJsInDev<string>((fk) => fk.address.streetAddress()) || '',
+  note:
+    runFakerJsInDev<string>((fk) =>
+      fk.random.words(fk.helpers.arrayElement([10, 15, 20, 25]))
+    ) || '',
 };
 
 function FormCreateCustomerWithLaundryQueue({}: Props) {
   const notif = useNotification();
-  // const customerPageCtx = useCustomerPageContext();
-
-  // const fetchQueryKey = customerPageCtx?.formActionOffCanvas?.data
-  //   ?.fetchQueryKey as any[];
 
   const createLaundryQueueCtx = useLaundryQueueCreateContext();
   const formType = createLaundryQueueCtx?.formType;
@@ -50,7 +50,6 @@ function FormCreateCustomerWithLaundryQueue({}: Props) {
   const {
     register,
     handleSubmit,
-    // reset: resetFormCustomer,
     clearErrors: clearFormCustomerErrors,
     formState: { errors: formErrors },
   } = methods;

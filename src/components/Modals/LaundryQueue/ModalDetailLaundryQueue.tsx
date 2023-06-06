@@ -235,11 +235,10 @@ function ModalDetailLaundryQueue() {
           <div>
             <Link
               passHref
+              legacyBehavior
               href={`/laundry/room/${laundryQueue?.laundryRooms?.laundryRoomId}`}
             >
               <BoxButton
-                as="a"
-                href={`/laundry/room/${laundryQueue?.laundryRooms?.laundryRoomId}`}
                 icon="ArrowRight"
                 iconPos="end"
                 className="text-nowrap"

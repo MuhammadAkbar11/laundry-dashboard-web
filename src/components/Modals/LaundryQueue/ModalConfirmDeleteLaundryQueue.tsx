@@ -65,6 +65,7 @@ function ModalConfirmDeleteLaundryQueue() {
           laundryQueueDelCtx.onCloseModal();
         }
       }}
+      backdrop="static"
       contentClassName="p-2 rounded-0"
     >
       <Modal.Header closeButton className="border-0 pb-0 ">

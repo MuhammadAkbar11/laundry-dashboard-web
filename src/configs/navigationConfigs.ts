@@ -47,7 +47,7 @@ const navigationConfigs: INavigation = {
       {
         name: 'Ruang Laundry',
         icon: 'RefreshCcw',
-        href: '/laundry/ruang-laundry',
+        href: '/laundry/room',
       },
       {
         name: 'Layanan / Kategori',

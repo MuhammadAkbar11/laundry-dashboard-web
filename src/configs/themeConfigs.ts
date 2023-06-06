@@ -1,5 +1,5 @@
 const themeConfigs = {
-  primary: '#3B7DDD',
+  primary: '#6f42c1',
   secondary: '#6c757d',
   success: '#1cbb8c',
   info: '#17a2b8',
@@ -15,6 +15,7 @@ const themeConfigs = {
   'gray-700': '#495057',
   'gray-800': '#343a40',
   'gray-900': '#212529',
+  blue: '#3b7ddd',
   black: '#000',
 };
 

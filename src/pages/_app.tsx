@@ -5,15 +5,17 @@ import React from 'react';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { SSRProvider } from 'react-bootstrap';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  QueryClient,
+  QueryClientProvider,
+  Hydrate,
+} from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Head from 'next/head';
 import ComposeCtxProvider, { ComposeContext } from '@utils/context';
 import ToastsWrapper from '@components/Toasts/ToastsWrapper';
 import ErrorServerPage from '@components/Utils/ErrorServerPage';
 import { APP_NAME } from '@configs/varsConfig';
-
-const queryClient = new QueryClient();
 
 type NextPageComponentProps = NextPage & {
   providers?: React.ComponentType[];
@@ -35,6 +37,17 @@ function SinglePageCtxProvider({
 }
 
 export default function App({ Component, pageProps }: AppPropsWrapp) {
+  const [queryClient] = React.useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 1000,
+          },
+        },
+      })
+  );
+
   const Layout =
     Component.layout ||
     (({ children }: { children: React.ReactNode }) => <>{children}</>);
@@ -68,14 +81,16 @@ export default function App({ Component, pageProps }: AppPropsWrapp) {
         <title>{APP_NAME}</title>
       </Head>
       <QueryClientProvider client={queryClient}>
-        <SSRProvider>
-          <ComposeCtxProvider>
-            <SinglePageCtxProvider providers={singlePageProviders}>
-              {appComponent}
-              <ToastsWrapper />
-            </SinglePageCtxProvider>
-          </ComposeCtxProvider>
-        </SSRProvider>
+        <Hydrate state={pageProps.dehydratedState}>
+          <SSRProvider>
+            <ComposeCtxProvider>
+              <SinglePageCtxProvider providers={singlePageProviders}>
+                {appComponent}
+                <ToastsWrapper />
+              </SinglePageCtxProvider>
+            </ComposeCtxProvider>
+          </SSRProvider>
+        </Hydrate>
         <ReactQueryDevtools />
       </QueryClientProvider>
     </>

@@ -1,6 +1,7 @@
 /* eslint-disable react/default-props-match-prop-types */
 /* eslint-disable react/display-name */
 import React from 'react';
+
 import { Button, ButtonProps, Spinner } from 'react-bootstrap';
 import clsx from 'classnames';
 import { FeatherIconsTypes } from '@utils/types';
@@ -10,7 +11,8 @@ interface BoxButtonProps extends ButtonProps {
   isLoading?: boolean;
   icon?: FeatherIconsTypes | null;
   iconPos?: 'start' | 'end';
-  children: React.ReactNode;
+  iconSize?: number | string;
+  children?: React.ReactNode;
 }
 
 const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
@@ -20,6 +22,7 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
       className,
       icon,
       iconPos,
+      iconSize,
       isLoading,
       disabled,
       ...restProps
@@ -35,12 +38,12 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
       buttonIcon = (
         <span
           className={clsx('d-inline-block', {
-            'me-2': iconPos === 'start',
-            'ms-2': iconPos === 'end',
+            'me-2': children !== null && iconPos === 'start',
+            'ms-2': children !== null && iconPos === 'end',
           })}
           style={{ transform: 'translateY(-2px)' }}
         >
-          <FeatherIcon name={icon} />
+          <FeatherIcon name={icon} size={iconSize} />
         </span>
       );
     }
@@ -56,7 +59,7 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
     return (
       <Button ref={ref} className={clsnm} disabled={btnDisabled} {...restProps}>
         {isLoading ? (
-          <span className="me-2  ">
+          <span className={children !== null ? 'me-2' : ''}>
             <Spinner size="sm" />
           </span>
         ) : null}
@@ -72,6 +75,8 @@ BoxButton.defaultProps = {
   icon: null,
   isLoading: false,
   iconPos: 'start',
+  iconSize: 16,
+  children: null,
 };
 
 export default BoxButton;

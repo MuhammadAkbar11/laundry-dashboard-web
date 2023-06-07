@@ -19,10 +19,7 @@ import { getSessionService } from '@services/authSevices';
 import { uDate, uNotAuthRedirect, uRupiah } from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { IPageProps } from '@utils/interfaces';
-import {
-  ILaundryRoom,
-  getDetailLaundryRoomService,
-} from '@services/laundryRoomService';
+import { getDetailLaundryRoomService } from '@services/laundryRoomService';
 import {
   LaundryRoomDetailProvider,
   useLaundryRoomDetailContext,
@@ -39,7 +36,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 interface Props extends IPageProps {
-  laundryRoom: ILaundryRoom;
+  laundryRoom: Interfaces.ILaundryRoom;
 }
 
 export default function DetailRoomPage(props: Props) {
@@ -60,7 +57,7 @@ export default function DetailRoomPage(props: Props) {
   const { data: laundryRoom, isLoading: laundryRoomLoading } = useQuery<
     unknown,
     unknown,
-    ILaundryRoom
+    Interfaces.ILaundryRoom
   >({
     queryKey: ['laundryRoomDetail', { laundryRoomId: laundryRoomIdParam }],
     queryFn: () => getDetailLaundryRoomService(laundryRoomIdParam as string),

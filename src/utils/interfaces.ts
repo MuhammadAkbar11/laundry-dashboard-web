@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IUserAuth } from '@/services/authSevices';
-import { FeatherIconsTypes, ThemeTypes } from './types';
-
-export interface IPageProps {
-  userAuth: IUserAuth;
-}
+import {
+  FeatherIconsTypes,
+  LaundryQueuePaymentStatusType,
+  LaundryQueueStatusType,
+  LaundryRoomStatusTypes,
+  LaundryServiceUnitTypes,
+  ThemeTypes,
+} from './types';
 
 export interface IAxiosErrorResult {
   name: string;
@@ -83,4 +85,108 @@ export interface IPaginateDataApiResponse<T> {
   rows: T[];
   totalEntries: number;
   pageCount: number;
+}
+
+// API Data Interface
+
+export interface ICustomerLevel {
+  customerLevelId: string;
+  name: string;
+  point: bigint;
+  discount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICustomer {
+  customerId: string;
+  name: string;
+  address: string;
+  phone: string;
+  customerLevelId: string;
+  point: number;
+  createdAt: string;
+  updatedAt: string;
+  customerLevel: ICustomerLevel;
+  _count?: {
+    laundryQueues: number;
+  };
+}
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface IUserAuth {
+  userId: string;
+  email: string;
+  name: string;
+  avatar: string;
+  role: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  session: string;
+}
+
+export interface ILaundryService {
+  serviceId: string;
+  name: string;
+  description: string;
+  unit: LaundryServiceUnitTypes;
+  price: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ILaundryItem {
+  laundryId: string;
+  price: string;
+  quantity: number;
+  totalPrice: string;
+  createdAt: string;
+  updatedAt: string;
+  laundryQueueId: string;
+  serviceId: string;
+  note: string;
+  historyService: ILaundryService;
+}
+
+export interface ILaundryQueue {
+  laundryQueueId: string;
+  queuePaymentStatus: LaundryQueuePaymentStatusType;
+  status: LaundryQueueStatusType;
+  finishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  customerId: string;
+  userId: string;
+  deliveryAt: string | null;
+  deliveryType: string;
+  note: string;
+  customer: Omit<ICustomer, 'customerLevel' | '_count'>;
+  user: Omit<IUserAuth, 'session'>;
+  laundryRooms?: {
+    laundryRoomId: string;
+    total: number;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+    laundryQueueId: string;
+  };
+  _count: { laundries: number };
+}
+
+export interface ILaundryRoom {
+  laundryRoomId: string;
+  total: number;
+  status: LaundryRoomStatusTypes;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  laundryQueueId: string;
+  user: Omit<IUserAuth, 'session'>;
+  laundryQueue: Omit<ILaundryQueue, 'laundryRooms' | '_count' | 'user'>;
+}
+
+export interface IPageProps {
+  userAuth: IUserAuth;
 }

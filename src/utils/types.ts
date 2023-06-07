@@ -18,3 +18,8 @@ export type BootstrapBreakpointsTypes =
   | 'lg'
   | 'xl'
   | 'xxl';
+
+export type LaundryQueuePaymentStatusType = 'PENDING' | 'FINISHED';
+export type LaundryQueueStatusType = 'ONHOLD' | 'FINISHED' | 'WASHED';
+export type LaundryServiceUnitTypes = 'KG' | 'PTNG';
+export type LaundryRoomStatusTypes = 'READY' | 'WASHED' | 'FINISHED';

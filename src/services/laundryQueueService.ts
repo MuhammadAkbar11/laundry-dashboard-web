@@ -2,15 +2,10 @@
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import {
-  IPaginationOptions,
-  IPaginationSorting,
-  IQueriesOptions,
-  IServiceWithPaginateReturn,
-} from '@utils/interfaces';
-import {
   CreateLaundryQueueInputTypes,
   CreateLaundryQueueWithCustomerInputTypes,
 } from '@utils/schema/laundryQueueSchema';
+import * as Interfaces from '@interfaces';
 import {
   runInDevAsync,
   uDelayAsync,
@@ -20,7 +15,6 @@ import {
 import { CreateCustomerInputTypes } from '@utils/schema/customerSchema';
 import { ICustomer } from './customerService';
 import { IUserAuth } from './authSevices';
-import { ILaundryRoom } from './laundryRoomService';
 
 export type LaundryQueuePaymentStatusType = 'PENDING' | 'FINISHED';
 export type LaundryQueueStatusType = 'ONHOLD' | 'FINISHED' | 'WASHED';
@@ -39,31 +33,30 @@ export interface ILaundryQueue {
   note: string;
   customer: Omit<ICustomer, 'customerLevel' | '_count'>;
   user: Omit<IUserAuth, 'session'>;
-  laundryRooms?: Pick<
-    ILaundryRoom,
-    | 'laundryRoomId'
-    | 'total'
-    | 'status'
-    | 'createdAt'
-    | 'updatedAt'
-    | 'userId'
-    | 'laundryQueueId'
-  >;
+  laundryRooms?: {
+    laundryRoomId: string;
+    total: number;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
+    laundryQueueId: string;
+  };
   _count: { laundries: number };
 }
 
 export async function getLaundryQueueService(
-  queryOpt: IPaginationOptions
-): Promise<IServiceWithPaginateReturn<ILaundryQueue[]> | void> {
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<Interfaces.IServiceWithPaginateReturn<ILaundryQueue[]> | void> {
   const sorting =
     queryOpt?.sorting?.length !== 0
-      ? (queryOpt?.sorting?.[0] as IPaginationSorting)
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
       : null;
 
   const orderBy = sorting?.id;
   const sortingBy = sorting ? (!sorting?.desc ? 'asc' : 'desc') : null;
 
-  const queries = uQueriesToString<IQueriesOptions>({
+  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
     _page: queryOpt.pageIndex + 1,
     _limit: queryOpt.pageSize,
     _search: queryOpt.searchTerm,
@@ -185,6 +178,23 @@ export async function getDetailLaundryQueueService(
       `${API_URI}/laundry/queue/${payload}`
     );
     return data?.laundryQueue;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function getLaundryQueueLaundriesService(
+  payload: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<Interfaces.ILaundryItem[] | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/laundry/queue/${payload}/laundries`
+    );
+    return data?.laundries;
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;

@@ -2,6 +2,8 @@
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import {
+  ICustomer,
+  ICustomerLevel,
   IPaginationOptions,
   IPaginationSorting,
   IQueriesOptions,
@@ -17,43 +19,6 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
-
-export interface ICustomerLevel {
-  customerLevelId: string;
-  name: string;
-  point: bigint;
-  discount: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface ICustomer {
-  customerId: string;
-  name: string;
-  address: string;
-  phone: string;
-  customerLevelId: string;
-  point: number;
-  createdAt: string;
-  updatedAt: string;
-  customerLevel: ICustomerLevel;
-  _count?: {
-    laundryQueues: number;
-  };
-}
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface IUserAuth {
-  userId: string;
-  email: string;
-  name: string;
-  avatar: string;
-  role: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  session: string;
-}
 
 export async function getCustomersService(
   queryOpt: IPaginationOptions

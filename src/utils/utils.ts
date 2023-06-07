@@ -34,11 +34,11 @@ export function uIsNotEmptyObject(obj: Record<string, unknown>): boolean {
 // Error
 export function uTranformAxiosError(error: any) {
   return {
-    name: error.response?.data?.name || UNKNOWM_ERROR,
+    name: error.response?.data?.name || error?.name || UNKNOWM_ERROR,
     message:
       error.response?.data?.message || error?.message || 'Something Went Wrong',
     statusCode:
-      error.response?.status || error.response?.data?.statusCode || 500,
+      error.response?.data?.statusCode || error.response?.status || 500,
     ...error.response?.data?.data,
   };
 }
@@ -155,9 +155,9 @@ export function uConvertNestedObjKeysToCamelCase(obj: any): any {
 
 export function runInDev(callback: () => void) {
   if (process.env.NODE_ENV === 'development') {
-    console.log('Running in development mode...');
+    console.log('info - Running in development mode...');
     callback();
-    console.log('Development mode execution completed.');
+    console.log('info - Development mode execution completed.');
   }
 }
 

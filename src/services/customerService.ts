@@ -1,14 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
-import {
-  ICustomer,
-  ICustomerLevel,
-  IPaginationOptions,
-  IPaginationSorting,
-  IQueriesOptions,
-  IServiceWithPaginateReturn,
-} from '@utils/interfaces';
+import * as Interfaces from '@interfaces';
 import {
   CreateCustomerInputTypes,
   UpdateCustomerInputTypes,
@@ -21,17 +14,17 @@ import {
 } from '@utils/utils';
 
 export async function getCustomersService(
-  queryOpt: IPaginationOptions
-): Promise<IServiceWithPaginateReturn<ICustomer> | void> {
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<Interfaces.IServiceWithPaginateReturn<Interfaces.ICustomer> | void> {
   const sorting =
     queryOpt?.sorting?.length !== 0
-      ? (queryOpt?.sorting?.[0] as IPaginationSorting)
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
       : null;
 
   const orderBy = sorting?.id;
   const sortingBy = sorting ? (!sorting?.desc ? 'asc' : 'desc') : null;
 
-  const queries = uQueriesToString<IQueriesOptions>({
+  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
     _page: queryOpt.pageIndex + 1,
     _limit: queryOpt.pageSize,
     _search: queryOpt.searchTerm,
@@ -59,7 +52,7 @@ export async function getCustomersService(
 
 export async function postCustomerService(
   payload: CreateCustomerInputTypes
-): Promise<{ customer: ICustomer; message: string } | void> {
+): Promise<{ customer: Interfaces.ICustomer; message: string } | void> {
   try {
     await runInDevAsync(() => uDelayAsync(1000));
 
@@ -76,7 +69,7 @@ export async function postCustomerService(
 
 export async function putCustomerService(
   payload: UpdateCustomerInputTypes
-): Promise<{ customer: ICustomer; message: string } | void> {
+): Promise<{ customer: Interfaces.ICustomer; message: string } | void> {
   try {
     await runInDevAsync(() => uDelayAsync(1000));
     const updateData: Omit<UpdateCustomerInputTypes, 'customerId'> = {
@@ -100,7 +93,7 @@ export async function putCustomerService(
 
 export async function deleteCustomerService(
   payload: string
-): Promise<{ customer: ICustomer; message: string } | void> {
+): Promise<{ customer: Interfaces.ICustomer; message: string } | void> {
   try {
     await runInDevAsync(() => uDelayAsync(1000));
 
@@ -115,7 +108,7 @@ export async function deleteCustomerService(
 }
 
 export async function getCustomerLevelsService(): Promise<
-  ICustomerLevel[] | void
+  Interfaces.ICustomerLevel[] | void
 > {
   try {
     const { data } = await axiosPrivate.get(`${API_URI}/level/customer`);

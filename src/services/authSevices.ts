@@ -1,4 +1,5 @@
 import { API_URI } from '@configs/varsConfig';
+import { IUserAuth } from '@interfaces';
 import { axiosPrivate } from '@utils/apiUtils';
 import { SignInInputTypes } from '@utils/schema/authSchema';
 import {
@@ -9,18 +10,6 @@ import {
   uTranformAxiosError,
 } from '@utils/utils';
 import { AxiosRequestConfig } from 'axios';
-
-export interface IUserAuth {
-  userId: string;
-  email: string;
-  name: string;
-  avatar: string;
-  role: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  session: string;
-}
 
 export async function postSignInService(payload: SignInInputTypes) {
   try {

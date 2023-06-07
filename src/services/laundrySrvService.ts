@@ -2,7 +2,6 @@
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import * as Interfaces from '@interfaces';
-
 import {
   runInDevAsync,
   uDelayAsync,

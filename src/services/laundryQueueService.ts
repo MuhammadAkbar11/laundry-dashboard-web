@@ -13,41 +13,12 @@ import {
   uTranformAxiosError,
 } from '@utils/utils';
 import { CreateCustomerInputTypes } from '@utils/schema/customerSchema';
-import { ICustomer } from './customerService';
-import { IUserAuth } from './authSevices';
-
-export type LaundryQueuePaymentStatusType = 'PENDING' | 'FINISHED';
-export type LaundryQueueStatusType = 'ONHOLD' | 'FINISHED' | 'WASHED';
-
-export interface ILaundryQueue {
-  laundryQueueId: string;
-  queuePaymentStatus: LaundryQueuePaymentStatusType;
-  status: LaundryQueueStatusType;
-  finishedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  customerId: string;
-  userId: string;
-  deliveryAt: string | null;
-  deliveryType: string;
-  note: string;
-  customer: Omit<ICustomer, 'customerLevel' | '_count'>;
-  user: Omit<IUserAuth, 'session'>;
-  laundryRooms?: {
-    laundryRoomId: string;
-    total: number;
-    status: string;
-    createdAt: string;
-    updatedAt: string;
-    userId: string;
-    laundryQueueId: string;
-  };
-  _count: { laundries: number };
-}
 
 export async function getLaundryQueueService(
   queryOpt: Interfaces.IPaginationOptions
-): Promise<Interfaces.IServiceWithPaginateReturn<ILaundryQueue[]> | void> {
+): Promise<Interfaces.IServiceWithPaginateReturn<
+  Interfaces.ILaundryQueue[]
+> | void> {
   const sorting =
     queryOpt?.sorting?.length !== 0
       ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
@@ -170,7 +141,7 @@ export async function deleteLaundryQueueService(
 export async function getDetailLaundryQueueService(
   payload: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<ILaundryQueue | void> {
+): Promise<Interfaces.ILaundryQueue | void> {
   try {
     await runInDevAsync(() => uDelayAsync(1000));
 

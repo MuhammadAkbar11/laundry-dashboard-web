@@ -14,13 +14,10 @@ import useDataQuery from '@hooks/useDataQuery';
 import { useLaundryQueueDeleteContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
 import { useLaundryQueueDetailContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
-import { IServiceWithPaginateReturn } from '@utils/interfaces';
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
-import {
-  ILaundryQueue,
-  LaundryQueueStatusType,
-  getLaundryQueueService,
-} from '@services/laundryQueueService';
+import { ILaundryQueue, IServiceWithPaginateReturn } from '@interfaces';
+import { LaundryQueueStatusType } from '@types';
+import { getLaundryQueueService } from '@services/laundryQueueService';
 import TableLoadingRow from '../TableLoadingRow';
 
 type Props = {};

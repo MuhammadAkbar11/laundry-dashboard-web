@@ -54,7 +54,6 @@ export function LaundryQueueDetailProvider({ children }: Props) {
 
   const onClose = () => {
     setIsOpen(false);
-    setData(null);
   };
 
   const onOpen = useCallback((payload: DataType | null) => {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ILaundryRoom } from '@services/laundryRoomService';
+import { ILaundryRoom } from '@interfaces';
 import React, {
   createContext,
   useContext,

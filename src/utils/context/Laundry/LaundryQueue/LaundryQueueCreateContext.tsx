@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ICustomer } from '@/services/customerService';
+import { ICustomer } from '@interfaces';
 import React, {
   createContext,
   useContext,

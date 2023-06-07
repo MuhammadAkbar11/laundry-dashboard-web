@@ -30,6 +30,12 @@
       "@hooks/*": [
         "./src/utils/hooks/*"
       ],
+      "@interfaces": [
+        "./src/utils/interfaces.ts"
+      ],
+      "@types": [
+        "./src/utils/types.ts"
+      ],
       "@services/*": [
         "./src/services/*"
       ],

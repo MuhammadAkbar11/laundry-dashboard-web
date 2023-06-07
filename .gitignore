@@ -35,5 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 yarn.lock
+
+# project
 .vscode/
-git_prompt/
+commitwhiz/
+
+*.ignore.*

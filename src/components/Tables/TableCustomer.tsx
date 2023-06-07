@@ -1,11 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
-import { ICustomer, getCustomersService } from '@/services/customerService';
-import FeatherIcon from '@components/Icons/FeatherIcon';
-import DebouncedInput from '@components/Inputs/DebouncedInput';
-import Paginate from '@components/Paginate/Paginate';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import clsx from 'classnames';
 import {
   ColumnDef,
   PaginationState,
@@ -18,11 +14,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { fuzzyFilter } from '@utils/utils';
-import React from 'react';
 import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import clsx from 'classnames';
+import { getCustomersService } from '@/services/customerService';
+import FeatherIcon from '@components/Icons/FeatherIcon';
+import DebouncedInput from '@components/Inputs/DebouncedInput';
+import Paginate from '@components/Paginate/Paginate';
+import { fuzzyFilter } from '@utils/utils';
 import { useCustomerPageContext } from '@utils/context/Customer/CustomerPageContext';
 import { useCustomerDeleteContext } from '@utils/context/Customer/CustomerDeleteContext';
+import { ICustomer } from '@interfaces';
 
 type Props = {};
 

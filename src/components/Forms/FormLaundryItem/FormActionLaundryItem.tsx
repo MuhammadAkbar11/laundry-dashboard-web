@@ -8,37 +8,54 @@ import {
   CreateLaundryItemInputTypes,
   createLaundryItemSchema,
 } from '@utils/schema/laundryItemSchema';
+import { ILaundryItem } from '@interfaces';
+import { uRupiah } from '@utils/utils';
+import { useLaundryRoomDetailContext } from '@utils/context/Laundry/LaundryRoom/LaundryRoomDetailContext';
 import BoxButton from '@components/Buttons/BoxButton';
 import useGetLaundryServices from '@hooks/useGetLaundryServices';
 import TableRowInfo from '@components/Utils/TableRowInfo';
-import { uRupiah } from '@utils/utils';
-import { postLaundryItemService } from '@services/laundryItemService';
+import { postOrPutLaundryItemService } from '@services/laundryItemService';
 import useNotification from '@hooks/useNotification';
-import { useLaundryRoomDetailContext } from '@utils/context/Laundry/LaundryRoom/LaundryRoomDetailContext';
 
 type Props = {
   laundryQueueId: string;
   onCloseForm: () => void;
+  type: 'create' | 'update';
+  laundryItem: ILaundryItem | null;
 };
 
-function FromCreateLaundryItem({ laundryQueueId, onCloseForm }: Props) {
+function FormActionLaundryItem({
+  laundryQueueId,
+  onCloseForm,
+  type,
+  laundryItem,
+}: Props) {
   const laundryRoomCtx = useLaundryRoomDetailContext();
 
   const laundryServices = useGetLaundryServices();
+  const laundryServicesLoading = laundryServices.isLoading;
   const notif = useNotification();
 
   const {
     register,
     handleSubmit,
     watch,
-
+    setValue,
     formState: { errors: formErrors },
   } = useForm<CreateLaundryItemInputTypes>({
     resolver: zodResolver(createLaundryItemSchema),
   });
 
+  React.useEffect(() => {
+    if (type === 'update' && laundryItem && !laundryServicesLoading) {
+      setValue('note', laundryItem?.note || '');
+      setValue('qty', laundryItem?.quantity);
+      setValue('serviceId', laundryItem?.historyService?.serviceId);
+    }
+  }, [laundryItem, type, setValue, laundryServicesLoading]);
+
   const queryClient = useQueryClient();
-  const mutation = useMutation(postLaundryItemService, {
+  const mutation = useMutation(postOrPutLaundryItemService, {
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ['laundriesData', { laundryQueueId }],
@@ -55,15 +72,24 @@ function FromCreateLaundryItem({ laundryQueueId, onCloseForm }: Props) {
   });
 
   const onSubmit = handleSubmit(async (inputs: CreateLaundryItemInputTypes) => {
+    laundryRoomCtx.onSetLoading(true);
     mutation.mutate(
-      { ...inputs, laundryQueueId },
+      {
+        ...inputs,
+        laundryQueueId,
+        laundryId: laundryItem?.laundryId,
+        type,
+      },
       {
         onSuccess(data) {
+          laundryRoomCtx.onSetLoading(false);
           notif.success(data?.message as string, { duration: 10000 });
           onCloseForm();
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onError(error: any) {
+          laundryRoomCtx.onSetLoading(false);
+
           // eslint-disable-next-line no-console
           const errMessage = error?.message || 'Gagal menambahkan data!';
           notif.danger(errMessage);
@@ -107,7 +133,9 @@ function FromCreateLaundryItem({ laundryQueueId, onCloseForm }: Props) {
             size="lg"
             isInvalid={!!formErrors?.serviceId}
             disabled={laundryServices.isLoading}
-            defaultValue=""
+            defaultValue={
+              type === 'update' ? laundryItem?.historyService?.serviceId : ''
+            }
             {...register('serviceId')}
           >
             <option value="" disabled>
@@ -201,11 +229,11 @@ function FromCreateLaundryItem({ laundryQueueId, onCloseForm }: Props) {
           isLoading={mutation.isLoading}
           className="order-1 order-sm-2"
         >
-          Tambah Cucian
+          {type === 'create' ? 'Tambah Cucian' : 'Ubah Cucian'}
         </BoxButton>
       </div>
     </Form>
   );
 }
 
-export default FromCreateLaundryItem;
+export default FormActionLaundryItem;

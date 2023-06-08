@@ -4,15 +4,7 @@ import React from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import AdminLayout from '@/layouts/AdminLayout';
-import {
-  Card,
-  Col,
-  Container,
-  Form,
-  Offcanvas,
-  Row,
-  Table,
-} from 'react-bootstrap';
+import { Card, Col, Container, Offcanvas, Row, Table } from 'react-bootstrap';
 import * as Interfaces from '@interfaces';
 import { APP_NAME } from '@configs/varsConfig';
 import { getSessionService } from '@services/authSevices';
@@ -27,13 +19,13 @@ import {
 import TableRowInfo from '@components/Utils/TableRowInfo';
 import TableLoadingRow from '@components/Tables/TableLoadingRow';
 import BoxButton from '@components/Buttons/BoxButton';
-import Link from 'next/link';
 import useGetLaundryQueueLaundries from '@hooks/useGetLaundryQueueLaundries';
-import FromCreateLaundryItem from '@components/Forms/FormLaundryItem/FormCreateLaundryItem';
+import FormActionLaundryItem from '@components/Forms/FormLaundryItem/FormActionLaundryItem';
 import useNotification from '@hooks/useNotification';
 import useEffectRun from '@hooks/useEffectRan';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import FormFinishedLaundryRoom from '@components/Forms/LaundryRoom/FormFinishedLaundryRoom';
 
 interface Props extends IPageProps {
   laundryRoom: Interfaces.ILaundryRoom;
@@ -44,8 +36,12 @@ export default function DetailRoomPage(props: Props) {
 
   const { userAuth, laundryRoom: laundryRoomDefaultData } = props;
 
-  const [formCreateLaundry, setFormCreateLaundry] =
+  const [formActionLaundryItem, setFormActionLaundryItem] =
     React.useState<boolean>(false);
+  const [formActionTypeLaundryItem, setFormActionTypeLaundryItem] =
+    React.useState<'create' | 'update'>('create');
+  const [selectedLaundryItem, setSelectedLaundryItem] =
+    React.useState<Interfaces.ILaundryItem | null>(null);
 
   const notif = useNotification();
   const router = useRouter();
@@ -54,12 +50,17 @@ export default function DetailRoomPage(props: Props) {
   const userAuthCtx = useUserAuthContext();
   const laundryRoomCtx = useLaundryRoomDetailContext();
 
+  const laundryRoomQueryKey = React.useMemo(
+    () => ['laundryRoomDetail', { laundryRoomId: laundryRoomIdParam }],
+    [laundryRoomIdParam]
+  );
+
   const { data: laundryRoom, isLoading: laundryRoomLoading } = useQuery<
     unknown,
     unknown,
     Interfaces.ILaundryRoom
   >({
-    queryKey: ['laundryRoomDetail', { laundryRoomId: laundryRoomIdParam }],
+    queryKey: laundryRoomQueryKey,
     queryFn: () => getDetailLaundryRoomService(laundryRoomIdParam as string),
     initialData: laundryRoomDefaultData,
   });
@@ -133,37 +134,11 @@ export default function DetailRoomPage(props: Props) {
                     />
                   </tbody>
                 </Table>
-                <Form>
-                  <div className="d-flex gap-2 ">
-                    {laundriesLength === 0 ||
-                    laundryRoom?.laundryQueue?.queuePaymentStatus ===
-                      'FINISHED' ? (
-                      <BoxButton disabled variant="success" icon="DollarSign">
-                        Bayar
-                      </BoxButton>
-                    ) : (
-                      <Link
-                        href={`/pembayaran/${laundryRoom?.laundryQueueId}`}
-                        legacyBehavior
-                        passHref
-                      >
-                        <BoxButton variant="success" icon="DollarSign">
-                          Bayar
-                        </BoxButton>
-                      </Link>
-                    )}
-                    <BoxButton
-                      disabled={
-                        laundriesLength === 0 ||
-                        laundryRoom.status === 'FINISHED'
-                      }
-                      variant="success"
-                      icon="CheckCircle"
-                    >
-                      Set selesai
-                    </BoxButton>
-                  </div>
-                </Form>
+                <FormFinishedLaundryRoom
+                  laundryRoom={laundryRoom}
+                  laundryRoomQueryKey={laundryRoomQueryKey}
+                  laundriesLength={(laundriesLength as number) || 0}
+                />
               </Card.Body>
             </Card>
           </Col>
@@ -171,15 +146,21 @@ export default function DetailRoomPage(props: Props) {
             <Card>
               <Card.Header className=" pt-4 d-flex justify-content-between ">
                 <Card.Title className=" mb-0">Daftar Item Cucian</Card.Title>
-                <BoxButton
-                  icon="Plus"
-                  disabled={
-                    laundryRoom?.laundryQueue.queuePaymentStatus === 'FINISHED'
-                  }
-                  onClick={() => setFormCreateLaundry(true)}
-                >
-                  Tambah Cucian
-                </BoxButton>
+                {laundryRoom.status !== 'FINISHED' ? (
+                  <BoxButton
+                    icon="Plus"
+                    disabled={
+                      laundryRoom?.laundryQueue.queuePaymentStatus ===
+                        'FINISHED' || laundryRoomCtx.isLoading
+                    }
+                    onClick={() => {
+                      setFormActionLaundryItem(true);
+                      setFormActionTypeLaundryItem('create');
+                    }}
+                  >
+                    Tambah Cucian
+                  </BoxButton>
+                ) : null}
               </Card.Header>
               <Card.Body>
                 <div className="table-responsive">
@@ -222,21 +203,29 @@ export default function DetailRoomPage(props: Props) {
                                     <div className="d-flex gap-1 ">
                                       <div>
                                         <BoxButton
+                                          disabled={
+                                            laundryRoom.status === 'FINISHED'
+                                          }
                                           size="sm"
                                           variant="blue"
                                           icon="Edit2"
                                           className="p-1"
                                           iconSize={11}
-                                          onClick={() =>
-                                            notif.info(
-                                              'Fitur ini akan segera hadir'
-                                            )
-                                          }
+                                          onClick={() => {
+                                            setFormActionLaundryItem(true);
+                                            setFormActionTypeLaundryItem(
+                                              'update'
+                                            );
+                                            setSelectedLaundryItem(lnd);
+                                          }}
                                         />
                                       </div>
                                       <div>
                                         <BoxButton
                                           size="sm"
+                                          disabled={
+                                            laundryRoom.status === 'FINISHED'
+                                          }
                                           iconSize={11}
                                           variant="danger"
                                           icon="Trash"
@@ -266,18 +255,30 @@ export default function DetailRoomPage(props: Props) {
       <Offcanvas
         backdrop="static"
         placement="end"
-        show={formCreateLaundry}
-        onHide={() => setFormCreateLaundry(false)}
+        show={formActionLaundryItem}
+        onHide={() => {
+          setFormActionLaundryItem(false);
+          setTimeout(() => {
+            setFormActionTypeLaundryItem('create');
+          }, 500);
+        }}
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title className="fw-bold">
-            Tambah Cucian : Antrian {laundryRoom?.laundryQueueId}
+            {formActionTypeLaundryItem === 'create'
+              ? `Tambah Cucian : Antrian ${laundryRoom?.laundryQueueId}`
+              : `Ubah Cucia ${selectedLaundryItem?.laundryId}`}
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <FromCreateLaundryItem
+          <FormActionLaundryItem
             laundryQueueId={laundryRoom?.laundryQueueId}
-            onCloseForm={() => setFormCreateLaundry(false)}
+            type={formActionTypeLaundryItem}
+            laundryItem={selectedLaundryItem}
+            onCloseForm={() => {
+              setFormActionTypeLaundryItem('create');
+              setFormActionLaundryItem(false);
+            }}
           />
         </Offcanvas.Body>
       </Offcanvas>

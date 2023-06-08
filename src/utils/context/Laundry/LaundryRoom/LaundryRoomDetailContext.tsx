@@ -20,17 +20,23 @@ type LaundryRoomDetailContextType = {
   data?: DataType | null;
   laundryRoom: ILaundryRoom | null;
   isOpen: boolean;
+  isLoading: boolean;
+
   onOpen: (data: DataType | null) => void;
   onSetLaundryRoom: (data: ILaundryRoom) => void;
+  onSetLoading: (value: boolean) => void;
   onClose: () => void;
 };
 
 const laundryRoomDetailContextDefaultValues: LaundryRoomDetailContextType = {
   laundryRoom: null,
   isOpen: false,
+  isLoading: false,
+
   onOpen: () => {},
   onClose: () => {},
   onSetLaundryRoom: () => {},
+  onSetLoading: () => {},
 };
 
 export const LaundryRoomDetailContext =
@@ -55,6 +61,9 @@ export function LaundryRoomDetailProvider({ children }: Props) {
   const [data] = useState<DataType | null>(null);
   const [laundryRoom, setLaundryRoom] = useState<ILaundryRoom | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSetLoading = (value: boolean) => setIsLoading(value);
 
   const onClose = () => {
     setIsOpen(false);
@@ -67,20 +76,18 @@ export function LaundryRoomDetailProvider({ children }: Props) {
     setLaundryRoom(payload);
   };
 
-  // const onOpen = useCallback((payload: DataType | null) => {
-  //   setIsOpen(true);
-  // }, []);
-
   const value: LaundryRoomDetailContextType = useMemo(
     () => ({
+      isLoading,
       isOpen,
       data,
       laundryRoom,
       onOpen,
       onClose,
       onSetLaundryRoom,
+      onSetLoading,
     }),
-    [data, isOpen, laundryRoom]
+    [data, isOpen, laundryRoom, isLoading]
   );
 
   return (

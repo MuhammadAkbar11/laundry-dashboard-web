@@ -19,22 +19,23 @@ import { runFakerJsInDev } from '@utils/utils';
 
 type Props = {};
 
-const formDefaultValues = {
-  point:
-    runFakerJsInDev<number>((fk) =>
-      fk.helpers.arrayElement([0, 5, 10, 15, 20])
-    ) || 0,
-  name: runFakerJsInDev<string>((fk) => fk.name.fullName()) || '',
-  phone:
-    runFakerJsInDev<string>((fk) => fk.phone.number('+628 #### #### ##')) || '',
-  address: runFakerJsInDev<string>((fk) => fk.address.streetAddress()) || '',
-  note:
-    runFakerJsInDev<string>((fk) =>
-      fk.random.words(fk.helpers.arrayElement([10, 15, 20, 25]))
-    ) || '',
-};
-
 function FormCreateCustomerWithLaundryQueue({}: Props) {
+  const formDefaultValues = {
+    point:
+      runFakerJsInDev<number>((fk) =>
+        fk.helpers.arrayElement([0, 5, 10, 15, 20])
+      ) || 0,
+    name: runFakerJsInDev<string>((fk) => fk.name.fullName()) || '',
+    phone:
+      runFakerJsInDev<string>((fk) => fk.phone.number('+628 #### #### ##')) ||
+      '',
+    address: runFakerJsInDev<string>((fk) => fk.address.streetAddress()) || '',
+    note:
+      runFakerJsInDev<string>((fk) =>
+        fk.random.words(fk.helpers.arrayElement([10, 15, 20, 25]))
+      ) || '',
+  };
+
   const notif = useNotification();
 
   const createLaundryQueueCtx = useLaundryQueueCreateContext();

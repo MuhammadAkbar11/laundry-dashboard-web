@@ -1,4 +1,5 @@
 import { API_URI } from '@configs/varsConfig';
+import { ILaundryItem } from '@interfaces';
 import { axiosPrivate } from '@utils/apiUtils';
 import { CreateLaundryItemInputTypes } from '@utils/schema/laundryItemSchema';
 import { runInDevAsync, uDelayAsync, uTranformAxiosError } from '@utils/utils';
@@ -38,6 +39,25 @@ export async function postOrPutLaundryItemService(
       }
     );
     return updatedData;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function deleteLaundryItemService(payload: string): Promise<{
+  message: string;
+  laundryItem: ILaundryItem;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+} | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.delete(
+      `${API_URI}/laundry/item/${payload}`
+    );
+    return data;
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;

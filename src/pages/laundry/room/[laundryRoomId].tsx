@@ -26,6 +26,11 @@ import useEffectRun from '@hooks/useEffectRan';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import FormFinishedLaundryRoom from '@components/Forms/LaundryRoom/FormFinishedLaundryRoom';
+import {
+  LaundryItemDeleteProvider,
+  useLaundryItemDeleteContext,
+} from '@utils/context/Laundry/LaundryItemDeleteContext';
+import ModalConfirmDeleteLaundryItem from '@components/Modals/ModalConfirmDeleteLaundryItem';
 
 interface Props extends IPageProps {
   laundryRoom: Interfaces.ILaundryRoom;
@@ -48,6 +53,7 @@ export default function DetailRoomPage(props: Props) {
   const laundryRoomIdParam = router.query?.laundryRoomId;
 
   const userAuthCtx = useUserAuthContext();
+  const deleteLaundryItemCtx = useLaundryItemDeleteContext();
   const laundryRoomCtx = useLaundryRoomDetailContext();
 
   const laundryRoomQueryKey = React.useMemo(
@@ -204,7 +210,8 @@ export default function DetailRoomPage(props: Props) {
                                       <div>
                                         <BoxButton
                                           disabled={
-                                            laundryRoom.status === 'FINISHED'
+                                            laundryRoom.status === 'FINISHED' ||
+                                            deleteLaundryItemCtx.isLoading
                                           }
                                           size="sm"
                                           variant="blue"
@@ -224,17 +231,20 @@ export default function DetailRoomPage(props: Props) {
                                         <BoxButton
                                           size="sm"
                                           disabled={
-                                            laundryRoom.status === 'FINISHED'
+                                            laundryRoom.status === 'FINISHED' ||
+                                            deleteLaundryItemCtx.isLoading
                                           }
                                           iconSize={11}
                                           variant="danger"
                                           icon="Trash"
                                           className="p-1"
-                                          onClick={() =>
-                                            notif.info(
-                                              'Fitur ini akan segera hadir'
-                                            )
-                                          }
+                                          onClick={() => {
+                                            deleteLaundryItemCtx.onOpenModal({
+                                              laundryItem: lnd,
+                                              fetchQueryKey:
+                                                laundryRoomQueryKey,
+                                            });
+                                          }}
                                         />
                                       </div>
                                     </div>
@@ -282,6 +292,7 @@ export default function DetailRoomPage(props: Props) {
           />
         </Offcanvas.Body>
       </Offcanvas>
+      <ModalConfirmDeleteLaundryItem />
     </>
   );
 }
@@ -345,6 +356,9 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
-DetailRoomPage.providers = [LaundryRoomDetailProvider];
+DetailRoomPage.providers = [
+  LaundryRoomDetailProvider,
+  LaundryItemDeleteProvider,
+];
 
 DetailRoomPage.layout = AdminLayout;

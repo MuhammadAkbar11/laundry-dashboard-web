@@ -57,11 +57,15 @@ export default function AntrianPage({ userAuth }: Props) {
           <Offcanvas.Title>Membuat Antrian</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          {createLaundryQueueCtx?.formType === 'existingCustomer' ? (
-            <FormCreateLaundryQueue />
-          ) : null}
-          {createLaundryQueueCtx?.formType === 'newCustomer' ? (
-            <FormCreateCustomerWithLaundryQueue />
+          {createLaundryQueueCtx.isOpenForm ? (
+            <>
+              {createLaundryQueueCtx?.formType === 'existingCustomer' ? (
+                <FormCreateLaundryQueue />
+              ) : null}
+              {createLaundryQueueCtx?.formType === 'newCustomer' ? (
+                <FormCreateCustomerWithLaundryQueue />
+              ) : null}
+            </>
           ) : null}
         </Offcanvas.Body>
       </Offcanvas>

@@ -144,8 +144,9 @@ export interface ILaundryItem {
   createdAt: string;
   updatedAt: string;
   laundryQueueId: string;
-  serviceId: string;
   note: string;
+  historyServiceId: string;
+  serviceId: string;
   historyService: ILaundryService;
 }
 

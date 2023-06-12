@@ -143,7 +143,7 @@ export async function getDetailLaundryQueueService(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<Interfaces.ILaundryQueue | void> {
   try {
-    await runInDevAsync(() => uDelayAsync(1000));
+    await runInDevAsync(() => uDelayAsync(100));
 
     const { data } = await axiosPrivate.get(
       `${API_URI}/laundry/queue/${payload}`

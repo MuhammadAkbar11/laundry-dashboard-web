@@ -118,3 +118,17 @@ export async function getCustomerLevelsService(): Promise<
     throw err;
   }
 }
+
+export async function getCustomerLevelDetailService(
+  payload: string
+): Promise<Interfaces.ICustomerLevel | void> {
+  try {
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/level/customer/${payload}`
+    );
+    return data?.level;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}

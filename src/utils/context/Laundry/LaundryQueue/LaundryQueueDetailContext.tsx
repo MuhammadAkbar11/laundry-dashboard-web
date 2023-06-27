@@ -18,13 +18,17 @@ type DataType = {
 type LaundryQueueDetailContextType = {
   data?: DataType | null;
   isOpen: boolean;
+  isLoading: boolean;
+  onSetLoading: (value: boolean) => void;
   onOpen: (data: DataType | null) => void;
   onClose: () => void;
 };
 
 const laundryQueueDetailContextDefaultValues: LaundryQueueDetailContextType = {
+  isLoading: false,
   isOpen: false,
   onOpen: () => {},
+  onSetLoading: () => {},
   onClose: () => {},
 };
 
@@ -50,25 +54,30 @@ type Props = {
 
 export function LaundryQueueDetailProvider({ children }: Props) {
   const [data, setData] = useState<DataType | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = () => {
     setIsOpen(false);
+    setIsLoading(false);
   };
 
   const onOpen = useCallback((payload: DataType | null) => {
     setIsOpen(true);
+    setIsLoading(false);
     setData(payload);
   }, []);
 
   const value: LaundryQueueDetailContextType = useMemo(
     () => ({
+      isLoading,
       isOpen,
       data,
       onOpen,
       onClose,
+      onSetLoading: setIsLoading,
     }),
-    [data, onOpen, isOpen]
+    [data, onOpen, isOpen, isLoading]
   );
 
   return (

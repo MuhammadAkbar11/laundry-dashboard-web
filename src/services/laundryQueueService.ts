@@ -171,3 +171,19 @@ export async function getLaundryQueueLaundriesService(
     throw err;
   }
 }
+
+export async function updateLaundryQueueDeliveredService(
+  payload: string
+): Promise<{ data: unknown; message: string } | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.put(
+      `${API_URI}/laundry/queue/deliver/${payload}`
+    );
+    return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}

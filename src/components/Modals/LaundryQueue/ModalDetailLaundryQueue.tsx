@@ -3,10 +3,13 @@
 import React from 'react';
 import { Modal, Spinner, Table } from 'react-bootstrap';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useQuery } from '@tanstack/react-query';
-// import useNotification from '@hooks/useNotification';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import useNotification from '@hooks/useNotification';
 import { useLaundryQueueDetailContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
-import { getDetailLaundryQueueService } from '@services/laundryQueueService';
+import {
+  getDetailLaundryQueueService,
+  updateLaundryQueueDeliveredService,
+} from '@services/laundryQueueService';
 import { uDate } from '@utils/utils';
 import BoxButton from '@components/Buttons/BoxButton';
 import Link from 'next/link';
@@ -15,55 +18,10 @@ import Link from 'next/link';
 function ModalDetailLaundryQueue() {
   const detailCtx = useLaundryQueueDetailContext();
 
-  // const notif = useNotification();
-
-  // const queryClient = useQueryClient();
-  // const mutation = useMutation(deleteLaundryQueueService, {
-  //   onSettled: () => {
-  //     queryClient.invalidateQueries({
-  //       queryKey: deleteData?.fetchQueryKey,
-  //     });
-  //   },
-  // });
-
-  // useEffectRun(
-  //   () => {
-  //     if (!deleteData?.laundryQueueId && laundryQueueDelCtx?.showModal) {
-  //       notif.danger('Tidak dapat menghapus data antrian, silahkan coba lagi', {
-  //         duration: 6666,
-  //       });
-  //       laundryQueueDelCtx.onCloseModal();
-  //     }
-  //   },
-  //   () => {},
-  //   [notif, deleteData, laundryQueueDelCtx]
-  // );
-
-  // const onLaundryQueueDelete = () => {
-  //   laundryQueueDelCtx.onSetLoading(true);
-  //   mutation.mutate(deleteData?.laundryQueueId as string, {
-  //     onSuccess(data) {
-  //       laundryQueueDelCtx.onSetSuccess(true);
-  //       laundryQueueDelCtx.onCloseModal();
-  //       laundryQueueDelCtx.onSetLoading(false);
-  //       notif.success(data?.message as string, { duration: 6666 });
-  //     },
-  //     onError(error: any) {
-  //       laundryQueueDelCtx.onCloseModal();
-  //       notif.danger('Gagal menghapus data antarian! silahkan coba lagi', {
-  //         duration: 6666,
-  //       });
-  //       laundryQueueDelCtx.onSetLoading(false);
-  //       laundryQueueDelCtx.onSetError(error);
-  //     },
-  //   });
-  // };
+  const notif = useNotification();
 
   const dataQuery = useQuery(
-    [
-      'laundry-queue-detail',
-      { laundryQueueId: detailCtx.data?.laundryQueueId },
-    ],
+    ['laundryQueueDetail', { laundryQueueId: detailCtx.data?.laundryQueueId }],
     () =>
       getDetailLaundryQueueService(detailCtx.data?.laundryQueueId as string),
     {
@@ -72,6 +30,41 @@ function ModalDetailLaundryQueue() {
   );
 
   const laundryQueue = React.useMemo(() => dataQuery.data, [dataQuery]);
+  const queryClient = useQueryClient();
+  const mutationUpdateDelivered = useMutation(
+    updateLaundryQueueDeliveredService,
+    {
+      onSettled: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            'laundryQueueDetail',
+            { laundryQueueId: detailCtx?.data?.laundryQueueId },
+          ],
+        });
+        queryClient.invalidateQueries({
+          queryKey: detailCtx?.data?.fetchQueryKey,
+        });
+      },
+    }
+  );
+
+  const onLaundryQueueDelivered = () => {
+    detailCtx.onSetLoading(true);
+
+    mutationUpdateDelivered.mutate(detailCtx?.data?.laundryQueueId as string, {
+      onSuccess(data) {
+        detailCtx.onSetLoading(false);
+        notif.success(data?.message as string, { duration: 6666 });
+      },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      onError(_error: any) {
+        notif.danger('Gagal mengubah data antarian! silahkan coba lagi', {
+          duration: 6666,
+        });
+        detailCtx.onSetLoading(false);
+      },
+    });
+  };
 
   return (
     <Modal
@@ -82,6 +75,7 @@ function ModalDetailLaundryQueue() {
         }
       }}
       contentClassName="p-2 rounded-0"
+      backdrop="static"
     >
       <Modal.Header closeButton className="border-0 pb-0 ">
         <Modal.Title>
@@ -165,13 +159,13 @@ function ModalDetailLaundryQueue() {
                   <td className="fw-bold">
                     {laundryQueue?.deliveryType === 'PICKUP' ? (
                       <>
-                        <span className="me-1">Di Ambil / Pickup</span>(
+                        <span className="me-1">Di Ambil / Pickup</span>
                         {laundryQueue?.deliveryAt === null ? (
                           <span className="text-danger fst-italic ">
                             (Belum di ambil)
                           </span>
                         ) : (
-                          <span className="text-danger fst-italic ">
+                          <span className="text-success fst-italic ">
                             (Sudah di ambil)
                           </span>
                         )}
@@ -184,7 +178,7 @@ function ModalDetailLaundryQueue() {
                             (belum di antar)
                           </span>
                         ) : (
-                          <span className="text-danger fst-italic ">
+                          <span className="text-success fst-italic ">
                             (Sudah di antar)
                           </span>
                         )}
@@ -219,13 +213,14 @@ function ModalDetailLaundryQueue() {
             </BoxButton>
             <BoxButton
               variant="success"
-              // onClick={() => onLaundryQueueDelete()}
+              onClick={() => onLaundryQueueDelivered()}
               disabled={
                 dataQuery.isLoading ||
                 laundryQueue?.queuePaymentStatus !== 'FINISHED' ||
                 laundryQueue?.status !== 'FINISHED' ||
                 laundryQueue?.deliveryAt !== null
               }
+              isLoading={mutationUpdateDelivered.isLoading}
               icon="CheckCircle"
             >
               Set Sudah{' '}
@@ -236,7 +231,7 @@ function ModalDetailLaundryQueue() {
             <Link
               passHref
               legacyBehavior
-              href={`/laundry/room/${laundryQueue?.laundryRooms?.laundryRoomId}`}
+              href={`/laundry/room/${laundryQueue?.laundryRoom?.laundryRoomId}`}
             >
               <BoxButton
                 icon="ArrowRight"

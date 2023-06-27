@@ -7,7 +7,7 @@ type Props = {
 function useNotification(props?: Partial<Props>) {
   const duration = props?.duration;
   const primary = (msg: string, options?: Partial<ToastOptions>) => {
-    toast(msg, {
+    return toast(msg, {
       duration,
       icon: 'primary',
       ...options,
@@ -15,7 +15,7 @@ function useNotification(props?: Partial<Props>) {
   };
 
   const success = (msg: string, options?: Partial<ToastOptions>) => {
-    toast.success(msg, {
+    return toast.success(msg, {
       duration,
       icon: 'success',
       ...options,
@@ -23,7 +23,7 @@ function useNotification(props?: Partial<Props>) {
   };
 
   const danger = (msg: string, options?: Partial<ToastOptions>) => {
-    toast.error(msg, {
+    return toast.error(msg, {
       duration,
       icon: 'danger',
       ...options,
@@ -31,7 +31,7 @@ function useNotification(props?: Partial<Props>) {
   };
 
   const info = (msg: string, options?: Partial<ToastOptions>) => {
-    toast.error(msg, {
+    return toast.error(msg, {
       duration,
       icon: 'info',
       ...options,
@@ -39,14 +39,17 @@ function useNotification(props?: Partial<Props>) {
   };
 
   const warning = (msg: string, options?: Partial<ToastOptions>) => {
-    toast.error(msg, {
+    return toast.error(msg, {
       duration,
       icon: 'warning',
       ...options,
     });
   };
 
-  return { primary, success, danger, info, warning };
+  const dismiss = (id: string) => toast.dismiss(id);
+  const remove = (id: string) => toast.remove(id);
+
+  return { primary, success, danger, info, warning, dismiss, remove };
 }
 
 useNotification.defaultProps = {

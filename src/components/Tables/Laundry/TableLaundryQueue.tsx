@@ -106,10 +106,10 @@ function TableLaundryQueue({}: Props) {
       {
         enableSorting: false,
         // eslint-disable-next-line no-underscore-dangle
-        accessorFn: (row) => row?.laundryRooms?.total,
+        accessorFn: (row) => row?.laundryRoom?.total,
         id: 'total',
         header: () => 'Total Harga',
-        cell: (info) => `${uRupiah(info.getValue() as number)}`,
+        cell: (info) => `${uRupiah(info?.getValue() as number)}`,
         size: 2,
       },
       {
@@ -132,6 +132,10 @@ function TableLaundryQueue({}: Props) {
         header: '',
         cell: (info) => {
           const data = info.getValue<ILaundryQueue>();
+          const disabledDelete =
+            data.queuePaymentStatus === 'FINISHED' ||
+            data.deliveryAt !== null ||
+            data.finishedAt !== null;
           return (
             <div className="d-flex gap-1">
               <Button
@@ -150,11 +154,14 @@ function TableLaundryQueue({}: Props) {
               <Button
                 size="sm"
                 variant="danger"
+                disabled={disabledDelete}
                 onClick={() => {
-                  laundryQueueDelCtx.onOpenModal({
-                    laundryQueueId: data.laundryQueueId,
-                    fetchQueryKey,
-                  });
+                  if (!disabledDelete) {
+                    laundryQueueDelCtx.onOpenModal({
+                      laundryQueueId: data.laundryQueueId,
+                      fetchQueryKey,
+                    });
+                  }
                 }}
               >
                 <FeatherIcon name="XCircle" size={14} />

@@ -31,9 +31,9 @@ function Paginate({
         className="d-flex "
         disabled={!isHasPrevPage}
       >
-        <div className="d-flex align-items-center  h-100 ">
+        <span className="d-flex align-items-center  h-100 ">
           <FeatherIcon size={14} name="ChevronLeft" />
-        </div>
+        </span>
       </Pagination.Prev>
       {totalPages > 0 ? (
         <PaginateNumbers
@@ -49,9 +49,9 @@ function Paginate({
         className="d-flex "
         disabled={!isHasNextPage}
       >
-        <div className="d-flex align-items-center  h-100 ">
+        <span className="d-flex align-items-center  h-100 ">
           <FeatherIcon size={14} name="ChevronRight" />
-        </div>
+        </span>
       </Pagination.Next>
     </Pagination>
   );

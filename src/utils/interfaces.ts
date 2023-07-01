@@ -164,7 +164,7 @@ export interface ILaundryQueue {
   note: string;
   customer: Omit<ICustomer, 'customerLevel' | '_count'>;
   user: Omit<IUserAuth, 'session'>;
-  laundryRooms?: {
+  laundryRoom?: {
     laundryRoomId: string;
     total: number;
     status: string;
@@ -186,6 +186,10 @@ export interface ILaundryRoom {
   laundryQueueId: string;
   user: Omit<IUserAuth, 'session'>;
   laundryQueue: Omit<ILaundryQueue, 'laundryRooms' | '_count' | 'user'>;
+}
+
+export interface IListLaundryRoom extends Omit<ILaundryRoom, 'laundryQueue'> {
+  laundryQueue: Omit<ILaundryQueue, 'laundryRoom' | 'user'>;
 }
 
 export interface IPageProps {

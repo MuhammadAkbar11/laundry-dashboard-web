@@ -38,7 +38,7 @@ function TableLaundryQueue({}: Props) {
     defaultData,
     fetchQueryKey,
   } = useDataQuery<IServiceWithPaginateReturn<ILaundryQueue>>({
-    queryKeyPrefix: 'laundry-queues',
+    queryKeyPrefix: 'laundryQueues',
     defaultSorting: [],
     queryFn: getLaundryQueueService,
     defaultData: [],

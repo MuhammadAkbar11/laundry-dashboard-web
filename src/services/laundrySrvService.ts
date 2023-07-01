@@ -8,6 +8,7 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
+import { CreateLaundryServiceInputTypes } from '@utils/schema/laundryServiceSchema';
 
 export async function getLaundrySrvPaginationService(
   queryOpt: Interfaces.IPaginationOptions
@@ -22,12 +23,15 @@ export async function getLaundrySrvPaginationService(
   const orderBy = sorting?.id;
   const sortingBy = sorting ? (!sorting?.desc ? 'asc' : 'desc') : null;
 
-  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
+  const queries = uQueriesToString<
+    Interfaces.IQueriesOptions & { _isFiltered: boolean }
+  >({
     _page: queryOpt.pageIndex + 1,
     _limit: queryOpt.pageSize,
     _search: queryOpt.searchTerm,
     _orderBy: orderBy,
     _sortBy: sortingBy,
+    _isFiltered: true,
   });
 
   try {
@@ -39,7 +43,7 @@ export async function getLaundrySrvPaginationService(
     const responseData = data?.data;
     return {
       entriesCount: responseData?.totalItems,
-      rows: responseData?.laundryQueues,
+      rows: responseData?.services,
       pageCount: responseData?.totalPages,
     };
   } catch (error: unknown) {
@@ -57,6 +61,23 @@ export async function getLaundrySrvService(): Promise<
     const { data } = await axiosPrivate.get(`${API_URI}/laundry/service`);
     const responseData = data?.laundryService;
     return responseData;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function postLaundrySrvService(
+  payload: CreateLaundryServiceInputTypes
+): Promise<{ service: Interfaces.ILaundryService; message: string } | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.post(
+      `${API_URI}/laundry/service`,
+      payload
+    );
+    return data;
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;

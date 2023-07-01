@@ -76,7 +76,7 @@ function FormFinishedLaundryRoom({
           </BoxButton>
         ) : (
           <Link
-            href={`/pembayaran/${laundryRoom?.laundryQueueId}`}
+            href={`/laundry/bayar/${laundryRoom?.laundryRoomId}`}
             legacyBehavior
             passHref
           >

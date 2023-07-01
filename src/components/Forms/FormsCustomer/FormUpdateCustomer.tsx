@@ -10,10 +10,10 @@ import {
   updateCustomerSchema,
 } from '@utils/schema/customerSchema';
 import useGetCustomerLevels from '@hooks/useGetCustomerLevels';
-import { ICustomer, putCustomerService } from '@/services/customerService';
+import { putCustomerService } from '@/services/customerService';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCustomerPageContext } from '@utils/context/Customer/CustomerPageContext';
-import { IServiceWithPaginateReturn } from '@utils/interfaces';
+import { ICustomer, IServiceWithPaginateReturn } from '@utils/interfaces';
 import useEffectRun from '@hooks/useEffectRan';
 
 type Props = {};

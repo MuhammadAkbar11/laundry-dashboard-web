@@ -7,7 +7,7 @@ import DropdownNotification from '../Dropdowns/DropdownNotification/DropdownNoti
 import DropdownMessages from '../Dropdowns/DropdownMessages/DropdownMessages';
 import DropdownUserProfile from '../Dropdowns/DropdownUserProfile/DropdownUserProfile';
 
-function Navbar() {
+function AdminNavbar() {
   const { onToggleSidebar } = useAdminLayoutContext();
   return (
     <BsNavbar expand className=" navbar-light navbar-bg">
@@ -258,4 +258,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default AdminNavbar;

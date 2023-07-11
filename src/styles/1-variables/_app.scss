@@ -100,6 +100,9 @@ $warning: $yellow !default;
 $danger: $red !default;
 $light: #f5f7fb !default;
 $dark: $gray-900 !default;
+$accent1: #21186e !default;
+// $accent1: #194376 !default;
+$accent2: #f52694 !default;
 
 $theme-colors: (
   'primary': $primary,
@@ -114,6 +117,8 @@ $theme-colors: (
   'grey': $gray-600,
   'slate': $gray-200,
   'blue': $blue,
+  'accent1': $accent1,
+  'accent2': $accent2,
 ) !default;
 
 // Social colors

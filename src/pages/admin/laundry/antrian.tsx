@@ -6,9 +6,16 @@ import { Col, Container, Offcanvas, Row } from 'react-bootstrap';
 import TableLaundryQueue from '@components/Tables/Laundry/TableLaundryQueue';
 import { GetServerSidePropsContext } from 'next';
 import { getSessionService } from '@/services/authSevices';
-import { uNotAuthRedirect } from '@utils/utils';
+import {
+  uCheckPermissions,
+  uGetStatusCode,
+  uIsForbiddenError,
+  uIsUnauthorizedError,
+  uNotAuthRedirect,
+  uReplaceURL,
+} from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import { IPageProps } from '@utils/interfaces';
+import { IPageProps, IUserAuth } from '@utils/interfaces';
 import {
   LaundryQueueCreateProvider,
   useLaundryQueueCreateContext,
@@ -78,28 +85,36 @@ export default function AntrianPage({ userAuth }: Props) {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
-
+  const url = uReplaceURL(ctx.req.url as string);
   try {
-    const userAuth = await getSessionService({
+    const userAuth = (await getSessionService({
       headers: { Cookie: cookies, 'User-Agent': userAgent },
-    });
-    if (!userAuth) return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+    })) as IUserAuth;
+    if (!userAuth) return uNotAuthRedirect(url);
+
+    const hasPermission = await uCheckPermissions(userAuth, url as string);
+
     return {
       props: {
         userAuth,
+        isRestricted: !hasPermission,
       },
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    if (
-      (err?.name as string)?.includes('NOT_AUTH') ||
-      err?.statusCode === 403
-    ) {
-      return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+    if (uIsUnauthorizedError(err) || uIsForbiddenError(err)) {
+      return {
+        redirect: {
+          destination: `/admin/login?redirect=${url}`,
+          permanent: false,
+        },
+      };
     }
-
     return {
-      props: { errorCode: err?.statusCode, userAuth: null },
+      props: {
+        errorCode: uGetStatusCode(err),
+        userAuth: null,
+      },
     };
   }
 }

@@ -1,23 +1,19 @@
-/* eslint-disable no-new */
-import React from 'react';
-import AdminLayout from '@/layouts/AdminLayout';
-import Head from 'next/head';
-import { Col, Container, Row } from 'react-bootstrap';
-import { GetServerSidePropsContext } from 'next';
-import { getSessionService } from '@/services/authSevices';
-import { uNotAuthRedirect } from '@utils/utils';
-import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import { IPageProps } from '@utils/interfaces';
-import { LaundryQueueCreateProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
+import TablePerson from '@components/Tables/TablePerson';
 import { APP_NAME } from '@configs/varsConfig';
-import { LaundryQueueDeleteProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
-import { LaundryQueueDetailProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
-import TableLaundryRoom from '@components/Tables/Laundry/TableLaundryRoom';
+import { IPageProps } from '@interfaces';
+import AdminLayout from '@layouts/AdminLayout';
+import { getSessionService } from '@services/authSevices';
+import { useUserAuthContext } from '@utils/context/UserAuthContext';
+import { uNotAuthRedirect } from '@utils/utils';
+import { GetServerSidePropsContext } from 'next';
+import Head from 'next/head';
+import React from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 
 interface Props extends IPageProps {}
 
-export default function AntrianPage({ userAuth }: Props) {
-  const TITLE = `Laundry Room | ${APP_NAME}`;
+export default function PengeluaranPage({ userAuth }: Props) {
+  const TITLE = `Pengeluaran | ${APP_NAME}`;
 
   const userAuthCtx = useUserAuthContext();
 
@@ -31,11 +27,10 @@ export default function AntrianPage({ userAuth }: Props) {
         <title>{TITLE}</title>
       </Head>
       <Container fluid className="p-0">
-        <h1 className="h3 mb-3">Laundry Room</h1>
+        <h1 className="h3 mb-3">Data Pengeluaran</h1>
         <Row className="row">
           <Col xs={12}>
-            {/* <TableLaundryQueue /> */}
-            <TableLaundryRoom />
+            <p>Pengeluaran</p>
           </Col>
         </Row>
       </Container>
@@ -72,10 +67,4 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
-AntrianPage.providers = [
-  LaundryQueueCreateProvider,
-  LaundryQueueDeleteProvider,
-  LaundryQueueDetailProvider,
-];
-
-AntrianPage.layout = AdminLayout;
+PengeluaranPage.layout = AdminLayout;

@@ -1,14 +1,32 @@
+/* eslint-disable no-else-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-new */
 import React from 'react';
+import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import AdminLayout from '@/layouts/AdminLayout';
-import { Card, Col, Container, Offcanvas, Row, Table } from 'react-bootstrap';
+import {
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+  Table,
+} from 'react-bootstrap';
 import * as Interfaces from '@interfaces';
 import { APP_NAME } from '@configs/varsConfig';
 import { getSessionService } from '@services/authSevices';
-import { uDate, uNotAuthRedirect, uRupiah } from '@utils/utils';
+import {
+  uCheckPermissions,
+  uGetStatusCode,
+  uIsForbiddenError,
+  uIsUnauthorizedError,
+  uNotAuthRedirect,
+  uReplaceURL,
+  uRupiah,
+} from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { IPageProps } from '@utils/interfaces';
 import { getDetailLaundryRoomService } from '@services/laundryRoomService';
@@ -18,43 +36,36 @@ import {
 } from '@utils/context/Laundry/LaundryRoom/LaundryRoomDetailContext';
 import TableRowInfo from '@components/Utils/TableRowInfo';
 import TableLoadingRow from '@components/Tables/TableLoadingRow';
-import BoxButton from '@components/Buttons/BoxButton';
 import useGetLaundryQueueLaundries from '@hooks/useGetLaundryQueueLaundries';
-import FormActionLaundryItem from '@components/Forms/FormLaundryItem/FormActionLaundryItem';
 import useNotification from '@hooks/useNotification';
 import useEffectRun from '@hooks/useEffectRan';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import FormFinishedLaundryRoom from '@components/Forms/LaundryRoom/FormFinishedLaundryRoom';
+import useGetCustomerLevelDetail from '@hooks/useGetCustomerLevelDetail';
+import BoxButton from '@components/Buttons/BoxButton';
 import {
-  LaundryItemDeleteProvider,
-  useLaundryItemDeleteContext,
-} from '@utils/context/Laundry/LaundryItemDeleteContext';
-import ModalConfirmDeleteLaundryItem from '@components/Modals/ModalConfirmDeleteLaundryItem';
+  LaundryPaymentProvider,
+  useLaundryPaymentContext,
+} from '@utils/context/Laundry/LaundryPaymentContext';
+import ModalProcessLaundryPayment from '@components/Modals/ModalProcessLaundryPayment';
 
 interface Props extends IPageProps {
   laundryRoom: Interfaces.ILaundryRoom;
 }
 
 export default function DetailRoomPage(props: Props) {
-  const TITLE = `Ruangan Laundry | ${APP_NAME}`;
+  const TITLE = `Pembayaran Laundry | ${APP_NAME}`;
 
   const { userAuth, laundryRoom: laundryRoomDefaultData } = props;
 
-  const [formActionLaundryItem, setFormActionLaundryItem] =
-    React.useState<boolean>(false);
-  const [formActionTypeLaundryItem, setFormActionTypeLaundryItem] =
-    React.useState<'create' | 'update'>('create');
-  const [selectedLaundryItem, setSelectedLaundryItem] =
-    React.useState<Interfaces.ILaundryItem | null>(null);
+  const [secondsRedirect, setSecondsRedirect] = React.useState(5);
 
   const notif = useNotification();
   const router = useRouter();
   const laundryRoomIdParam = router.query?.laundryRoomId;
 
   const userAuthCtx = useUserAuthContext();
-  const deleteLaundryItemCtx = useLaundryItemDeleteContext();
   const laundryRoomCtx = useLaundryRoomDetailContext();
+  const laundryPaymentCtx = useLaundryPaymentContext();
 
   const laundryRoomQueryKey = React.useMemo(
     () => ['laundryRoomDetail', { laundryRoomId: laundryRoomIdParam }],
@@ -75,6 +86,10 @@ export default function DetailRoomPage(props: Props) {
     laundryRoom?.laundryQueueId as string
   );
 
+  const { data: customerLevelDataQuery } = useGetCustomerLevelDetail(
+    laundryRoom?.laundryQueue?.customer?.customerLevelId as string
+  );
+
   React.useEffect(() => {
     userAuthCtx.onSetUser(userAuth);
   }, [userAuth, userAuthCtx]);
@@ -82,6 +97,30 @@ export default function DetailRoomPage(props: Props) {
   React.useEffect(() => {
     if (!laundryRoomLoading) laundryRoomCtx.onSetLaundryRoom(laundryRoom);
   }, [laundryRoom, laundryRoomCtx, laundryRoomLoading]);
+
+  // eslint-disable-next-line consistent-return
+  React.useEffect(() => {
+    if (laundryPaymentCtx.isSuccess) {
+      if (secondsRedirect > 0) {
+        const timer = setInterval(() => {
+          setSecondsRedirect((prevSeconds: number) => prevSeconds - 1);
+          notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
+          notif.info(`Halaman akan di arahkan dalam ${secondsRedirect}`, {
+            id: `pay-success-redirect-${secondsRedirect}`,
+            duration: 1000,
+          });
+        }, 1000);
+
+        return () => {
+          clearInterval(timer);
+        };
+      } else {
+        notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
+        router.push(`/laundry/room/${laundryRoom.laundryRoomId}`);
+        return () => {};
+      }
+    }
+  }, [notif, secondsRedirect, laundryPaymentCtx, router, laundryRoom]);
 
   useEffectRun(
     () => {
@@ -93,7 +132,11 @@ export default function DetailRoomPage(props: Props) {
     [laundriesDataQuery, notif]
   );
 
-  const laundriesLength = laundriesDataQuery?.data?.length;
+  const totalDiscount = customerLevelDataQuery
+    ? (Number(laundryRoom?.total || 0) *
+        Number(customerLevelDataQuery?.discount || 0)) /
+      100
+    : 0;
 
   return (
     <>
@@ -101,15 +144,12 @@ export default function DetailRoomPage(props: Props) {
         <title>{TITLE}</title>
       </Head>
       <Container fluid className="p-0">
-        <h1 className="h3 mb-4">
-          Laundry Room :{' '}
-          <span className="fw-bold">{laundryRoom?.laundryRoomId}</span>
-        </h1>
+        <h1 className="h3 mb-4">Pembayaran</h1>
         <Row className="row">
-          <Col xs={12} md={5}>
+          <Col xs={12} md={6} lg={7}>
             <Card>
               <Card.Header className="pt-4">
-                <Card.Title className=" mb-0">Info Cucian</Card.Title>
+                <Card.Title className=" mb-0">Informasi</Card.Title>
               </Card.Header>
               <Card.Body>
                 <Table borderless>
@@ -127,46 +167,24 @@ export default function DetailRoomPage(props: Props) {
                       }
                     />
                     <TableRowInfo
-                      label="Waktu Masuk"
-                      value={<span>{uDate(laundryRoom?.createdAt)}</span>}
+                      label="Level Pelanggan"
+                      value={<span>{customerLevelDataQuery?.name || ''}</span>}
                     />
                     <TableRowInfo
-                      label="Total Item"
-                      value={<span>{laundriesLength} Cucian</span>}
-                    />
-                    <TableRowInfo
-                      label="Total Item"
-                      value={<span>{uRupiah(laundryRoom?.total)}</span>}
+                      label="Diskon Level"
+                      value={
+                        <span>
+                          {`${customerLevelDataQuery?.discount}%` || ''}
+                        </span>
+                      }
                     />
                   </tbody>
                 </Table>
-                <FormFinishedLaundryRoom
-                  laundryRoom={laundryRoom}
-                  laundryRoomQueryKey={laundryRoomQueryKey}
-                  laundriesLength={(laundriesLength as number) || 0}
-                />
               </Card.Body>
             </Card>
-          </Col>
-          <Col xs={12} md={7}>
             <Card>
               <Card.Header className=" pt-4 d-flex justify-content-between ">
                 <Card.Title className=" mb-0">Daftar Item Cucian</Card.Title>
-                {laundryRoom.status !== 'FINISHED' ? (
-                  <BoxButton
-                    icon="Plus"
-                    disabled={
-                      laundryRoom?.laundryQueue.queuePaymentStatus ===
-                        'FINISHED' || laundryRoomCtx.isLoading
-                    }
-                    onClick={() => {
-                      setFormActionLaundryItem(true);
-                      setFormActionTypeLaundryItem('create');
-                    }}
-                  >
-                    Tambah Cucian
-                  </BoxButton>
-                ) : null}
               </Card.Header>
               <Card.Body>
                 <div className="table-responsive">
@@ -177,7 +195,6 @@ export default function DetailRoomPage(props: Props) {
                         <th>Jenis Layanan</th>
                         <th>Qty</th>
                         <th>Total</th>
-                        <th>Hapus</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -205,50 +222,6 @@ export default function DetailRoomPage(props: Props) {
                                     </span>
                                   </td>
                                   <td>{uRupiah(+lnd.totalPrice)}</td>
-                                  <td>
-                                    <div className="d-flex gap-1 ">
-                                      <div>
-                                        <BoxButton
-                                          disabled={
-                                            laundryRoom.status === 'FINISHED' ||
-                                            deleteLaundryItemCtx.isLoading
-                                          }
-                                          size="sm"
-                                          variant="blue"
-                                          icon="Edit2"
-                                          className="p-1"
-                                          iconSize={11}
-                                          onClick={() => {
-                                            setFormActionLaundryItem(true);
-                                            setFormActionTypeLaundryItem(
-                                              'update'
-                                            );
-                                            setSelectedLaundryItem(lnd);
-                                          }}
-                                        />
-                                      </div>
-                                      <div>
-                                        <BoxButton
-                                          size="sm"
-                                          disabled={
-                                            laundryRoom.status === 'FINISHED' ||
-                                            deleteLaundryItemCtx.isLoading
-                                          }
-                                          iconSize={11}
-                                          variant="danger"
-                                          icon="Trash"
-                                          className="p-1"
-                                          onClick={() => {
-                                            deleteLaundryItemCtx.onOpenModal({
-                                              laundryItem: lnd,
-                                              fetchQueryKey:
-                                                laundryRoomQueryKey,
-                                            });
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                  </td>
                                 </tr>
                               );
                             })
@@ -260,9 +233,85 @@ export default function DetailRoomPage(props: Props) {
               </Card.Body>
             </Card>
           </Col>
+          <Col xs={12} md={6} lg={5}>
+            <Card>
+              <Card.Header className="pt-4">
+                <Card.Title className=" mb-0">Informasi Harga</Card.Title>
+              </Card.Header>
+              <Card.Body className="pb-2">
+                <Table borderless>
+                  <tbody>
+                    <TableRowInfo
+                      label="Harga"
+                      value={<span>{uRupiah(laundryRoom.total)}</span>}
+                    />
+                    <TableRowInfo
+                      label={`Disc (${customerLevelDataQuery?.discount}%)`}
+                      value={<span>{uRupiah(totalDiscount)}</span>}
+                    />
+                    <TableRowInfo
+                      label="Total Harga"
+                      value={
+                        <span>
+                          {uRupiah(laundryRoom.total - totalDiscount)}
+                        </span>
+                      }
+                    />
+                  </tbody>
+                </Table>
+              </Card.Body>
+              {laundryRoom?.laundryQueue?.queuePaymentStatus === 'PENDING' ? (
+                <Card.Footer className="  border-top ">
+                  <Form.Group className="">
+                    <InputGroup className="mb-1" size="lg">
+                      <Form.Control
+                        aria-label="Masukan kode promo"
+                        aria-describedby="basic-coupon"
+                        className="rounded-0"
+                        placeholder="Masukan kode promo"
+                      />
+                      <BoxButton variant="primary" id="button-coupon">
+                        Gunakan
+                      </BoxButton>
+                    </InputGroup>
+                  </Form.Group>
+                </Card.Footer>
+              ) : null}
+
+              <Card.Footer className=" border-top d-flex flex-column ">
+                {laundryRoom?.laundryQueue?.queuePaymentStatus === 'PENDING' ? (
+                  <BoxButton
+                    className="w-100"
+                    size="lg"
+                    onClick={() => {
+                      // laundryRoomQueryKey
+                      laundryPaymentCtx.onOpenModal({
+                        totalDiscount,
+                        totalPrice: Number(laundryRoom.total - totalDiscount),
+                        laundryRoom,
+                        fetchQueryKey: laundryRoomQueryKey,
+                      });
+                    }}
+                  >
+                    Proses Bayar
+                  </BoxButton>
+                ) : (
+                  <BoxButton
+                    className="w-100"
+                    size="lg"
+                    icon="CheckCircle"
+                    iconPos="end"
+                    variant="success"
+                  >
+                    Lunas
+                  </BoxButton>
+                )}
+              </Card.Footer>
+            </Card>
+          </Col>
         </Row>
       </Container>
-      <Offcanvas
+      {/* <Offcanvas
         backdrop="static"
         placement="end"
         show={formActionLaundryItem}
@@ -292,7 +341,8 @@ export default function DetailRoomPage(props: Props) {
           />
         </Offcanvas.Body>
       </Offcanvas>
-      <ModalConfirmDeleteLaundryItem />
+      <ModalConfirmDeleteLaundryItem /> */}
+      <ModalProcessLaundryPayment />
     </>
   );
 }
@@ -301,12 +351,15 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
   const headers = { Cookie: cookies, 'User-Agent': userAgent };
-  try {
-    const userAuth = await getSessionService({
-      headers,
-    });
 
-    if (!userAuth) return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+  const url = uReplaceURL(ctx.req.url as string);
+  try {
+    const userAuth = (await getSessionService({
+      headers,
+    })) as Interfaces.IUserAuth;
+    if (!userAuth) return uNotAuthRedirect(url);
+
+    const hasPermission = await uCheckPermissions(userAuth, url as string);
 
     const laundryRoomId = ctx.params?.laundryRoomId;
 
@@ -337,28 +390,29 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       props: {
         userAuth,
         laundryRoom,
+        isRestricted: !hasPermission,
       },
     };
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    const { name: errName, statusCode } = err;
-    if ((errName as string)?.includes('NOT_AUTH') || statusCode === 403) {
-      return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
-    }
-    if (statusCode === 404) {
+    if (uIsUnauthorizedError(err) || uIsForbiddenError(err)) {
       return {
-        notFound: true,
+        redirect: {
+          destination: `/admin/login?redirect=${url}`,
+          permanent: false,
+        },
       };
     }
     return {
-      props: { errorCode: statusCode, userAuth: null },
+      props: {
+        errorCode: uGetStatusCode(err),
+        userAuth: null,
+      },
     };
   }
 }
 
-DetailRoomPage.providers = [
-  LaundryRoomDetailProvider,
-  LaundryItemDeleteProvider,
-];
+DetailRoomPage.providers = [LaundryRoomDetailProvider, LaundryPaymentProvider];
 
 DetailRoomPage.layout = AdminLayout;

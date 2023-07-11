@@ -2,12 +2,19 @@
 import React from 'react';
 import AdminLayout from '@/layouts/AdminLayout';
 import Head from 'next/head';
-import { Card, Col, Container, Offcanvas, Row } from 'react-bootstrap';
+import { Col, Container, Offcanvas, Row } from 'react-bootstrap';
 import { APP_NAME } from '@configs/varsConfig';
 import { GetServerSidePropsContext } from 'next';
 import { getSessionService } from '@services/authSevices';
-import { uNotAuthRedirect } from '@utils/utils';
-import { IPageProps } from '@interfaces';
+import {
+  uCheckPermissions,
+  uGetStatusCode,
+  uIsForbiddenError,
+  uIsUnauthorizedError,
+  uNotAuthRedirect,
+  uReplaceURL,
+} from '@utils/utils';
+import { IPageProps, IUserAuth } from '@interfaces';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import {
   LaundryServiceActionsProvider,
@@ -15,6 +22,9 @@ import {
 } from '@utils/context/Laundry/LaundryService/LaundryServiceActionsContext';
 import TableLaundryService from '@components/Tables/Laundry/TableLaundryService';
 import FormCreateLaundryService from '@components/Forms/FormLaundryService/FormCreateLaundryService';
+import { LaundryServiceDeleteProvider } from '@utils/context/Laundry/LaundryService/LaundryServiceDeleteContext';
+import ModalConfirmDeleteLaundryService from '@components/Modals/ModalConfirmDeleteLaundryService';
+import FormUpdateLaundryService from '@components/Forms/FormLaundryService/FormUpdateLaundryService';
 
 interface Props extends IPageProps {}
 
@@ -56,9 +66,6 @@ export default function LaundryServicePage({ userAuth }: Props) {
             {laundryServiceActionsCtx?.formType === 'update'
               ? 'Ubah Data Layanan'
               : null}
-            {laundryServiceActionsCtx?.formType === 'initial'
-              ? 'Loading...'
-              : null}
           </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
@@ -68,12 +75,13 @@ export default function LaundryServicePage({ userAuth }: Props) {
                 <FormCreateLaundryService />
               ) : null}
               {laundryServiceActionsCtx?.formType === 'update' ? (
-                <h1>FORM UPDATE</h1>
+                <FormUpdateLaundryService />
               ) : null}
             </>
           ) : null}
         </Offcanvas.Body>
       </Offcanvas>
+      <ModalConfirmDeleteLaundryService />
     </>
   );
 }
@@ -81,32 +89,43 @@ export default function LaundryServicePage({ userAuth }: Props) {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
-
+  const url = uReplaceURL(ctx.req.url as string);
   try {
-    const userAuth = await getSessionService({
+    const userAuth = (await getSessionService({
       headers: { Cookie: cookies, 'User-Agent': userAgent },
-    });
-    if (!userAuth) return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+    })) as IUserAuth;
+    if (!userAuth) return uNotAuthRedirect(url);
+
+    const hasPermission = await uCheckPermissions(userAuth, url as string);
+
     return {
       props: {
         userAuth,
+        isRestricted: !hasPermission,
       },
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
-    if (
-      (err?.name as string)?.includes('NOT_AUTH') ||
-      err?.statusCode === 403
-    ) {
-      return uNotAuthRedirect(`/login?redirect=${ctx.req.url}`);
+    if (uIsUnauthorizedError(err) || uIsForbiddenError(err)) {
+      return {
+        redirect: {
+          destination: `/admin/login?redirect=${url}`,
+          permanent: false,
+        },
+      };
     }
-
     return {
-      props: { errorCode: err?.statusCode, userAuth: null },
+      props: {
+        errorCode: uGetStatusCode(err),
+        userAuth: null,
+      },
     };
   }
 }
 
-LaundryServicePage.providers = [LaundryServiceActionsProvider];
+LaundryServicePage.providers = [
+  LaundryServiceActionsProvider,
+  LaundryServiceDeleteProvider,
+];
 
 LaundryServicePage.layout = AdminLayout;

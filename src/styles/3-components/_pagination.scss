@@ -1,0 +1,6 @@
+.web-pagination.pagination {
+  & .page-item.active .page-link {
+    background-color: $accent1 !important;
+    border-color: $accent1;
+  }
+}

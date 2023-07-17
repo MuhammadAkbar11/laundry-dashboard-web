@@ -9,6 +9,7 @@ interface TableLoadingRowProps {
   headerLength: number;
   emptyText?: string;
   errorText?: string;
+  variant?: string;
 }
 
 function TableLoadingRow({
@@ -18,12 +19,13 @@ function TableLoadingRow({
   emptyText,
   errorText,
   isError,
+  variant,
 }: TableLoadingRowProps) {
   if (isLoading) {
     return (
       <tr>
         <td colSpan={headerLength} className="text-center">
-          <Spinner size="sm" animation="border" variant="primary" role="status">
+          <Spinner size="sm" animation="border" variant={variant} role="status">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         </td>
@@ -53,6 +55,7 @@ function TableLoadingRow({
 TableLoadingRow.defaultProps = {
   emptyText: 'Tidak ada data yang di temukan',
   errorText: 'Terjadi kesalahan saat memuat data',
+  variant: 'primary',
 };
 
 export default TableLoadingRow;

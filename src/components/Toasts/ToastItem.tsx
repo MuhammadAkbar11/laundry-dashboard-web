@@ -36,6 +36,7 @@ function ToastItem({ toast, updateHeight }: Props) {
 
   const toastIcon = toast.icon as NotificationVariantTypes;
   const toastIconName = iconNames[toastIcon] ?? iconNames.primary;
+  const toastMsg = toast.message as string;
 
   const toastIconClsx = clsx('toast-icon', {
     'bg-primary text-white': toastIcon === 'primary' || !toastIcon,
@@ -45,15 +46,19 @@ function ToastItem({ toast, updateHeight }: Props) {
     'bg-warning text-white': toastIcon === 'warning',
   });
 
+  const toastClsx = clsx('bg-white text-dark rounded-0 ', {
+    'w-auto': toastMsg?.length > 30,
+  });
+
   return (
-    <div className="toast-notif animate">
-      <Toast key={toast.id} ref={ref} className="bg-white text-dark">
+    <div className="toast-notif animate p-1">
+      <Toast key={toast.id} ref={ref} className={toastClsx}>
         <Toast.Body>
           <div className="toast-content">
             <div className={toastIconClsx}>
               <FeatherIcon name={toastIconName} size={16} />
             </div>
-            <span className="ms-2 my-0 ">{toast.message as string}</span>
+            <span className="ms-2 my-0 ">{toastMsg}</span>
           </div>
           <div className="toast-dismiss">
             <Button

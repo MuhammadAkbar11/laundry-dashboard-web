@@ -10,7 +10,7 @@ function ToastsWrapper({}: Props) {
   const { startPause, endPause, updateHeight } = handlers;
   return (
     <ToastContainer
-      className="toast-container-fixed pt-3 px-3 d-flex flex-column "
+      className="toast-container-fixed pt-3 px-0 px-md-3 d-flex flex-column "
       position="top-center" // position
       style={{
         top: 8,

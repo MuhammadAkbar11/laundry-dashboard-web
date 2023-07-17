@@ -15,7 +15,7 @@ const WebButton = React.forwardRef<HTMLButtonElement, WebButtonProps>(
 
     const [btnDisabled, setBtnDisabled] = React.useState(disabled || false);
 
-    const clsnm = clsx('py-md-3 px-md-5', className);
+    const clsnm = clsx('py-3 px-4 px-md-5', className);
 
     React.useEffect(() => {
       if (isLoading) {
@@ -42,6 +42,7 @@ const WebButton = React.forwardRef<HTMLButtonElement, WebButtonProps>(
 
 WebButton.defaultProps = {
   isLoading: false,
+  variant: 'accent1',
   children: null,
 };
 

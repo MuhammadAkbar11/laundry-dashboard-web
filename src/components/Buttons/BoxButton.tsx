@@ -56,16 +56,24 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
       }
     }, [isLoading, disabled]);
 
+    const iconLoading = isLoading ? (
+      <span
+        className={clsx({
+          'me-2': children !== null && iconPos === 'start',
+          'ms-2': children !== null && iconPos === 'end',
+        })}
+      >
+        <Spinner size="sm" />
+      </span>
+    ) : null;
+
     return (
       <Button ref={ref} className={clsnm} disabled={btnDisabled} {...restProps}>
-        {isLoading ? (
-          <span className={children !== null ? 'me-2' : ''}>
-            <Spinner size="sm" />
-          </span>
-        ) : null}
+        {iconPos === 'start' ? iconLoading : null}
         {iconPos === 'start' ? buttonIcon : null}
         {children}
         {iconPos === 'end' ? buttonIcon : null}
+        {iconPos === 'end' ? iconLoading : null}
       </Button>
     );
   }

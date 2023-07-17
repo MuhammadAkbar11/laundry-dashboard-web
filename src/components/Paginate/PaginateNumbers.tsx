@@ -32,6 +32,7 @@ function PaginateNumbers({
           key={1}
           active={activePage === 1}
           onClick={() => handlePageChange(1)}
+          className="bg-danger"
         >
           1
         </Pagination.Item>
@@ -62,6 +63,7 @@ function PaginateNumbers({
       pageNumbers.push(
         <Pagination.Item
           key={i}
+          className="bg-danger"
           active={activePage === i}
           onClick={() => handlePageChange(i)}
         >

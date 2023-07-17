@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'classnames';
 import { Pagination } from 'react-bootstrap';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import PaginateNumbers from './PaginateNumbers';
@@ -12,6 +13,7 @@ type Props = {
   totalPages: number;
   activePage: number;
   loading: boolean;
+  className?: string;
 };
 
 function Paginate({
@@ -23,9 +25,10 @@ function Paginate({
   totalPages,
   activePage,
   loading,
+  className,
 }: Props) {
   return (
-    <Pagination className="align-self-center my-auto">
+    <Pagination className={clsx('align-self-center my-auto', className)}>
       <Pagination.Prev
         onClick={() => onPrevPage()}
         className="d-flex "
@@ -56,5 +59,9 @@ function Paginate({
     </Pagination>
   );
 }
+
+Paginate.defaultProps = {
+  className: '',
+};
 
 export default Paginate;

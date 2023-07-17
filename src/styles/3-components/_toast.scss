@@ -15,9 +15,10 @@
     transform: scaleY(0) translate(8%);
     clip-path: circle(6.5% at 71% 100%);
     transform-origin: 100% 100%;
+
     & .toast {
       border: none;
-      margin: 0.2rem 0.4rem;
+      margin: 0.2rem auto;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1), 0 3px 3px rgba(0, 0, 0, 0.05) !important;
     }
 

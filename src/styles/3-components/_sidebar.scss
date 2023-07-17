@@ -238,3 +238,28 @@ a.sidebar-link {
   background: $sidebar-cta-bg;
   color: $sidebar-cta-color;
 }
+
+.member-siderbar-nav.nav {
+  & .nav-link {
+    color: $dark;
+    padding: {
+      top: 0.75rem;
+      bottom: 0.75rem;
+    }
+
+    &:hover {
+      background-color: rgba($gray-500, $alpha: 0.5);
+    }
+  }
+
+  & .nav-link.active {
+    background-color: $accent1;
+    color: $light;
+  }
+}
+
+.member-sidebar.list-group {
+  & .list-group-item.active {
+    background-color: $accent1;
+  }
+}

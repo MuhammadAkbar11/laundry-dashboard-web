@@ -69,3 +69,12 @@
   display: block;
   font-size: $font-size-sm;
 }
+
+
+.dropdown-member-profile {
+  & .dropdown-menu .dropdown-item {
+    &:focus {
+      background-color: $accent1;
+    }
+  }
+}

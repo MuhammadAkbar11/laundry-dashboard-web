@@ -16,3 +16,42 @@
   justify-content: center;
   color: $primary;
 }
+
+.avatar-upload > input {
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+.avatar-upload > label {
+  cursor: pointer;
+}
+
+.avatar-upload-img {
+  position: relative;
+
+  img {
+    object-fit: cover;
+  }
+
+  .avatar-upload-img-icon {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.6s all;
+    background: rgba($primary, $alpha: 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &:hover .avatar-upload-img-icon {
+    display: flex;
+    opacity: 0.8;
+  }
+}

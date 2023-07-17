@@ -22,7 +22,7 @@
 .card-img-bottom {
   @include img-fluid;
 
-  @media all and (-ms-high-contrast:none) {
+  @media all and (-ms-high-contrast: none) {
     height: 100%;
   }
 }
@@ -35,5 +35,34 @@
   tr:last-child td:last-child,
   tr:last-child th:last-child {
     border-bottom-right-radius: $card-border-radius;
+  }
+}
+
+.checkbox-service-card {
+  transition: all 0.1s linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .icon-checked {
+    opacity: 0;
+    color: $accent2;
+    position: absolute;
+    right: 3px;
+    top: 0px;
+  }
+}
+
+.checkbox-services input[type='checkbox']:checked + .checkbox-service-card {
+  background-color: rgba($accent2, $alpha: 0.2);
+  border: 1.2px solid $accent2 !important;
+
+  p {
+    font-weight: 600;
+    color: $accent2;
+  }
+
+  .icon-checked {
+    opacity: 1;
   }
 }

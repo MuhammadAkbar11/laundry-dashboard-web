@@ -137,6 +137,8 @@
 }
 
 .webnav-bar {
+  box-sizing: border-box;
+  position: relative;
   & > * {
     font-family: 'Open Sans', sans-serif !important;
   }
@@ -148,6 +150,13 @@
   width: 100%;
   height: 50%;
   top: 0;
+  right: 0;
   left: 0;
   background: $accent1;
+}
+
+#dropdown-profile-toggle {
+  &::after {
+    display: none;
+  }
 }

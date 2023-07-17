@@ -15,6 +15,7 @@ type Props = {
 };
 
 function SidebarItem(props: Props) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { href, name, icon, badge, bagdeColor, disabled } = props;
   const { pathname } = useRouter();
 

@@ -22,9 +22,9 @@ import {
 } from '@utils/context/User/UserActionsContext';
 import TableUser from '@components/Tables/TableUser';
 import FormCreateUser from '@components/Forms/FormUser/FormCreateUser';
+import FormUpdateUser from '@components/Forms/FormUser/FormUpdateUser';
 import { UserDeleteProvider } from '@utils/context/User/UserDeleteContext';
 import ModalConfirmDeleteUser from '@components/Modals/User/ModalConfirmDeleteUser';
-import FormUpdateUser from '@components/Forms/FormUser/FormUpdateUser';
 
 interface Props extends IPageProps {}
 

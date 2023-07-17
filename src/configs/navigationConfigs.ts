@@ -1,29 +1,13 @@
-import { FeatherIconsTypes, ThemeTypes } from '@utils/types';
-
-interface INavigationSubItems {
-  name: string;
-  href: string;
-  badge?: string;
-  bagdeColor?: ThemeTypes;
-  disabled?: boolean;
-}
-
-interface INavigationItem {
-  name: string;
-  icon: FeatherIconsTypes;
-  href?: string;
-  disabled?: boolean;
-  badge?: string;
-  bagdeColor?: ThemeTypes;
-  navSubItems?: INavigationSubItems[];
-}
-
-interface INavigation {
-  [key: string]: {
-    title: string;
-    navItems: INavigationItem[];
-  };
-}
+/* eslint-disable no-restricted-syntax */
+import {
+  faBagShopping,
+  faCartFlatbed,
+  faChartBar,
+  // faClock,
+  faExchangeAlt,
+  faTShirt,
+} from '@fortawesome/free-solid-svg-icons';
+import { INavigation } from '@interfaces';
 
 const navigationConfigs: INavigation = {
   pages: {
@@ -32,7 +16,8 @@ const navigationConfigs: INavigation = {
       {
         name: 'Dashboard',
         icon: 'Sliders',
-        href: '/',
+        href: '/admin',
+        permissions: ['*'],
       },
     ],
   },
@@ -42,32 +27,38 @@ const navigationConfigs: INavigation = {
       {
         name: 'Antrian',
         icon: 'Clipboard',
-        href: '/laundry/antrian',
+        href: '/admin/laundry/antrian',
+        permissions: ['*'],
       },
       {
         name: 'Ruang Laundry',
         icon: 'RefreshCcw',
-        href: '/laundry/room',
+        href: '/admin/laundry/room',
+        permissions: ['*'],
       },
       {
         name: 'Layanan / Kategori',
         icon: 'ShoppingBag',
-        href: '/laundry/layanan',
+        href: '/admin/laundry/layanan',
+        permissions: ['*'],
       },
       {
         name: 'Promo',
         icon: 'Tag',
-        href: '/laundry/promo',
+        href: '/admin/laundry/promo',
+        permissions: ['*'],
       },
       {
         name: 'Pelanggan',
         icon: 'UserCheck',
-        href: '/laundry/pelanggan',
+        href: '/admin/laundry/pelanggan',
+        permissions: ['ADMIN', 'OFFICER'],
       },
       {
         name: 'User',
         icon: 'Users',
-        href: '/laundry/user',
+        href: '/admin/laundry/user',
+        permissions: ['ADMIN'],
       },
     ],
   },
@@ -80,18 +71,21 @@ const navigationConfigs: INavigation = {
         navSubItems: [
           {
             name: 'Semua Transaksi',
-            href: '/transaksi',
+            href: '/admin/transaksi',
+            permissions: ['ADMIN'],
           },
           {
             name: 'Riwayat Transaksi',
-            href: '/transaksi/riwayat',
+            href: '/admin/transaksi/riwayat',
+            permissions: ['ADMIN', 'OFFICER'],
           },
         ],
       },
       {
         icon: 'ShoppingCart',
         name: 'Pengeluaran',
-        href: '/laundry/user',
+        href: '/admin/pengeluaran',
+        permissions: ['ADMIN', 'OFFICER'],
       },
       {
         name: 'Laporan',
@@ -99,99 +93,47 @@ const navigationConfigs: INavigation = {
         navSubItems: [
           {
             name: 'Laporan Transaksi',
-            href: '/laundry/user',
+            href: '/admin/laporan',
+            permissions: ['ADMIN', 'OFFICER'],
           },
           {
             name: 'Laporan Kas',
-            href: '/laundry/user',
+            href: '/admin/kas',
+            permissions: ['ADMIN', 'OFFICER'],
           },
         ],
       },
     ],
   },
-
-  // toolsComponents: {
-  //   title: 'Tools & Components',
-  //   navItems: [
-  //     {
-  //       name: 'UI Elements',
-  //       icon: 'Briefcase',
-  //       navSubItems: [
-  //         {
-  //           name: 'Alerts',
-  //           href: '/ui-alerts',
-  //           badge: 'Soon',
-  //           disabled: true,
-  //         },
-  //         {
-  //           name: 'Buttons',
-  //           href: '/ui-buttons',
-  //           badge: 'Soon',
-  //           disabled: true,
-  //         },
-  //         {
-  //           name: 'Cards',
-  //           href: '/ui-cards',
-  //           badge: 'Soon',
-  //           disabled: true,
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       name: 'Forms',
-  //       icon: 'CheckSquare',
-  //       badge: 'Soon',
-  //       disabled: true,
-  //       href: '/ui-forms',
-  //     },
-  //     {
-  //       name: 'Icons',
-  //       icon: 'Coffee',
-
-  //       href: '/ui-feather',
-  //     },
-  //   ],
-  // },
-  // pluginsAddons: {
-  //   title: 'Plugins & Addons',
-  //   navItems: [
-  //     {
-  //       name: 'Notification',
-  //       icon: 'Bell',
-  //       href: '/notification',
-  //     },
-  //     {
-  //       name: 'Table',
-  //       icon: 'List',
-  //       href: '/tables-react',
-  //     },
-  //     {
-  //       name: 'Charts',
-  //       icon: 'BarChart2',
-  //       href: '/charts-chartjs',
-  //       badge: 'Soon',
-  //       disabled: true,
-  //     },
-  //     {
-  //       name: 'Map',
-  //       icon: 'Map',
-  //       navSubItems: [
-  //         {
-  //           name: 'Google Map',
-  //           href: '/map-google',
-  //           badge: 'Soon',
-  //           disabled: true,
-  //         },
-  //         {
-  //           name: 'JVectorMap',
-  //           href: '/map-jvectormap',
-  //           badge: 'Soon',
-  //           disabled: true,
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
 };
+
+export const memberProfileNavigationConfigs = [
+  { text: 'Profile', href: '/m/profile' },
+  { text: 'Dashboard', href: '/m/dashboard' },
+  { text: 'Pengaturan', href: '/m/pengaturan' },
+];
+
+export const memberNavigationConfigs = [
+  {
+    name: 'Dashboard',
+    href: '/m/dashboard',
+    icon: faChartBar,
+  },
+  {
+    name: 'Antrian',
+    href: '/m/antrian',
+    icon: faBagShopping,
+  },
+  {
+    name: 'Cucian',
+    href: '/m/cucian',
+    icon: faTShirt,
+  },
+  {
+    name: 'Transaksi',
+    href: '/m/transaksi',
+    icon: faExchangeAlt,
+  },
+];
 
 export default navigationConfigs;

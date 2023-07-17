@@ -17,3 +17,16 @@ export const BOOTSTRAP_BREAKPOINTS: Record<BootstrapBreakpointsTypes, string> =
     xl: '(min-width: 1200px)',
     xxl: '(min-width: 1400px)',
   };
+
+export const LAUNDRY_ROOM_STATUS = {
+  WASHED: 'Proses Pencucian',
+  READY: 'Dalan Antrian',
+  FINISHED: 'Proses Selesai',
+};
+
+export const LAUNDRY_PAYMENT_STATUS = {
+  PENDING: 'Menunggu pembayaran.',
+  PROCESSED: 'Pembayaran diproses.',
+  REJECTED: 'Pembayaran ditolak.',
+  FINISHED: 'Lunas',
+};

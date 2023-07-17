@@ -14,8 +14,7 @@ import {
   uNotAuthRedirect,
   uReplaceURL,
 } from '@utils/utils';
-import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import { IPageProps, IUserAuth } from '@utils/interfaces';
+import { IUserAuth } from '@utils/interfaces';
 import {
   LaundryQueueCreateProvider,
   useLaundryQueueCreateContext,
@@ -28,18 +27,10 @@ import { LaundryQueueDeleteProvider } from '@utils/context/Laundry/LaundryQueue/
 import { LaundryQueueDetailProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
 import ModalDetailLaundryQueue from '@components/Modals/LaundryQueue/ModalDetailLaundryQueue';
 
-interface Props extends IPageProps {}
-
-export default function AntrianPage({ userAuth }: Props) {
+export default function AntrianPage() {
   const TITLE = `Antrian | ${APP_NAME}`;
 
-  const userAuthCtx = useUserAuthContext();
-
   const createLaundryQueueCtx = useLaundryQueueCreateContext();
-
-  React.useEffect(() => {
-    userAuthCtx.onSetUser(userAuth);
-  }, [userAuth, userAuthCtx]);
 
   return (
     <>

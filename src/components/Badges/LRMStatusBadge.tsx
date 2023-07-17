@@ -8,7 +8,7 @@ type LRMStatusBadgeProps = {
 
 function LRMStatusBadge({ value }: LRMStatusBadgeProps): JSX.Element {
   const clsNm = clsx('p-2 rounded-0 d-flex align-items-center', {
-    'bg-primary': value === 'WASHED',
+    'bg-blue': value === 'WASHED',
     'bg-success': value === 'FINISHED',
     'bg-info ': value === 'READY',
   });
@@ -19,7 +19,7 @@ function LRMStatusBadge({ value }: LRMStatusBadgeProps): JSX.Element {
     content = (
       <Badge className={clsNm}>
         <span className="p-1 bg-white rounded-circle " />
-        <span className="ms-1">Ready</span>
+        <span className="ms-1">Dalam Antrian</span>
       </Badge>
     );
   } else if (value === 'FINISHED') {

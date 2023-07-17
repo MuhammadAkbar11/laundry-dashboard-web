@@ -1,8 +1,10 @@
+import { APP_NAME } from '@configs/varsConfig';
+import Link from 'next/link';
 import React from 'react';
 
 type Props = {};
 
-export default function Footer({}: Props) {
+export default function AdminFooter({}: Props) {
   return (
     <footer className="footer">
       <div className="container-fluid">
@@ -10,24 +12,9 @@ export default function Footer({}: Props) {
           <div className="col-6 text-start">
             <div className="mb-0">
               <div>
-                <a
-                  className="text-muted"
-                  href="https://adminkit.io/"
-                  target="_blank"
-                >
-                  <strong>AdminKit</strong>
-                </a>{' '}
-                -{' '}
-                <a
-                  className="text-muted"
-                  href="https://github.com/MuhammadAkbar11/next-ts-adminkit"
-                  target="_blank"
-                >
-                  <strong>
-                    Bootstrap 5 Admin Template Nextjs + Typescript version
-                  </strong>
-                </a>{' '}
-                ©
+                <Link className="text-muted" href="/">
+                  <strong>{APP_NAME}</strong>
+                </Link>
               </div>
             </div>
           </div>

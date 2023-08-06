@@ -38,6 +38,7 @@ const pagesConfigs: IPageConfig[] = [
   { path: '/admin/profile', permissions: ['*'] },
   { path: '/admin/laundry/room/', permissions: ['*'], isDynamicPage: true },
   { path: '/admin/laundry/bayar/', permissions: ['*'], isDynamicPage: true },
+  { path: '/admin/transaksi/', permissions: ['*'], isDynamicPage: true },
 ];
 
 export default pagesConfigs;

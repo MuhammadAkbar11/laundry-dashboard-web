@@ -42,23 +42,34 @@ const navigationConfigs: INavigation = {
         href: '/admin/laundry/layanan',
         permissions: ['*'],
       },
-      {
-        name: 'Promo',
-        icon: 'Tag',
-        href: '/admin/laundry/promo',
-        permissions: ['*'],
-      },
+      // {
+      //   name: 'Promo',
+      //   icon: 'Tag',
+      //   href: '/admin/laundry/promo',
+      //   permissions: ['*'],
+      // },
       {
         name: 'Pelanggan',
         icon: 'UserCheck',
         href: '/admin/laundry/pelanggan',
         permissions: ['ADMIN', 'OFFICER'],
       },
+
       {
         name: 'User',
-        icon: 'Users',
-        href: '/admin/laundry/user',
-        permissions: ['ADMIN'],
+        icon: 'User',
+        navSubItems: [
+          {
+            name: 'User',
+            href: '/admin/laundry/member',
+            permissions: ['ADMIN'],
+          },
+          {
+            name: 'Member',
+            href: '/admin/laundry/user',
+            permissions: ['ADMIN'],
+          },
+        ],
       },
     ],
   },

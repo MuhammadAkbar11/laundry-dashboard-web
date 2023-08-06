@@ -66,3 +66,41 @@
     opacity: 1;
   }
 }
+
+.radio-cards {
+  transition: all 0.1s linear;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .radio-card {
+    position: relative;
+    background-color: $light;
+  }
+
+  .radio-card > * {
+    color: $gray-800;
+  }
+
+  .icon-checked {
+    opacity: 0;
+    color: $accent2;
+    position: absolute;
+    right: 3px;
+    top: 0px;
+  }
+}
+
+.radio-cards input[type='radio']:checked + .radio-card {
+  background-color: rgba($accent2, $alpha: 0.2);
+  border: 1.2px solid $accent2 !important;
+  p {
+    font-weight: 600;
+    color: $accent2;
+  }
+
+  .icon-checked {
+    opacity: 1;
+  }
+}

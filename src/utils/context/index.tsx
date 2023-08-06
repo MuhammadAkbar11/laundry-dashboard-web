@@ -2,6 +2,8 @@
 import React from 'react';
 import { AdminLayoutCtxProvider } from './AdminLayoutContext';
 import { UserAuthCtxProvider } from './UserAuthContext';
+import { WebLayoutCtxProvider } from './WebLayoutContext';
+import { MemberAuthCtxProvider } from './MemberAuthContext';
 
 type ComponseProps = {
   providers: React.ElementType[];
@@ -20,7 +22,12 @@ export function ComposeContext(props: ComponseProps) {
 }
 
 function ComposeCtxProvider({ children }: { children: React.ReactNode }) {
-  const providers = [AdminLayoutCtxProvider, UserAuthCtxProvider];
+  const providers = [
+    AdminLayoutCtxProvider,
+    WebLayoutCtxProvider,
+    UserAuthCtxProvider,
+    MemberAuthCtxProvider,
+  ];
 
   return <ComposeContext providers={providers}>{children}</ComposeContext>;
 }

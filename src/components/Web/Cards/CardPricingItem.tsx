@@ -2,6 +2,7 @@ import Link from 'next/link';
 import clsx from 'classnames';
 import { Col } from 'react-bootstrap';
 import WebButton from '@components/Buttons/WebButton';
+import useMemberAuth from '@hooks/useMemberAuth';
 
 interface PricingProps {
   title: string;
@@ -11,6 +12,8 @@ interface PricingProps {
 }
 
 function CardPricingItem({ title, price, features, variant }: PricingProps) {
+  const { authState: profile, isLoading: authLoading } = useMemberAuth();
+
   return (
     <Col lg={4} mb={4}>
       <div className="bg-light text-center font-opensans mb-2 py-4 h-100  d-flex flex-column align-content-between justify-content-center align-items-center ">
@@ -46,14 +49,26 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
           })}
         </div>
         <div className="d-flex mt-auto justify-content-center ">
-          <Link passHref legacyBehavior href="/daftar">
-            <WebButton
-              variant={variant}
-              className="py-2 px-4 font-opensans text-uppercase "
-            >
-              Daftar Sekarang
-            </WebButton>
-          </Link>
+          {authLoading ? (
+            <Link passHref legacyBehavior href="/daftar">
+              <WebButton
+                variant={variant}
+                className="py-2 px-4 font-opensans text-uppercase "
+              >
+                Daftar Sekarang
+              </WebButton>
+            </Link>
+          ) : null}
+          {!authLoading && profile ? (
+            <Link passHref legacyBehavior href="/pemesanan">
+              <WebButton
+                variant={variant}
+                className="py-2 px-4 font-opensans text-uppercase "
+              >
+                Pesan Sekarang
+              </WebButton>
+            </Link>
+          ) : null}
         </div>
       </div>
     </Col>

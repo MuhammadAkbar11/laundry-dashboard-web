@@ -28,9 +28,9 @@ function HomeCarousel({}: Props) {
               <h1 className="display-3 text-capitalize text-white fw-bolder mb-md-4">
                 Pilihan terbaik untuk Layanan Laundry
               </h1>
-              <Link passHref legacyBehavior href="#/">
+              <Link passHref legacyBehavior href="/pemesanan">
                 <WebButton variant="accent1" className="mt-2">
-                  Learn More
+                  Pesan Sekarang{' '}
                 </WebButton>
               </Link>
             </div>
@@ -54,9 +54,9 @@ function HomeCarousel({}: Props) {
               <h1 className="display-3 text-capitalize text-white fw-bolder mb-md-4">
                 Petugas yang Sangat Profesional
               </h1>
-              <Link passHref legacyBehavior href="#/">
-                <WebButton variant="accent1" className="mt-2" isLoading>
-                  Learn More
+              <Link passHref legacyBehavior href="/pemesanan">
+                <WebButton variant="accent1" className="mt-2">
+                  Pesan Sekarang
                 </WebButton>
               </Link>
             </div>

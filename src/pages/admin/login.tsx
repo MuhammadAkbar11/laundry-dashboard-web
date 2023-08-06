@@ -9,6 +9,7 @@ import { isAuthenticadedService } from '@/services/authSevices';
 import { uIsAuthRedirect } from '@utils/utils';
 import { APP_NAME } from '@configs/varsConfig';
 import { useRouter } from 'next/router';
+import FeatherIcon from '@components/Icons/FeatherIcon';
 
 type Props = {
   // userAuth: IUserAuth;
@@ -35,23 +36,21 @@ export default function PagesSignIn({}: Props) {
       <Row className=" vh-100">
         <Col sm={10} md={8} lg={6} className=" mx-auto d-table h-100">
           <div className="d-table-cell align-middle">
-            <div className="text-center mt-4">
-              <h1 className="h2">Selamat datang</h1>
-              <p className="lead">Masuk ke akun Anda untuk melanjutkan</p>
+            <div className="text-center mt-4 mb-3">
+              <h1 className="h2 ">Selamat datang</h1>
+              {/* <p className="lead">Masuk ke akun Anda untuk melanjutkan</p> */}
             </div>
             <Card>
-              <Card.Body>
+              <Card.Body className="pt-4">
+                <Card.Title className="text-primary text-center ">
+                  <FeatherIcon name="Sliders" size={30} />
+                </Card.Title>
+                <Card.Title className=" text-center text-dark text-uppercase ">
+                  {' '}
+                  <br />
+                  {APP_NAME} <br /> Administrasi
+                </Card.Title>
                 <div className="m-sm-4">
-                  {/* <div className="text-center">
-                    <Image
-                      src="/img/avatars/avatar.jpg"
-                      alt="Charles Hall"
-                      className="img-fluid rounded-circle"
-                      width={132}
-                      height={132}
-                      priority
-                    />
-                  </div> */}
                   <FormSignIn />
                 </div>
               </Card.Body>

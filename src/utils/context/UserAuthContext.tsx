@@ -1,4 +1,4 @@
-import { IUserAuth } from '@/services/authSevices';
+import { IUserAuth } from '@interfaces';
 import React, { createContext, ReactNode } from 'react';
 
 type UserAuthContextType = {

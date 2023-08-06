@@ -23,7 +23,6 @@ interface ILaundryQueueDeleteContext {
   onSetError: (error: any) => void;
   onSetLoading: (value: boolean) => void;
   onSetSuccess: (value: boolean) => void;
-  // onToggleModal: (value: boolean) => void;
   onOpenModal: (data: IData | null) => void;
   onCloseModal: () => void;
   onReset?: () => void;

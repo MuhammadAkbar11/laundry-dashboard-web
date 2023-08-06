@@ -13,7 +13,7 @@ import React, {
 type FormActionType = 'initial' | 'create' | 'update';
 
 interface IData {
-  laundryService: ILaundryService;
+  laundryService: ILaundryService | null;
   fetchQueryKey: any[];
 }
 
@@ -90,6 +90,7 @@ export function LaundryServiceActionsProvider({ children }: Props) {
     payloadFormType: FormActionType,
     payload?: IData | null
   ) => {
+    setIsLoading(false);
     setIsOpenForm(true);
     setData(payload as IData);
     setFormType(payloadFormType);
@@ -97,6 +98,7 @@ export function LaundryServiceActionsProvider({ children }: Props) {
 
   const onCloseForm = () => {
     setIsOpenForm(false);
+
     setData(null);
     setFormType('initial');
   };

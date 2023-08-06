@@ -1,3 +1,5 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable @typescript-eslint/dot-notation */
 /* eslint-disable no-console */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-restricted-syntax */
@@ -8,11 +10,38 @@
 // eslint-disable @typescript-eslint/no-explicit-any
 import { FilterFn } from '@tanstack/react-table';
 import { rankItem } from '@tanstack/match-sorter-utils';
-import { UNKNOWM_ERROR } from '@configs/varsConfig';
+import { NODE_ENV, UNKNOWM_ERROR } from '@configs/varsConfig';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Faker } from '@faker-js/faker';
 import { faker } from '@faker-js/faker/locale/id_ID';
+import { IUserAuth } from '@interfaces';
+import pagesConfigs from '@configs/pageConfigs';
+
+export function runInDev(callback: () => void) {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('info - Running in development mode...');
+    callback();
+    console.log('info - Development mode execution completed.');
+  }
+}
+
+export async function runInDevAsync<T>(
+  callback: () => Promise<T>
+): Promise<T | undefined> {
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Running in development mode...');
+    try {
+      const result = await callback();
+      console.log('Development mode execution completed.');
+      return result;
+    } catch (error) {
+      console.error('Error occurred during development mode execution:', error);
+    }
+  }
+
+  return undefined;
+}
 
 export const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -64,17 +93,19 @@ export function uDelayAsync(ms: number) {
 }
 
 export function uRupiah(value: number) {
-  const result = value.toLocaleString('id', {
+  const result = value?.toLocaleString('id', {
     style: 'currency',
     currency: 'IDR',
   });
   return result;
 }
 
-export function uDate(_date?: string) {
+export function uDate(_date?: string, type: 'short' | 'long' = 'long') {
   if (_date) {
     const date = new Date(_date);
-    return format(date, 'EEEE, dd/MM/yyyy hh:mm BBBB', { locale: id });
+    return type === 'long'
+      ? format(date, 'EEEE, dd/MM/yyyy hh:mm BBBB', { locale: id })
+      : format(date, 'EEEE, dd MMMM yyyy', { locale: id });
   }
   return null;
 }
@@ -102,7 +133,27 @@ export function uHandleDuplicates<T extends Record<string, any>>(
   return Array.from(uniqueObjects.values());
 }
 
-export function uNotAuthRedirect(destination = '/login') {
+export function uNotAuthRedirect(
+  recirectQuery?: string,
+  destinationParam?: string
+) {
+  let destination = destinationParam || '/admin/login';
+
+  if (recirectQuery) {
+    destination = `${
+      destinationParam || '/admin/login'
+    }redirect=${recirectQuery}`;
+  }
+
+  return {
+    redirect: {
+      destination,
+      permanent: false,
+    },
+  };
+}
+
+export function uRestrictedRedirect(destination = '/admin') {
   return {
     redirect: {
       destination,
@@ -118,6 +169,69 @@ export function uIsAuthRedirect(destination = '/') {
       permanent: false,
     },
   };
+}
+
+export function uIsUnauthorizedError(error: any): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    error?.hasOwnProperty('name') &&
+    String(error['name'])?.includes('NOT_AUTH')
+  );
+}
+
+export function uIsForbiddenError(error: any): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    error.hasOwnProperty('statusCode') &&
+    error['statusCode'] === 403
+  );
+}
+
+export function uGetStatusCode(error: any): number | undefined {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    error?.hasOwnProperty('statusCode')
+  ) {
+    return error['statusCode'];
+  }
+
+  return 500;
+}
+
+export function uCheckPermissions(
+  user: IUserAuth,
+  path: string
+): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (user) {
+      const { role } = user;
+      const matchingPage = pagesConfigs?.find((item) =>
+        item?.isDynamicPage ? path?.includes(item.path) : item.path === path
+      );
+      if (matchingPage) {
+        const permissions = matchingPage?.permissions as string[];
+        if (permissions.includes('*') || permissions.includes(role)) {
+          resolve(true);
+          return;
+        }
+      }
+      runInDev(() => console.log(`NOT FOUND "${path}" in pageConfigs!`));
+    }
+    resolve(false);
+  });
+}
+
+export function uReplaceURL(value: string): string {
+  if (value.includes('.json') || value.includes('/_next/data/')) {
+    if (NODE_ENV === 'development') {
+      return value.replace(/\/_next\/data\/development|\.json/g, '');
+    }
+    return value.replace(/\/_next\/data\/production|\.json/g, '');
+  }
+  return value;
 }
 
 export function uConvertKeysToCamelCase(obj: any) {
@@ -151,31 +265,6 @@ export function uConvertNestedObjKeysToCamelCase(obj: any): any {
 
     return { ...result, [newKey]: newValue };
   }, {});
-}
-
-export function runInDev(callback: () => void) {
-  if (process.env.NODE_ENV === 'development') {
-    console.log('info - Running in development mode...');
-    callback();
-    console.log('info - Development mode execution completed.');
-  }
-}
-
-export async function runInDevAsync<T>(
-  callback: () => Promise<T>
-): Promise<T | undefined> {
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Running in development mode...');
-    try {
-      const result = await callback();
-      console.log('Development mode execution completed.');
-      return result;
-    } catch (error) {
-      console.error('Error occurred during development mode execution:', error);
-    }
-  }
-
-  return undefined;
 }
 
 export function runFakerJsInDev<T>(

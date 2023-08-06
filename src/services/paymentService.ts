@@ -1,10 +1,25 @@
+/* eslint-disable no-nested-ternary */
 import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
-import { runInDevAsync, uDelayAsync, uTranformAxiosError } from '@utils/utils';
+import * as Interfaces from '@interfaces';
 
-export async function getPaymentsService() {
-  // eslint-disable-next-line no-console
-  console.log('getPaymentsService');
+import { runInDevAsync, uDelayAsync, uTranformAxiosError } from '@utils/utils';
+import { AxiosRequestConfig } from 'axios';
+
+export async function getPaymentInvoiceService(
+  payload: string,
+  config?: AxiosRequestConfig
+): Promise<Interfaces.IInvoice | void> {
+  try {
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/payment/${payload}`,
+      config
+    );
+    return data?.invoice;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
 }
 
 export async function postPaymentService(payload: {
@@ -14,7 +29,7 @@ export async function postPaymentService(payload: {
 }) {
   try {
     await runInDevAsync(() => uDelayAsync(1000));
-    const { data } = await axiosPrivate.post(`${API_URI}/payment`, {
+    const { data } = await axiosPrivate.post(`${API_URI}/payment/all`, {
       paidAmount: Number(payload.paidAmount),
       laundryQueueId: payload.laundryQueueId,
       promoCode: payload.promoCode,

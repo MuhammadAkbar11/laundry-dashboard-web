@@ -5,8 +5,38 @@ import {
   LaundryQueueStatusType,
   LaundryRoomStatusTypes,
   LaundryServiceUnitTypes,
+  PaymentMethodTypes,
   ThemeTypes,
+  UserRoleTypes,
+  UserStatusTypes,
 } from './types';
+
+export interface INavigationSubItems {
+  name: string;
+  href: string;
+  badge?: string;
+  bagdeColor?: ThemeTypes;
+  disabled?: boolean;
+  permissions: string[];
+}
+
+export interface INavigationItem {
+  name: string;
+  icon: FeatherIconsTypes;
+  href?: string;
+  disabled?: boolean;
+  badge?: string;
+  bagdeColor?: ThemeTypes;
+  permissions?: string[];
+  navSubItems?: INavigationSubItems[];
+}
+
+export interface INavigation {
+  [key: string]: {
+    title: string;
+    navItems: INavigationItem[];
+  };
+}
 
 export interface IAxiosErrorResult {
   name: string;
@@ -89,6 +119,24 @@ export interface IPaginateDataApiResponse<T> {
 
 // API Data Interface
 
+export interface ISettingItem {
+  settingId: string;
+  name: string;
+  description: string;
+  value: string;
+}
+
+export interface ISetting {
+  name: ISettingItem;
+  alamat: ISettingItem;
+  kelurahan: ISettingItem;
+  kecamatan: ISettingItem;
+  kabupaten: ISettingItem;
+  provinsi: ISettingItem;
+  kodepos: ISettingItem;
+  [key: string]: any;
+}
+
 export interface ICustomerLevel {
   customerLevelId: string;
   name: string;
@@ -113,6 +161,27 @@ export interface ICustomer {
   };
 }
 
+export interface IMember {
+  avatar: string;
+  createdAt: string;
+  customerId: string;
+  email: string;
+  memberId: string;
+  password: string;
+  status: string;
+  updatedAt: string;
+  username: string;
+}
+
+export interface IMemberAuth extends IMember {
+  session: string;
+}
+
+export interface IMemberProfile extends IMember {
+  customer: Omit<ICustomer, '_count'>;
+  isValidProfile: boolean;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IUserAuth {
   userId: string;
@@ -124,6 +193,18 @@ export interface IUserAuth {
   createdAt: string;
   updatedAt: string;
   session: string;
+}
+
+export interface IUser {
+  userId: string;
+  email: string;
+  name: string;
+  avatar: string;
+  password: string;
+  role: UserRoleTypes;
+  status: UserStatusTypes;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ILaundryService {
@@ -158,22 +239,42 @@ export interface ILaundryQueue {
   createdAt: string;
   updatedAt: string;
   customerId: string;
-  userId: string;
   deliveryAt: string | null;
   deliveryType: string;
   note: string;
-  customer: Omit<ICustomer, 'customerLevel' | '_count'>;
-  user: Omit<IUserAuth, 'session'>;
+  deliveryAddress: string;
+  pickupAt: string;
+  customer?: Omit<ICustomer, 'customerLevel' | '_count'> & {
+    customerLevel?: ICustomerLevel;
+  };
   laundryRoom?: {
     laundryRoomId: string;
     total: number;
     status: string;
     createdAt: string;
     updatedAt: string;
-    userId: string;
     laundryQueueId: string;
   };
   _count: { laundries: number };
+}
+
+export interface IPayment {
+  paymentId: string;
+  invoice: string;
+  price: string;
+  discount: number;
+  paid: string;
+  cashback: string;
+  paymentMethod: PaymentMethodTypes;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  laundryQueueId: string;
+  totalPrice: string;
+  proof?: string;
+  totalLaundry: number;
+  laundryQueue: Omit<ILaundryQueue, 'laundryRooms' | '_count'>;
+  user: IUser;
 }
 
 export interface ILaundryRoom {
@@ -182,16 +283,24 @@ export interface ILaundryRoom {
   status: LaundryRoomStatusTypes;
   createdAt: string;
   updatedAt: string;
-  userId: string;
   laundryQueueId: string;
-  user: Omit<IUserAuth, 'session'>;
-  laundryQueue: Omit<ILaundryQueue, 'laundryRooms' | '_count' | 'user'>;
+  laundryQueue: Omit<ILaundryQueue, 'laundryRoom' | '_count'> & {
+    payment?: Omit<IPayment, 'laundryQueue' | 'user'>;
+  };
 }
 
 export interface IListLaundryRoom extends Omit<ILaundryRoom, 'laundryQueue'> {
-  laundryQueue: Omit<ILaundryQueue, 'laundryRoom' | 'user'>;
+  laundryQueue: Omit<ILaundryQueue, 'laundryRoom'>;
+}
+
+export interface IInvoice extends Omit<IPayment, 'laundryQueue'> {
+  laundryQueue: Omit<ILaundryQueue, '_count'> & { laundries: ILaundryItem[] };
 }
 
 export interface IPageProps {
   userAuth: IUserAuth;
+}
+
+export interface IMemberPageProps {
+  memberAuth: IMemberAuth;
 }

@@ -8,7 +8,10 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
-import { CreateLaundryServiceInputTypes } from '@utils/schema/laundryServiceSchema';
+import {
+  CreateLaundryServiceInputTypes,
+  UpdateLaundryServiceInputTypes,
+} from '@utils/schema/laundryServiceSchema';
 
 export async function getLaundrySrvPaginationService(
   queryOpt: Interfaces.IPaginationOptions
@@ -76,6 +79,48 @@ export async function postLaundrySrvService(
     const { data } = await axiosPrivate.post(
       `${API_URI}/laundry/service`,
       payload
+    );
+    return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function putLaundrySrvService(
+  payload: UpdateLaundryServiceInputTypes
+): Promise<{ service: Interfaces.ILaundryService; message: string } | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+    const updateData: Omit<UpdateLaundryServiceInputTypes, 'serviceId'> = {
+      description: payload.description,
+      name: payload.name,
+      unit: payload.unit,
+      price: payload.price,
+    };
+
+    const { data } = await axiosPrivate.put(
+      `${API_URI}/laundry/service/${payload.serviceId}`,
+      updateData
+    );
+    return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function deleteLaundrySrvService(payload: string): Promise<{
+  message: string;
+  service: Interfaces.ILaundryService;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+} | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.delete(
+      `${API_URI}/laundry/service/${payload}`
     );
     return data;
   } catch (error: unknown) {

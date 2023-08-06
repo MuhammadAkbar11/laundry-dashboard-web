@@ -59,11 +59,6 @@ export async function postLaundryQueueAndCustomerService(
   try {
     await runInDevAsync(() => uDelayAsync(1000));
 
-    // const { data } = await axiosPrivate.post(
-    //   `${API_URI}/laundry/queue`,
-    //   payload
-    // );
-
     const customerPayload: CreateCustomerInputTypes = {
       name: payload?.name,
       customerLevelId: payload.customerLevelId,
@@ -180,6 +175,24 @@ export async function updateLaundryQueueDeliveredService(
 
     const { data } = await axiosPrivate.put(
       `${API_URI}/laundry/queue/deliver/${payload}`
+    );
+    return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function updateLaundryQueueStatusService(payload: {
+  laundryQueueId: string;
+  status: string;
+}): Promise<{ data: unknown; message: string } | void> {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.put(
+      `${API_URI}/laundry/queue/status/${payload.laundryQueueId}`,
+      { status: payload.status }
     );
     return data;
   } catch (error: unknown) {

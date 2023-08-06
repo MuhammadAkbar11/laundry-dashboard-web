@@ -30,3 +30,26 @@ export const LAUNDRY_PAYMENT_STATUS = {
   REJECTED: 'Pembayaran ditolak.',
   FINISHED: 'Lunas',
 };
+
+export const BANKS = [
+  {
+    name: APP_NAME?.toLocaleLowerCase(),
+    bank_name: 'MANDIRI',
+    no_rek: '1234567890',
+  },
+  {
+    name: APP_NAME?.toLocaleLowerCase(),
+    bank_name: 'BRI',
+    no_rek: '0987654321',
+  },
+  {
+    name: APP_NAME?.toLocaleLowerCase(),
+    bank_name: 'BCA',
+    no_rek: '2468135790',
+  },
+];
+
+export const PAYMENT_METHODS = [
+  { name: 'Transfer', value: 'BANK_TRANSFER' },
+  { name: 'Tunai', value: 'CASH' },
+];

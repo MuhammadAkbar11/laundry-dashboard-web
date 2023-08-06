@@ -2,6 +2,8 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 import '@/styles/app.scss';
 import React from 'react';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { SSRProvider } from 'react-bootstrap';
@@ -16,6 +18,10 @@ import ComposeCtxProvider, { ComposeContext } from '@utils/context';
 import ToastsWrapper from '@components/Toasts/ToastsWrapper';
 import ErrorServerPage from '@components/Utils/ErrorServerPage';
 import { APP_NAME } from '@configs/varsConfig';
+import RestrictedPage from '@components/Utils/RestrictedPage';
+import Error404Page from '@components/Utils/Error404Page';
+
+config.autoAddCss = false;
 
 type NextPageComponentProps = NextPage & {
   providers?: React.ComponentType[];
@@ -55,12 +61,21 @@ export default function App({ Component, pageProps }: AppPropsWrapp) {
   const singlePageProviders = Component.providers ? Component.providers : [];
 
   let appComponent = (
-    <Layout>
+    <Layout {...pageProps}>
       <Component {...pageProps} />
     </Layout>
   );
+
   if (pageProps?.errorCode && pageProps?.errorCode === 500) {
     appComponent = <ErrorServerPage statusCode={pageProps?.errorCode} />;
+  }
+
+  if (pageProps?.errorCode && pageProps?.errorCode === 404) {
+    appComponent = <Error404Page />;
+  }
+
+  if (pageProps?.isRestricted) {
+    appComponent = <RestrictedPage />;
   }
 
   return (

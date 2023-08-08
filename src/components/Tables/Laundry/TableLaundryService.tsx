@@ -1,28 +1,26 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import Link from 'next/link';
 import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
-import LRMStatusBadge from '@components/Badges/LRMStatusBadge';
 import useDataQuery from '@hooks/useDataQuery';
-import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
+import { fuzzyFilter, uRupiah } from '@utils/utils';
 import { ILaundryService, IServiceWithPaginateReturn } from '@interfaces';
-import { LaundryQueueStatusType } from '@types';
-import { getLaundryRoomService } from '@services/laundryRoomService';
 import BoxButton from '@components/Buttons/BoxButton';
 import { getLaundrySrvPaginationService } from '@services/laundrySrvService';
 import { useLaundryServiceActionsContext } from '@utils/context/Laundry/LaundryService/LaundryServiceActionsContext';
+import { useLaundryServiceDeleteContext } from '@utils/context/Laundry/LaundryService/LaundryServiceDeleteContext';
 import TableLoadingRow from '../TableLoadingRow';
 
 type Props = {};
 
 function TableLaundryService({}: Props) {
   const laundryServiceActionsCtx = useLaundryServiceActionsContext();
+  const laundryServiceDelCtx = useLaundryServiceDeleteContext();
 
   const {
     sorting,
@@ -110,12 +108,12 @@ function TableLaundryService({}: Props) {
               <Button
                 size="sm"
                 variant="danger"
-                // onClick={() => {
-                //   laundryServiceActionsCtx.onOpenModal({
-                //     customerId: laundryServiceInfo.customerId,
-                //     fetchQueryKey,
-                //   });
-                // }}
+                onClick={() => {
+                  laundryServiceDelCtx.onOpenModal({
+                    laundryService: laundryServiceInfo,
+                    fetchQueryKey,
+                  });
+                }}
               >
                 <FeatherIcon name="Trash" size={14} />
               </Button>
@@ -125,7 +123,7 @@ function TableLaundryService({}: Props) {
         enableSorting: false,
       },
     ],
-    []
+    [fetchQueryKey, laundryServiceActionsCtx, laundryServiceDelCtx]
   );
 
   const table = rtb.useReactTable({
@@ -197,6 +195,7 @@ function TableLaundryService({}: Props) {
               </Form.Label>
 
               <Form.Control
+                disabled={table.getPageCount() <= 1}
                 style={{
                   width: 80,
                 }}

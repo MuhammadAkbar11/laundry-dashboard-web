@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import BoxButton from '@components/Buttons/BoxButton';
@@ -9,16 +9,18 @@ import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import ShowMore from '@components/Utils/ShowMore';
 import LQPayStatusBadge from '@components/Badges/LQPayStatusBadge';
-import LQStatusBadge from '@components/Badges/LQStatusBadge';
 import useDataQuery from '@hooks/useDataQuery';
 import { useLaundryQueueDeleteContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
 import { useLaundryQueueDetailContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
 import { ILaundryQueue, IServiceWithPaginateReturn } from '@interfaces';
-import { LaundryQueueStatusType } from '@types';
 import { getLaundryQueueService } from '@services/laundryQueueService';
-import TableLoadingRow from '../TableLoadingRow';
+import FromUpdateLaundryQueueStatus from '@components/Forms/FormsLaundryQueue/FromUpdateLaundryQueueStatus';
+import TableLoadingRow from '@components/Tables/TableLoadingRow';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandPaper, faShippingFast } from '@fortawesome/free-solid-svg-icons';
+import LQStatusBadge from '@components/Badges/LQStatusBadge';
 
 type Props = {};
 
@@ -52,7 +54,7 @@ function TableLaundryQueue({}: Props) {
         size: 60,
       },
       {
-        accessorFn: (row) => row.customer.name,
+        accessorFn: (row) => row?.customer?.name,
         id: 'customerName',
         header: () => 'Nama Plgn',
         cell: (info) => {
@@ -92,13 +94,55 @@ function TableLaundryQueue({}: Props) {
         minSize: 150,
       },
       {
-        accessorFn: (row) => row.status,
+        accessorFn: (row) => row.deliveryType,
+        id: 'deliveryType',
+        header: () => 'Jenis Pengiriman',
+        cell: (info) => {
+          const value = info.getValue() as string;
+          return (
+            <div>
+              {value === 'PICKUP' ? (
+                <Badge className=" bg-dark p-2 rounded-0">
+                  <FontAwesomeIcon
+                    icon={faHandPaper}
+                    className=" d-inline-flex me-1 "
+                  />
+                  <span className="ms-1">Self Pickup</span>
+                </Badge>
+              ) : (
+                <Badge className=" bg-info p-2 rounded-0">
+                  <FontAwesomeIcon
+                    icon={faShippingFast}
+                    className="d-inline-flex me-1 "
+                  />
+                  <span className="ms-1">Delivery</span>
+                </Badge>
+              )}
+            </div>
+          );
+        },
+        size: 30,
+      },
+      {
+        accessorFn: (row) => row,
         id: 'status',
         header: () => 'Status',
         cell: (info) => {
-          const value = info.getValue() as LaundryQueueStatusType;
-
-          return <LQStatusBadge value={value} />;
+          const data = info.getValue<ILaundryQueue>();
+          const { laundryQueueId, status: value } = data;
+          return (
+            <div className=" position-relative">
+              {value !== 'FINISHED' ? (
+                <FromUpdateLaundryQueueStatus
+                  value={value}
+                  laundryQueueId={laundryQueueId}
+                  fetchQueryKey={fetchQueryKey}
+                />
+              ) : (
+                <LQStatusBadge value={value} disabled={false} />
+              )}
+            </div>
+          );
         },
         // sortingFn: (info) => info.g
         size: 50,
@@ -109,7 +153,11 @@ function TableLaundryQueue({}: Props) {
         accessorFn: (row) => row?.laundryRoom?.total,
         id: 'total',
         header: () => 'Total Harga',
-        cell: (info) => `${uRupiah(info?.getValue() as number)}`,
+        cell: (info) => {
+          const value = info?.getValue() as number;
+
+          return value ? uRupiah(value) : uRupiah(0);
+        },
         size: 2,
       },
       {

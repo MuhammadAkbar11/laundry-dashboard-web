@@ -111,7 +111,7 @@ function TableLaundryRoom({}: Props) {
               <Link
                 passHref
                 legacyBehavior
-                href={`/laundry/room/${data.laundryRoomId}`}
+                href={`/admin/laundry/room/${data.laundryRoomId}`}
               >
                 <Button size="sm" variant="blue">
                   <FeatherIcon name="Info" size={14} />

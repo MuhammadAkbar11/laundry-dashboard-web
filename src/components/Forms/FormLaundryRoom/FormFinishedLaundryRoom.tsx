@@ -76,7 +76,7 @@ function FormFinishedLaundryRoom({
           </BoxButton>
         ) : (
           <Link
-            href={`/laundry/bayar/${laundryRoom?.laundryRoomId}`}
+            href={`/admin/laundry/bayar/${laundryRoom?.laundryRoomId}`}
             legacyBehavior
             passHref
           >

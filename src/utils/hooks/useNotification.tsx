@@ -53,7 +53,7 @@ function useNotification(props?: Partial<Props>) {
 }
 
 useNotification.defaultProps = {
-  duration: 6666,
+  duration: 3333,
 } as Props;
 
 export default useNotification;

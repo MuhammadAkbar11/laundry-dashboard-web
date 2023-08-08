@@ -1,35 +1,45 @@
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from 'react-bootstrap';
 import BoxButton from '@components/Buttons/BoxButton';
 import {
-  CreateLaundryServiceInputTypes,
-  createLaundryServiceSchema,
+  UpdateLaundryServiceInputTypes,
+  updateLaundryServiceSchema,
 } from '@utils/schema/laundryServiceSchema';
 import { useLaundryServiceActionsContext } from '@utils/context/Laundry/LaundryService/LaundryServiceActionsContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postLaundrySrvService } from '@services/laundrySrvService';
+import { putLaundrySrvService } from '@services/laundrySrvService';
 import useNotification from '@hooks/useNotification';
 
-function FormCreateLaundryService() {
+function FormUpdateLaundryService() {
   const notif = useNotification();
 
   const laundryServiceActionsCtx = useLaundryServiceActionsContext();
 
+  const selectedLaundryService = laundryServiceActionsCtx?.data?.laundryService;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fetchQueryKey = laundryServiceActionsCtx?.data?.fetchQueryKey as any[];
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset: resetForm,
-  } = useForm<CreateLaundryServiceInputTypes>({
-    resolver: zodResolver(createLaundryServiceSchema),
+  } = useForm<UpdateLaundryServiceInputTypes>({
+    resolver: zodResolver(updateLaundryServiceSchema),
+    defaultValues: {
+      serviceId: selectedLaundryService?.name,
+      description: selectedLaundryService?.description,
+      name: selectedLaundryService?.name,
+      unit: selectedLaundryService?.unit,
+      price: Number(selectedLaundryService?.price || 0),
+    },
   });
 
   const queryClient = useQueryClient();
-  const mutation = useMutation(postLaundrySrvService, {
+  const mutation = useMutation(putLaundrySrvService, {
     onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: fetchQueryKey,
@@ -37,7 +47,18 @@ function FormCreateLaundryService() {
     },
   });
 
-  const onSubmit = (inputs: CreateLaundryServiceInputTypes) => {
+  React.useEffect(() => {
+    if (selectedLaundryService) {
+      setValue('serviceId', selectedLaundryService?.serviceId);
+    } else {
+      notif.danger('Gagal menampilakan form, silahkan coba lagi', {
+        id: `notifErrorUpdateLaundryService`,
+      });
+      laundryServiceActionsCtx.onCloseForm();
+    }
+  }, [selectedLaundryService, setValue, notif, laundryServiceActionsCtx]);
+
+  const onSubmit = (inputs: UpdateLaundryServiceInputTypes) => {
     // Handle form submission here
     laundryServiceActionsCtx.onSetLoading(true);
     mutation.mutate(inputs, {
@@ -50,14 +71,12 @@ function FormCreateLaundryService() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError(error: any) {
         laundryServiceActionsCtx.onSetLoading(false);
-        const errMessage = error?.message || 'Gagal menambahkan data!';
+        const errMessage = error?.message || 'Gagal memperbaharui data!';
         notif.danger(errMessage);
         laundryServiceActionsCtx.onCloseForm();
         notif.danger(errMessage);
       },
     });
-    // Reset the form after successful submission
-    // reset();
   };
 
   return (
@@ -74,6 +93,7 @@ function FormCreateLaundryService() {
             id="name"
             placeholder="Masukkan nama category"
             isInvalid={!!errors?.name}
+            disabled={mutation.isLoading}
             {...register('name')}
           />
           {errors?.name?.message && (
@@ -90,6 +110,7 @@ function FormCreateLaundryService() {
             id="description"
             placeholder="Masukkan deskripsi"
             isInvalid={!!errors?.description}
+            disabled={mutation.isLoading}
             {...register('description')}
           />
           {errors?.description?.message && (
@@ -105,8 +126,9 @@ function FormCreateLaundryService() {
             as="select"
             id="unit"
             isInvalid={!!errors?.unit}
-            {...register('unit')}
+            disabled={mutation.isLoading}
             defaultValue=""
+            {...register('unit')}
           >
             <option value="" disabled>
               -- Pilih Satuan --
@@ -128,6 +150,7 @@ function FormCreateLaundryService() {
             id="price"
             placeholder="Masukkan Harga"
             isInvalid={!!errors?.price}
+            disabled={mutation.isLoading}
             {...register('price', { valueAsNumber: true })}
           />
           {errors?.price?.message && (
@@ -154,4 +177,4 @@ function FormCreateLaundryService() {
   );
 }
 
-export default FormCreateLaundryService;
+export default FormUpdateLaundryService;

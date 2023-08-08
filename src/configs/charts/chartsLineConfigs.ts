@@ -25,10 +25,11 @@ const chartsLineConfigs = (gradient: CanvasGradient) =>
           fill: true,
           backgroundColor: gradient,
           borderColor: themeConfigs.primary,
-          data: [
-            2115, 1562, 1584, 1892, 1587, 1923, 2566, 2448, 2805, 3438, 2917,
-            3327,
-          ],
+          data: [15, 62, 584, 192, 287, 223, 166, 148, 228, 318, 110, 50],
+          // data: [
+          //   2115, 1562, 1584, 1892, 1587, 1923, 2566, 2448, 2805, 3438, 2917,
+          //   3327,
+          // ],
         },
       ],
     },

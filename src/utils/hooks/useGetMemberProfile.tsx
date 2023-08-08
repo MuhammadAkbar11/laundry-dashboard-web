@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/function-component-definition */
 import { IMemberProfile } from '@interfaces';
 import { getMemberProfileService } from '@services/profileService';

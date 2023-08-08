@@ -4,20 +4,12 @@ import Link from 'next/link';
 import { Form, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  SignInInputTypes,
-  SignUpInputTypes,
-  signInSchema,
-  signUpSchema,
-} from '@utils/schema/authSchema';
+import { SignUpInputTypes, signUpSchema } from '@utils/schema/authSchema';
 import { useRouter } from 'next/router';
 import { useMutation } from '@tanstack/react-query';
 import useNotification from '@hooks/useNotification';
 import useRouteChangeHandlers from '@hooks/useRouteChangeHandlers';
-import {
-  postMemberSignInService,
-  postMemberSignUpService,
-} from '@services/authMemberService';
+import { postMemberSignUpService } from '@services/authMemberService';
 import WebButton from '@components/Buttons/WebButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';

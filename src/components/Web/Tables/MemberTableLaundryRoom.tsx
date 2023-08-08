@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import Link from 'next/link';
-import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import { Button, Card, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import FeatherIcon from '@components/Icons/FeatherIcon';

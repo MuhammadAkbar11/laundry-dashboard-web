@@ -10,7 +10,7 @@ import {
 } from '@utils/schema/userSchema';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useNotification from '@hooks/useNotification';
-import { postUserService, putUserService } from '@services/userService';
+import { putUserService } from '@services/userService';
 import { useUserActionsContext } from '@utils/context/User/UserActionsContext';
 import { UserRoleTypes } from '@types';
 import { API_URI } from '@configs/varsConfig';

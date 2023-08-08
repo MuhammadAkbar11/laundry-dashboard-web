@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import React from 'react';
-import { Dropdown, Spinner } from 'react-bootstrap';
+import { Dropdown } from 'react-bootstrap';
 import LQStatusBadge from '@components/Badges/LQStatusBadge';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updateLaundryQueueStatusService } from '@services/laundryQueueService';

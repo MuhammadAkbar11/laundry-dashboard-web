@@ -58,7 +58,7 @@ function ModalDetailLaundryQueue() {
         notif.success(data?.message as string, { duration: 6666 });
       },
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      onError(_error: any) {
+      onError() {
         notif.danger('Gagal mengubah data antarian! silahkan coba lagi', {
           duration: 6666,
         });

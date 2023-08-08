@@ -1,12 +1,10 @@
 import React from 'react';
 import clsx from 'classnames';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import Image from 'next/image';
-import WebButton from '@components/Buttons/WebButton';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import LoadingPulse from '@components/Utils/LoadingPulse';
 import { API_URI } from '@configs/varsConfig';
-import Link from 'next/link';
 
 type Props = {};
 

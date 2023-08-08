@@ -5,6 +5,7 @@ import clsx from 'classnames';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import useSidebarNavigation from '@hooks/useSidebarNavigation';
+import { IUserAuth } from '@interfaces';
 import SidebarBrand from './SidebarBrand';
 import SidebarHeader from './SidebarHeader';
 import SidebarItem from './SidebarItem';
@@ -18,7 +19,9 @@ export default function AdminSidebar({}: Props) {
 
   const { openSidebar } = useAdminLayoutContext();
   const userAuth = useUserAuthContext();
-  const navigations = useSidebarNavigation({ userAuth: userAuth.user });
+  const navigations = useSidebarNavigation({
+    userAuth: userAuth?.user as IUserAuth,
+  });
 
   React.useEffect(() => {
     ref?.current?.recalculate();

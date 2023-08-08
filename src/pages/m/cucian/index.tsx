@@ -12,8 +12,7 @@ import {
   uReplaceURL,
 } from '@utils/utils';
 import { getMemberSessionService } from '@services/authMemberService';
-import { IMemberAuth, IMemberPageProps } from '@interfaces';
-import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
+import { IMemberAuth } from '@interfaces';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
 import MemberTableLaundryRoom from '@components/Web/Tables/MemberTableLaundryRoom';
 

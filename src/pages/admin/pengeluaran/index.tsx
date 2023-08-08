@@ -1,4 +1,3 @@
-import TablePerson from '@components/Tables/TablePerson';
 import { APP_NAME } from '@configs/varsConfig';
 import { IPageProps } from '@interfaces';
 import AdminLayout from '@layouts/AdminLayout';

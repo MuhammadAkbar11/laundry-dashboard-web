@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import { Badge, Button, Card, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import useDataQuery from '@hooks/useDataQuery';
-import { useLaundryQueueDetailContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
-import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
+import { fuzzyFilter, uDate } from '@utils/utils';
 import { ILaundryQueue, IServiceWithPaginateReturn } from '@interfaces';
 import TableLoadingRow from '@components/Tables/TableLoadingRow';
 import { getMemberLaundryQueueService } from '@services/memberService';
@@ -20,7 +19,6 @@ import {
   faHandPaper,
   faShippingFast,
 } from '@fortawesome/free-solid-svg-icons';
-import ShowMore from '@components/Utils/ShowMore';
 
 type Props = {};
 

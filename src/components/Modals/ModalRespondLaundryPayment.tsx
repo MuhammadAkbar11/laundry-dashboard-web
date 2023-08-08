@@ -1,5 +1,4 @@
 import BoxButton from '@components/Buttons/BoxButton';
-import TableRowInfo from '@components/Utils/TableRowInfo';
 import { API_URI } from '@configs/varsConfig';
 import { useLaundryPaymentRespondContext } from '@utils/context/Laundry/LaundryPaymentRespondContext';
 import { uDate, uRupiah } from '@utils/utils';

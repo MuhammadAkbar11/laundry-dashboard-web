@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'classnames';
 import Link from 'next/link';
 import { memberNavigationConfigs } from '@configs/navigationConfigs';
-import { ListGroup, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

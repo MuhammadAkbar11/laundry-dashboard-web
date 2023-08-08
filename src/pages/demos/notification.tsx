@@ -68,6 +68,16 @@ export default function ToastsPage({}: Props) {
                   >
                     Warning
                   </Button>
+                  <Button
+                    variant="info"
+                    onClick={() =>
+                      notify.warning(
+                        'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt animi quisquam a repellat possimus odit soluta, ea harum magni inventore minima voluptatibus deleniti unde, vero illum fugit ad similique illo.'
+                      )
+                    }
+                  >
+                    Lorem
+                  </Button>
                 </div>
                 <Card.Title className="text-dark">Note</Card.Title>
                 <Card.Text className="">

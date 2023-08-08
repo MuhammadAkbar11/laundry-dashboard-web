@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
-import messagesData from '@utils/dummyData/messages';
-import notificationsData from '@utils/dummyData/notifications';
-import { IMessage, INotification } from '@utils/interfaces';
 import {
   createContext,
   useContext,

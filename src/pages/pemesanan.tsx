@@ -32,7 +32,7 @@ import useNotification from '@hooks/useNotification';
 import useGetMemberProfile from '@hooks/useGetMemberProfile';
 import { getMemberProfileService } from '@services/profileService';
 import { postMemberOrderService } from '@services/memberService';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 type Props = {

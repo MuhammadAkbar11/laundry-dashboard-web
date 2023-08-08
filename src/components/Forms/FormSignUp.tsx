@@ -13,11 +13,7 @@ function FormSignUp({}: Props) {
 
   const methods = useForm<SignUpInputTypes>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      name: 'adminkit',
-      email: 'adminkit@adminkit.io',
-      company: 'adminkit',
-    },
+    defaultValues: {},
   });
 
   const {
@@ -42,22 +38,22 @@ function FormSignUp({}: Props) {
   return (
     <Form method="POST" onSubmit={handleSubmit(onSubmitHandler)}>
       <div className="mb-3">
-        <Form.Label htmlFor="name">Name</Form.Label>
+        <Form.Label htmlFor="username">Name</Form.Label>
         <Form.Control
           size="lg"
           type="text"
-          id="name"
-          placeholder="Enter your name"
-          isInvalid={!!errors?.name}
-          {...register('name')}
+          id="username"
+          placeholder="Enter your username"
+          isInvalid={!!errors?.username}
+          {...register('username')}
         />
-        {errors?.name?.message ? (
+        {errors?.username?.message ? (
           <Form.Control.Feedback type="invalid" className=" pt-1">
-            {errors?.name?.message}
+            {errors?.username?.message}
           </Form.Control.Feedback>
         ) : null}
       </div>
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <Form.Label htmlFor="company">Company</Form.Label>
         <Form.Control
           size="lg"
@@ -72,7 +68,7 @@ function FormSignUp({}: Props) {
             {errors?.company?.message}
           </Form.Control.Feedback>
         ) : null}
-      </div>
+      </div> */}
       <div className="mb-3">
         <Form.Label htmlFor="email">Email</Form.Label>
         <Form.Control

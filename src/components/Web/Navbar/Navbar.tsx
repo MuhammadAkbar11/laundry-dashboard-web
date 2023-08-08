@@ -6,7 +6,6 @@ import useMemberAuth from '@hooks/useMemberAuth';
 import { IMemberAuth } from '@interfaces';
 import MemberDropdownProfile from '@components/Web/Dropdowns/MemberDropdownProfile';
 import LoadingPulse from '@components/Utils/LoadingPulse';
-import Logo from '@components/Logo/Logo';
 
 function Navbar() {
   const memberAuth = useMemberAuth();

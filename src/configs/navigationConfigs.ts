@@ -1,9 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import {
   faBagShopping,
-  faCartFlatbed,
   faChartBar,
-  // faClock,
   faExchangeAlt,
   faTShirt,
 } from '@fortawesome/free-solid-svg-icons';

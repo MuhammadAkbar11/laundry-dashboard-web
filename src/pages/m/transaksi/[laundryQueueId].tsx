@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 import React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import { APP_NAME } from '@configs/varsConfig';
 import WebMemberLayout from '@layouts/WebMemberLayout';
@@ -14,20 +15,18 @@ import {
 import { getMemberSessionService } from '@services/authMemberService';
 import { IMemberAuth } from '@interfaces';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import useNotification from '@hooks/useNotification';
-import { useRouter } from 'next/router';
-import useGetSetting from '@hooks/useGetSetting';
+// import useNotification from '@hooks/useNotification';
+// import useGetSetting from '@hooks/useGetSetting';
 
 export default function MemberLaundryPage() {
-  const notif = useNotification();
+  // const notif = useNotification();
   const router = useRouter();
 
   const laundryQueueIdParam = router.query?.laundryQueueId;
 
   const TITLE = `Transaksi ${laundryQueueIdParam} | ${APP_NAME}`;
 
-  const setting = useGetSetting();
-  console.log(setting?.data);
+  // const setting = useGetSetting();
   return (
     <>
       <Head>

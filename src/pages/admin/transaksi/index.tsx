@@ -13,7 +13,6 @@ import {
   uIsUnauthorizedError,
   uNotAuthRedirect,
   uReplaceURL,
-  uRestrictedRedirect,
 } from '@utils/utils';
 import { IPageProps, IUserAuth } from '@interfaces';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';

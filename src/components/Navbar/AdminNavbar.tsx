@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from 'next/link';
 import React from 'react';
 import { Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';

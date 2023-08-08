@@ -6,15 +6,7 @@ import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import AdminLayout from '@/layouts/AdminLayout';
-import {
-  Card,
-  Col,
-  Container,
-  Form,
-  InputGroup,
-  Row,
-  Table,
-} from 'react-bootstrap';
+import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import * as Interfaces from '@interfaces';
 import { APP_NAME } from '@configs/varsConfig';
 import { getSessionService } from '@services/authSevices';

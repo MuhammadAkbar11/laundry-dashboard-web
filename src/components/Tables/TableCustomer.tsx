@@ -33,7 +33,6 @@ import { fuzzyFilter } from '@utils/utils';
 import { useCustomerPageContext } from '@utils/context/Customer/CustomerPageContext';
 import { useCustomerDeleteContext } from '@utils/context/Customer/CustomerDeleteContext';
 import { ICustomer } from '@interfaces';
-import ShowMore from '@components/Utils/ShowMore';
 
 type Props = {};
 

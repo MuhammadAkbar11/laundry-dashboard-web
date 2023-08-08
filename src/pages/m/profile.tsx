@@ -15,24 +15,14 @@ import { getMemberSessionService } from '@services/authMemberService';
 import { IMemberAuth, IMemberPageProps, IMemberProfile } from '@interfaces';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Row,
-  Spinner,
-} from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import { getMemberProfileService } from '@services/profileService';
 import Image from 'next/image';
-import useMediaQuery from '@hooks/useMediaQuery';
+// import useMediaQuery from '@hooks/useMediaQuery';
 import WebButton from '@components/Buttons/WebButton';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import ProfileInvalidWarning from '@components/Alerts/ProfileInvalidWarning';
 import useGetMemberProfile from '@hooks/useGetMemberProfile';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 
 type PageProps = IMemberPageProps & { profile: IMemberProfile };
 
@@ -50,7 +40,7 @@ export default function MemberProfilePage({
     if (memberAuth) memberAuthCtx.onSetMember(memberAuth);
   }, [memberAuth, memberAuthCtx]);
 
-  const mdScreen = useMediaQuery('md');
+  // const mdScreen = useMediaQuery('md');
 
   const avatarSize = 200;
 

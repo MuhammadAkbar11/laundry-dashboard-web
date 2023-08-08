@@ -1,7 +1,6 @@
 import {
   faFacebookF,
   faInstagram,
-  faLinkedinIn,
   faTwitter,
   faWhatsapp,
 } from '@fortawesome/free-brands-svg-icons';

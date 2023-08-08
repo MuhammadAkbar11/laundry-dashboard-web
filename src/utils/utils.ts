@@ -225,13 +225,14 @@ export function uCheckPermissions(
 }
 
 export function uReplaceURL(value: string): string {
+  let result = value;
   if (value.includes('.json') || value.includes('/_next/data/')) {
     if (NODE_ENV === 'development') {
-      return value.replace(/\/_next\/data\/development|\.json/g, '');
+      result = value.replace(/\/_next\/data\/development|\.json/g, '');
     }
-    return value.replace(/\/_next\/data\/.*?|\.json/g, '');
+    result = value.replace(/\/_next\/data\/[a-zA-Z0-9-]+|\.json/g, '');
   }
-  return value;
+  return result;
 }
 
 export function uConvertKeysToCamelCase(obj: any) {

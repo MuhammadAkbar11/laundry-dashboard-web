@@ -114,7 +114,7 @@ export default function DetailRoomPage(props: Props) {
           Laundry Room :{' '}
           <span className="fw-bold">{laundryRoom?.laundryRoomId}</span>
         </h1>
-        <Row className="row">
+        <Row>
           <Col xs={12} md={5}>
             <Card>
               <Card.Header className="pt-4">
@@ -161,7 +161,7 @@ export default function DetailRoomPage(props: Props) {
             <Card>
               <Card.Header className=" pt-4 d-flex justify-content-between ">
                 <Card.Title className=" mb-0">Daftar Item Cucian</Card.Title>
-                {laundryRoom.status !== 'FINISHED' ? (
+                {laundryRoom?.status !== 'FINISHED' ? (
                   <BoxButton
                     icon="Plus"
                     disabled={
@@ -219,7 +219,8 @@ export default function DetailRoomPage(props: Props) {
                                       <div>
                                         <BoxButton
                                           disabled={
-                                            laundryRoom.status === 'FINISHED' ||
+                                            laundryRoom?.status ===
+                                              'FINISHED' ||
                                             deleteLaundryItemCtx.isLoading
                                           }
                                           size="sm"
@@ -240,7 +241,8 @@ export default function DetailRoomPage(props: Props) {
                                         <BoxButton
                                           size="sm"
                                           disabled={
-                                            laundryRoom.status === 'FINISHED' ||
+                                            laundryRoom?.status ===
+                                              'FINISHED' ||
                                             deleteLaundryItemCtx.isLoading
                                           }
                                           iconSize={11}
@@ -321,10 +323,11 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (!userAuth) return uNotAuthRedirect(url);
 
     const hasPermission = await uCheckPermissions(userAuth, url as string);
-    if (!laundryRoomId) {
+
+    if (!laundryRoomId || laundryRoomId === 'undefined') {
       return {
         redirect: {
-          destination: '/room',
+          destination: '/admin/laundry/room',
           permanent: false,
         },
       };
@@ -334,11 +337,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       laundryRoomId as string,
       { headers }
     );
-
     if (!laundryRoom) {
       return {
         redirect: {
-          destination: '/room',
+          destination: '/admin/laundry/room',
           permanent: false,
         },
       };

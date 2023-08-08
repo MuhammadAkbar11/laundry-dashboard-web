@@ -15,11 +15,8 @@ import {
 } from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { IPageProps, IUserAuth } from '@utils/interfaces';
-import { LaundryQueueCreateProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
-import { APP_NAME } from '@configs/varsConfig';
-import { LaundryQueueDeleteProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDeleteContext';
-import { LaundryQueueDetailProvider } from '@utils/context/Laundry/LaundryQueue/LaundryQueueDetailContext';
 import TableLaundryRoom from '@components/Tables/Laundry/TableLaundryRoom';
+import { APP_NAME } from '@configs/varsConfig';
 
 interface Props extends IPageProps {}
 
@@ -86,11 +83,5 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     };
   }
 }
-
-AntrianPage.providers = [
-  LaundryQueueCreateProvider,
-  LaundryQueueDeleteProvider,
-  LaundryQueueDetailProvider,
-];
 
 AntrianPage.layout = AdminLayout;

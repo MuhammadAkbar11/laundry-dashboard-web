@@ -27,8 +27,6 @@ import {
   uReplaceURL,
   uRupiah,
 } from '@utils/utils';
-import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import { IPageProps } from '@utils/interfaces';
 import { getDetailLaundryRoomService } from '@services/laundryRoomService';
 import {
   LaundryRoomDetailProvider,
@@ -47,15 +45,21 @@ import {
   useLaundryPaymentContext,
 } from '@utils/context/Laundry/LaundryPaymentContext';
 import ModalProcessLaundryPayment from '@components/Modals/ModalProcessLaundryPayment';
+import {
+  LaundryPaymentRespondProvider,
+  useLaundryPaymentRespondContext,
+} from '@utils/context/Laundry/LaundryPaymentRespondContext';
+import ModalRespondLaundryPayment from '@components/Modals/ModalRespondLaundryPayment';
 
-interface Props extends IPageProps {
+type IPaymentOriginal = Omit<Interfaces.IPayment, 'laundryQueue' | 'user'>;
+type Props = {
   laundryRoom: Interfaces.ILaundryRoom;
-}
+};
 
 export default function DetailRoomPage(props: Props) {
   const TITLE = `Pembayaran Laundry | ${APP_NAME}`;
 
-  const { userAuth, laundryRoom: laundryRoomDefaultData } = props;
+  const { laundryRoom: laundryRoomDefaultData } = props;
 
   const [secondsRedirect, setSecondsRedirect] = React.useState(5);
 
@@ -63,9 +67,9 @@ export default function DetailRoomPage(props: Props) {
   const router = useRouter();
   const laundryRoomIdParam = router.query?.laundryRoomId;
 
-  const userAuthCtx = useUserAuthContext();
   const laundryRoomCtx = useLaundryRoomDetailContext();
   const laundryPaymentCtx = useLaundryPaymentContext();
+  const laundryPaymentRespondCtx = useLaundryPaymentRespondContext();
 
   const laundryRoomQueryKey = React.useMemo(
     () => ['laundryRoomDetail', { laundryRoomId: laundryRoomIdParam }],
@@ -91,10 +95,6 @@ export default function DetailRoomPage(props: Props) {
   );
 
   React.useEffect(() => {
-    userAuthCtx.onSetUser(userAuth);
-  }, [userAuth, userAuthCtx]);
-
-  React.useEffect(() => {
     if (!laundryRoomLoading) laundryRoomCtx.onSetLaundryRoom(laundryRoom);
   }, [laundryRoom, laundryRoomCtx, laundryRoomLoading]);
 
@@ -116,7 +116,9 @@ export default function DetailRoomPage(props: Props) {
         };
       } else {
         notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
-        router.push(`/laundry/room/${laundryRoom.laundryRoomId}`);
+        router.push(
+          `/admin/laundry/admin/laundry/room/${laundryRoom?.laundryRoomId}`
+        );
         return () => {};
       }
     }
@@ -145,7 +147,7 @@ export default function DetailRoomPage(props: Props) {
       </Head>
       <Container fluid className="p-0">
         <h1 className="h3 mb-4">Pembayaran</h1>
-        <Row className="row">
+        <Row className="">
           <Col xs={12} md={6} lg={7}>
             <Card>
               <Card.Header className="pt-4">
@@ -243,7 +245,7 @@ export default function DetailRoomPage(props: Props) {
                   <tbody>
                     <TableRowInfo
                       label="Harga"
-                      value={<span>{uRupiah(laundryRoom.total)}</span>}
+                      value={<span>{uRupiah(laundryRoom?.total)}</span>}
                     />
                     <TableRowInfo
                       label={`Disc (${customerLevelDataQuery?.discount}%)`}
@@ -253,14 +255,14 @@ export default function DetailRoomPage(props: Props) {
                       label="Total Harga"
                       value={
                         <span>
-                          {uRupiah(laundryRoom.total - totalDiscount)}
+                          {uRupiah(Number(laundryRoom?.total) - totalDiscount)}
                         </span>
                       }
                     />
                   </tbody>
                 </Table>
               </Card.Body>
-              {laundryRoom?.laundryQueue?.queuePaymentStatus === 'PENDING' ? (
+              {/* {laundryRoom?.laundryQueue?.queuePaymentStatus === 'PENDING' ? (
                 <Card.Footer className="  border-top ">
                   <Form.Group className="">
                     <InputGroup className="mb-1" size="lg">
@@ -276,8 +278,7 @@ export default function DetailRoomPage(props: Props) {
                     </InputGroup>
                   </Form.Group>
                 </Card.Footer>
-              ) : null}
-
+              ) : null} */}
               <Card.Footer className=" border-top d-flex flex-column ">
                 {laundryRoom?.laundryQueue?.queuePaymentStatus === 'PENDING' ? (
                   <BoxButton
@@ -287,7 +288,9 @@ export default function DetailRoomPage(props: Props) {
                       // laundryRoomQueryKey
                       laundryPaymentCtx.onOpenModal({
                         totalDiscount,
-                        totalPrice: Number(laundryRoom.total - totalDiscount),
+                        totalPrice: Number(
+                          (laundryRoom?.total as number) - totalDiscount
+                        ),
                         laundryRoom,
                         fetchQueryKey: laundryRoomQueryKey,
                       });
@@ -295,7 +298,47 @@ export default function DetailRoomPage(props: Props) {
                   >
                     Proses Bayar
                   </BoxButton>
-                ) : (
+                ) : null}
+                {laundryRoom?.laundryQueue?.queuePaymentStatus ===
+                  'PROCESSED' && laundryRoom?.laundryQueue?.payment ? (
+                  <div className="d-flex gap-2">
+                    <BoxButton
+                      className="w-100 text-dark"
+                      size="lg"
+                      variant="warning"
+                      onClick={() => {
+                        laundryPaymentRespondCtx.onOpen({
+                          payment: laundryRoom?.laundryQueue
+                            ?.payment as IPaymentOriginal,
+                          totalDiscount,
+                          totalPrice: Number(
+                            (laundryRoom?.total as number) - totalDiscount
+                          ),
+                        });
+                      }}
+                    >
+                      Tanggapi Pembayaran
+                    </BoxButton>
+                    {/* {laundryRoom?.laundryQueue?.payment?.paymentMethod ===
+                    'BANK_TRANSFER' ? (
+                      <BoxButton
+                        className="w-100"
+                        size="lg"
+                        variant="outline-warning"
+                        onClick={() => {
+                          laundryPaymentRespondCtx.onOpen(
+                            laundryRoom?.laundryQueue
+                              ?.payment as IPaymentOriginal
+                          );
+                        }}
+                      >
+                        Bukti Pembayaran
+                      </BoxButton>
+                    ) : null} */}
+                  </div>
+                ) : null}
+                {laundryRoom?.laundryQueue?.queuePaymentStatus ===
+                'FINISHED' ? (
                   <BoxButton
                     className="w-100"
                     size="lg"
@@ -305,44 +348,14 @@ export default function DetailRoomPage(props: Props) {
                   >
                     Lunas
                   </BoxButton>
-                )}
+                ) : null}
               </Card.Footer>
             </Card>
           </Col>
         </Row>
       </Container>
-      {/* <Offcanvas
-        backdrop="static"
-        placement="end"
-        show={formActionLaundryItem}
-        onHide={() => {
-          setFormActionLaundryItem(false);
-          setTimeout(() => {
-            setFormActionTypeLaundryItem('create');
-          }, 500);
-        }}
-      >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title className="fw-bold">
-            {formActionTypeLaundryItem === 'create'
-              ? `Tambah Cucian : Antrian ${laundryRoom?.laundryQueueId}`
-              : `Ubah Cucia ${selectedLaundryItem?.laundryId}`}
-          </Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          <FormActionLaundryItem
-            laundryQueueId={laundryRoom?.laundryQueueId}
-            type={formActionTypeLaundryItem}
-            laundryItem={selectedLaundryItem}
-            onCloseForm={() => {
-              setFormActionTypeLaundryItem('create');
-              setFormActionLaundryItem(false);
-            }}
-          />
-        </Offcanvas.Body>
-      </Offcanvas>
-      <ModalConfirmDeleteLaundryItem /> */}
       <ModalProcessLaundryPayment />
+      <ModalRespondLaundryPayment />
     </>
   );
 }
@@ -363,10 +376,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     const laundryRoomId = ctx.params?.laundryRoomId;
 
-    if (!laundryRoomId) {
+    if (!laundryRoomId || laundryRoomId === 'undefined') {
       return {
         redirect: {
-          destination: '/room',
+          destination: '/admin/laundry/room',
           permanent: false,
         },
       };
@@ -376,11 +389,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       laundryRoomId as string,
       { headers }
     );
-
     if (!laundryRoom) {
       return {
         redirect: {
-          destination: '/room',
+          destination: '/admin/laundry/room',
           permanent: false,
         },
       };
@@ -413,6 +425,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
-DetailRoomPage.providers = [LaundryRoomDetailProvider, LaundryPaymentProvider];
+DetailRoomPage.providers = [
+  LaundryRoomDetailProvider,
+  LaundryPaymentRespondProvider,
+  LaundryPaymentProvider,
+];
 
 DetailRoomPage.layout = AdminLayout;

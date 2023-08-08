@@ -37,6 +37,7 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
     if (!isLoading && icon) {
       buttonIcon = (
         <span
+          suppressHydrationWarning
           className={clsx('d-inline-block', {
             'me-2': children !== null && iconPos === 'start',
             'ms-2': children !== null && iconPos === 'end',
@@ -58,6 +59,7 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
 
     const iconLoading = isLoading ? (
       <span
+        suppressHydrationWarning
         className={clsx({
           'me-2': children !== null && iconPos === 'start',
           'ms-2': children !== null && iconPos === 'end',

@@ -14,7 +14,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import {
+  Badge,
+  Button,
+  Card,
+  Form,
+  OverlayTrigger,
+  Spinner,
+  Table,
+  Tooltip,
+} from 'react-bootstrap';
 import clsx from 'classnames';
 import { getCustomersService } from '@/services/customerService';
 import FeatherIcon from '@components/Icons/FeatherIcon';
@@ -24,6 +33,7 @@ import { fuzzyFilter } from '@utils/utils';
 import { useCustomerPageContext } from '@utils/context/Customer/CustomerPageContext';
 import { useCustomerDeleteContext } from '@utils/context/Customer/CustomerDeleteContext';
 import { ICustomer } from '@interfaces';
+import ShowMore from '@components/Utils/ShowMore';
 
 type Props = {};
 
@@ -97,18 +107,20 @@ function TableCustomer({}: Props) {
         cell: (info) => {
           const values = info.getValue() as { address: string; phone: string };
           return (
-            <>
-              <p className="mb-1">
-                <strong>Alamat</strong> : {values?.address}
-              </p>
+            <div className="">
+              <OverlayTrigger overlay={<Tooltip>{values?.address}</Tooltip>}>
+                <p className="mb-1 text-truncate-2 ">
+                  <strong>Alamat</strong> : {values?.address}
+                </p>
+              </OverlayTrigger>
               <p>
                 <strong>Phone</strong> : {values?.phone}
               </p>
-            </>
+            </div>
           );
         },
         header: () => <span>Kontak</span>,
-        minSize: 150,
+        // minSize: 150,
       },
       {
         // enableSorting: false,

@@ -21,7 +21,7 @@ function CardChartsLine({}: Props) {
   return (
     <Card className=" flex-fill w-100">
       <Card.Header>
-        <Card.Title className=" mb-0">Recent Movement</Card.Title>
+        <Card.Title className=" mb-0">Statistik</Card.Title>
       </Card.Header>
       <Card.Body className="py-3">
         <div className="chart chart-sm">

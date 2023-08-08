@@ -5,7 +5,7 @@ import clsx from 'classnames';
 import FeatherIcon from '../Icons/FeatherIcon';
 
 type Props = {
-  statTitle: string;
+  statTitle: string | number;
   statValue: string;
   statIcon: FeatherIconsTypes;
   statIconColor?: ThemeTypes;

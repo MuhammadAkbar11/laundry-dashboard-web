@@ -47,7 +47,7 @@ function FormSignIn({}: Props) {
   });
 
   React.useEffect(() => {
-    const redirect = router.query?.redirect?.toString() || '/';
+    const redirect = router.query?.redirect?.toString() || '/admin';
 
     if (mutation.isSuccess) {
       router.push(redirect);
@@ -62,8 +62,7 @@ function FormSignIn({}: Props) {
       },
       onError(error: any) {
         setLoading(false);
-        // eslint-disable-next-line no-console
-        console.log(error);
+
         const errMessage = error?.name?.includes('AUTH')
           ? error?.message
           : 'Login gagal! silahkan coba lagi';
@@ -126,6 +125,7 @@ function FormSignIn({}: Props) {
         <BoxButton
           type="submit"
           size="lg"
+          icon="LogIn"
           variant="primary"
           isLoading={loading}
           className="w-100"

@@ -229,7 +229,7 @@ export function uReplaceURL(value: string): string {
     if (NODE_ENV === 'development') {
       return value.replace(/\/_next\/data\/development|\.json/g, '');
     }
-    return value.replace(/\/_next\/data\/production|\.json/g, '');
+    return value.replace(/\/_next\/data\/.*?|\.json/g, '');
   }
   return value;
 }

@@ -216,8 +216,8 @@ function FormCreateCustomerWithLaundryQueue({}: Props) {
             <option value="" disabled>
               Pilih Jenis Pengiriman
             </option>
-            <option value="PICKUP">Pickup / Jemput</option>
-            <option value="DELIVERED">Antar</option>
+            <option value="DELIVERED">Delivered (Jemput Antar)</option>
+            <option value="PICKUP">Self Pickup (Antar Jemput Sendiri)</option>
           </Form.Select>
           {formErrors?.deliveryType?.message ? (
             <Form.Control.Feedback type="invalid" className=" pt-1">

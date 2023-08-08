@@ -183,7 +183,7 @@ function TableTransaction({ typeQueryKey }: Props) {
                 setGlobalFilter(String(value));
               }}
               className="form-control"
-              placeholder="Cari data pelanggan"
+              placeholder="Cari data transaksi"
             />
           </div>
         </div>

@@ -32,7 +32,7 @@ function FormActionLaundryItem({
 }: Props) {
   const laundryRoomCtx = useLaundryRoomDetailContext();
 
-  const laundryServices = useGetLaundryServices();
+  const laundryServices = useGetLaundryServices('admin');
   const laundryServicesLoading = laundryServices.isLoading;
   const notif = useNotification();
 
@@ -83,7 +83,7 @@ function FormActionLaundryItem({
       {
         onSuccess(data) {
           laundryRoomCtx.onSetLoading(false);
-          notif.success(data?.message as string, { duration: 10000 });
+          notif.success(data?.message as string);
           onCloseForm();
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

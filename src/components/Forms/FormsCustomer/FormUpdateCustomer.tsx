@@ -131,7 +131,7 @@ function FormUpdateCustomer({}: Props) {
           formType: 'initial',
           data: null,
         });
-        notif.success(data?.message as string, { duration: 10000 });
+        notif.success(data?.message as string);
         setLoading(false);
       },
       // on

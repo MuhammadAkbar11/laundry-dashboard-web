@@ -13,6 +13,7 @@ import {
 import { uDate } from '@utils/utils';
 import BoxButton from '@components/Buttons/BoxButton';
 import Link from 'next/link';
+import PaymentStatusText from '@components/Typography/PaymentStatusText';
 // import useEffectRun from '@hooks/useEffectRan';
 
 function ModalDetailLaundryQueue() {
@@ -109,10 +110,25 @@ function ModalDetailLaundryQueue() {
                   <td className="fw-bold">{uDate(laundryQueue?.createdAt)}</td>
                 </tr>
                 <tr>
-                  <td>Status Cucian</td>
+                  <td>
+                    Waktu{' '}
+                    {laundryQueue?.deliveryType === 'PICKUP'
+                      ? 'Penyerahan'
+                      : 'Penjemputan'}
+                  </td>
+                  <td className="fw-bold">{uDate(laundryQueue?.pickupAt)}</td>
+                </tr>
+                <tr>
+                  <td>Status </td>
                   <td className="fw-bold">
                     {laundryQueue?.status === 'ONHOLD' ? (
                       <span>Proses (Sedang dalam antrian ke laundry room)</span>
+                    ) : null}
+                    {laundryQueue?.status === 'PENDING' ? (
+                      <span>Menunggu (Menunggu konfirmasi pemesanan)</span>
+                    ) : null}
+                    {laundryQueue?.status === 'CANCELED' ? (
+                      <span>Batal (Antrian di batalkan atau di tolak)</span>
                     ) : null}
                     {laundryQueue?.status === 'WASHED' ? (
                       <span>
@@ -143,15 +159,10 @@ function ModalDetailLaundryQueue() {
                 <tr>
                   <td>Status Pembayaran</td>
                   <td className="fw-bold">
-                    {laundryQueue?.queuePaymentStatus === 'PENDING' ? (
-                      <span className="badge bg-danger p-2 rounded-0">
-                        Belum
-                      </span>
-                    ) : (
-                      <span className="badge bg-success p-2 rounded-0">
-                        Sudah
-                      </span>
-                    )}
+                    <PaymentStatusText
+                      colored
+                      value={laundryQueue?.queuePaymentStatus || 'PENDING'}
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -159,7 +170,7 @@ function ModalDetailLaundryQueue() {
                   <td className="fw-bold">
                     {laundryQueue?.deliveryType === 'PICKUP' ? (
                       <>
-                        <span className="me-1">Di Ambil / Pickup</span>
+                        <span className="me-1">Self Pickup</span>
                         {laundryQueue?.deliveryAt === null ? (
                           <span className="text-danger fst-italic ">
                             (Belum di ambil)
@@ -172,7 +183,7 @@ function ModalDetailLaundryQueue() {
                       </>
                     ) : (
                       <>
-                        <span className="me-1">Di Antarkan</span>
+                        <span className="me-1">Delivery / Jemput-Antar</span>
                         {laundryQueue?.deliveryAt === null ? (
                           <span className="text-danger fst-italic ">
                             (belum di antar)
@@ -186,6 +197,12 @@ function ModalDetailLaundryQueue() {
                     )}
                   </td>
                 </tr>
+                {laundryQueue?.deliveryType === 'DELIVERED' ? (
+                  <tr>
+                    <td>Alamat</td>
+                    <td className="fw-bold">{laundryQueue?.deliveryAddress}</td>
+                  </tr>
+                ) : null}
 
                 <tr>
                   <td>Catatan</td>
@@ -199,18 +216,6 @@ function ModalDetailLaundryQueue() {
       <Modal.Footer className="pt-0 mt-0 " style={{ border: '0px' }}>
         <div className=" d-flex  justify-content-between w-100">
           <div className="d-flex justify-content-start w-100 gap-2 ">
-            <BoxButton
-              variant="success"
-              // onClick={() => onLaundryQueueDelete()}
-              disabled={
-                dataQuery.isLoading ||
-                laundryQueue?._count?.laundries === 0 ||
-                laundryQueue?.queuePaymentStatus === 'FINISHED'
-              }
-              icon="DollarSign"
-            >
-              Bayar
-            </BoxButton>
             <BoxButton
               variant="success"
               onClick={() => onLaundryQueueDelivered()}
@@ -228,20 +233,23 @@ function ModalDetailLaundryQueue() {
             </BoxButton>
           </div>
           <div>
-            <Link
-              passHref
-              legacyBehavior
-              href={`/laundry/room/${laundryQueue?.laundryRoom?.laundryRoomId}`}
-            >
-              <BoxButton
-                icon="ArrowRight"
-                iconPos="end"
-                className="text-nowrap"
-                disabled={dataQuery.isLoading}
+            {laundryQueue?.status !== 'PENDING' ? (
+              <Link
+                passHref
+                legacyBehavior
+                href={`/admin/laundry/room/${laundryQueue?.laundryRoom?.laundryRoomId}`}
               >
-                Ke Laundry Room
-              </BoxButton>
-            </Link>
+                <BoxButton
+                  icon="ArrowRight"
+                  iconPos="end"
+                  variant="slate"
+                  className="text-dark text-nowrap "
+                  disabled={dataQuery.isLoading}
+                >
+                  Ke Laundry Room
+                </BoxButton>
+              </Link>
+            ) : null}
           </div>
         </div>
       </Modal.Footer>

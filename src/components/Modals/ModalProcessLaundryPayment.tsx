@@ -52,15 +52,11 @@ function ModalProcessLaundryPayment() {
         laundryPaymentCtx.onSetSuccess(true);
         handleOnCloseModal();
         laundryPaymentCtx.onSetLoading(false);
-        notif.success((data?.message as string) || 'Pembayaran berhasil', {
-          duration: 6666,
-        });
+        notif.success((data?.message as string) || 'Pembayaran berhasil');
       },
       onError(error: any) {
         handleOnCloseModal();
-        notif.danger('Gagal mengkonfirmasi pembayaran! silahkan coba lagi', {
-          duration: 6666,
-        });
+        notif.danger('Gagal mengkonfirmasi pembayaran! silahkan coba lagi');
         laundryPaymentCtx.onSetLoading(false);
         laundryPaymentCtx.onSetError(error);
       },
@@ -73,7 +69,7 @@ function ModalProcessLaundryPayment() {
       setChangeAmount(change);
       setIsSetPaidAmount(true);
     } else {
-      notif.danger('Nominal uang yang dimasukan kurang!');
+      notif.danger('Nominal uang yang dimasukan kurang!', { duration: 1000 });
     }
   };
   const handleUnsetPaidSubmit = async () => {

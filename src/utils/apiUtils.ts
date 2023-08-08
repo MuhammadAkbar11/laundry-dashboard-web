@@ -3,6 +3,7 @@ import axios, { AxiosInstance } from 'axios';
 
 export const axiosApi: AxiosInstance = axios.create({
   baseURL: API_URI,
+  withCredentials: true,
   headers: { 'Access-Control-Allow-Origin': true },
 });
 

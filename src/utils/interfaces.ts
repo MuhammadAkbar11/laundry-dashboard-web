@@ -297,6 +297,38 @@ export interface IInvoice extends Omit<IPayment, 'laundryQueue'> {
   laundryQueue: Omit<ILaundryQueue, '_count'> & { laundries: ILaundryItem[] };
 }
 
+export interface IReportTrx {
+  month: string;
+  time: string;
+  invoice: string;
+  description: string;
+  type: 'IN' | 'OUT';
+  amount: string;
+}
+
+export interface IReportTrxYears {
+  value: number;
+  income: number;
+  expense: number;
+  incomeTotal: number;
+  expenseTotal: number;
+}
+
+export interface IReportTrxMonth extends IReportTrxYears {
+  key: string;
+}
+
+export interface IReportTrxYearAndMonth {
+  value: string;
+  day: string;
+  month: string;
+  year: string;
+  income: number;
+  expense: number;
+  incomeTotal: number;
+  expenseTotal: number;
+}
+
 export interface IPageProps {
   userAuth: IUserAuth;
 }

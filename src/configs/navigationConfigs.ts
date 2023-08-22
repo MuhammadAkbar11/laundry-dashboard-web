@@ -102,12 +102,12 @@ const navigationConfigs: INavigation = {
         navSubItems: [
           {
             name: 'Laporan Transaksi',
-            href: '/admin/laporan',
+            href: '/admin/laporan/transaksi',
             permissions: ['ADMIN', 'OFFICER'],
           },
           {
             name: 'Laporan Kas',
-            href: '/admin/kas',
+            href: '/admin/laporan/kas',
             permissions: ['ADMIN', 'OFFICER'],
           },
         ],

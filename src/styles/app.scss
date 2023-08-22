@@ -86,26 +86,4 @@
 @import '5-vendor/simplebar';
 // @import '5-vendor/jsvectormap';
 
-@media (min-width: 992px) {
-  #header-carousel,
-  .page-header {
-    margin-top: -42px;
-  }
-}
-
-.carousel-caption {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 1;
-}
-
-@media (min-width: 768px) {
-  .contact-info {
-    position: relative;
-    margin-top: -100px !important;
-    z-index: 1;
-  }
-}
+@import '6-pages/home';

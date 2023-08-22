@@ -20,10 +20,6 @@ type Props = {
 };
 
 function TableTransaction({ typeQueryKey }: Props) {
-  // const laundryServiceDelCtx = useLaundryServiceDeleteContext();
-
-  // const notif = useNotification();
-
   const {
     sorting,
     setSorting,

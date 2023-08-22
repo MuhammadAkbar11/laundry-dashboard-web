@@ -2,6 +2,7 @@ import React from 'react';
 import { IInvoice, ISetting } from '@interfaces';
 import { uDate, uRupiah } from '@utils/utils';
 import { Card, Col, Row, Table } from 'react-bootstrap';
+import Logo from '@components/Logo/Logo';
 
 type Props = { invoice: IInvoice; setting: ISetting };
 
@@ -14,7 +15,7 @@ function CardInvoice({ invoice, setting }: Props) {
             <div className="d-flex justify-content-between">
               <h3 className="m-t-0">
                 {/* <img src="/images/logo.png" alt="logo" height="40" /> */}
-                LOGO
+                <Logo />
               </h3>
               <h4 className="float-right font-16">
                 <strong>Invoice #{invoice.invoice}</strong>

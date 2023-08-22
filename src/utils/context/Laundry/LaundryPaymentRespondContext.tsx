@@ -14,6 +14,7 @@ type DataType = {
   payment: Omit<IPayment, 'laundryQueue' | 'user'>;
   totalPrice: number;
   totalDiscount: number;
+  fetchQueryKey: any[];
 };
 
 type LaundryPaymentRespondContextType = {

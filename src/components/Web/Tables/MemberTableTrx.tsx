@@ -58,7 +58,7 @@ function MemberTableTrx({}: Props) {
         // eslint-disable-next-line no-underscore-dangle
         accessorFn: (row) => row.totalLaundry,
         id: 'totalLaundry',
-        header: () => 'Total Layana',
+        header: () => 'Total Layanan',
         cell: (info) => {
           const value = info.getValue() as number;
           return <span>{value}</span>;

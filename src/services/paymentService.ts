@@ -43,3 +43,24 @@ export async function postPaymentService(payload: {
     throw err;
   }
 }
+
+export async function postRespondPaymentService(payload: {
+  paymentId: string;
+  type: string;
+}) {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+    const { data } = await axiosPrivate.post(
+      `${API_URI}/payment/${payload.paymentId}/respond`,
+      { type: payload.type }
+    );
+    // eslint-disable-next-line no-console
+    console.log(data);
+    return data;
+    // eslint-disable-next-line no-console
+    // console.log(payload);
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}

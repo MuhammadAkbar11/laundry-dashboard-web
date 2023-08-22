@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'classnames';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,15 +8,29 @@ import {
   faBurn,
   faTshirt,
 } from '@fortawesome/free-solid-svg-icons';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 function SectionOurServices() {
+  const sm = useMediaQuery('sm');
+  const xs = useMediaQuery('xs');
+
+  console.log(xs);
   return (
     <div className="container-fluid bg-white  py-5 font-opensans ">
       <Container>
-        <h6 className="text-uppercase text-center fw-semibold text-accent2 mb-3">
+        <h6
+          className={clsx(
+            'text-uppercase text-center fw-semibold text-accent2 mb-3'
+          )}
+        >
           Layanan Kami
         </h6>
-        <h1 className="display-4 fw-extrabold text-center mb-5 text-accent1 ">
+        <h1
+          className={clsx(
+            'display-4 fw-extrabold text-center mb-5 text-accent1 ',
+            { 'display-6': sm || xs }
+          )}
+        >
           Apa Yang Kami Tawarkan
         </h1>
         <Row>

@@ -8,9 +8,9 @@ type Props = {};
 
 function FooterQuickLinks({}: Props) {
   return (
-    <Col lg={3} md={6} mb={5}>
+    <Col lg={3} md={6} mb={5} className="ps-lg-4 mb-3">
       <h4 className="text-white mb-4">Links</h4>
-      <div className="d-flex flex-column justify-content-start">
+      <div className="d-flex flex-column justify-content-center ">
         <Link className="text-white mb-2" href="/">
           <FontAwesomeIcon icon={faAngleRight} className="me-2" />
           Beranda

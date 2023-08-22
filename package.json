@@ -2,7 +2,7 @@
   "name": "html-nextjs-ts",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:36666",
+  "proxy": "http://localhost:3001",
   "scripts": {
     "dev": "next dev --port 3379",
     "build": "next build",

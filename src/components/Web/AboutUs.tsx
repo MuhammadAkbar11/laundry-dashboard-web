@@ -8,7 +8,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 function AboutUs() {
   return (
     <div className="container-fluid bg-white py-5 ">
-      <Container className="pt-0 pt-lg-5 overflow-hidden ">
+      <Container className=" pt-lg-5 overflow-hidden ">
         <Row className="align-items-center d-flex align-items-md-stretch font-opensans ">
           <Col lg={5}>
             <div className="position-relative  " style={{ height: '100%' }}>

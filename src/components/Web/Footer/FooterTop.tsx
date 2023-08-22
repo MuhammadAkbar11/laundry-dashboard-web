@@ -14,8 +14,8 @@ function FooterTop({}: Props) {
         <Row className="pt-5">
           <FooterAbout />
           <FooterContactInfo />
-          <FooterQuickLinks />
           <FooterNewsLetter />
+          <FooterQuickLinks />
         </Row>
       </Container>
     </div>

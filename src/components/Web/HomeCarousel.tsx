@@ -1,12 +1,17 @@
-import WebButton from '@components/Buttons/WebButton';
-import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import Image from 'next/image';
+import Link from 'next/link';
+import clsx from 'classnames';
+import WebButton from '@components/Buttons/WebButton';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 type Props = {};
 
 function HomeCarousel({}: Props) {
+  const sm = useMediaQuery('sm');
+  const xs = useMediaQuery('xs');
+
   return (
     <div className="container-fluid p-0">
       <Carousel id="header-carousel" className="h-100">
@@ -25,7 +30,12 @@ function HomeCarousel({}: Props) {
               <h4 className="text-white text-uppercase mb-md-3">
                 CUCI & PENYETRIKAAN{' '}
               </h4>
-              <h1 className="display-3 text-capitalize text-white fw-bolder mb-md-4">
+              <h1
+                className={clsx(
+                  'display-3 text-capitalize text-white fw-bolder mb-md-4',
+                  { 'display-6': sm || xs }
+                )}
+              >
                 Pilihan terbaik untuk Layanan Laundry
               </h1>
               <Link passHref legacyBehavior href="/pemesanan">
@@ -51,7 +61,12 @@ function HomeCarousel({}: Props) {
               <h4 className="text-white text-uppercase mb-md-3">
                 CUCI & PENYETRIKAAN
               </h4>
-              <h1 className="display-3 text-capitalize text-white fw-bolder mb-md-4">
+              <h1
+                className={clsx(
+                  'display-3 text-capitalize text-white fw-bolder mb-md-4',
+                  { 'display-6': sm || xs }
+                )}
+              >
                 Petugas yang Sangat Profesional
               </h1>
               <Link passHref legacyBehavior href="/pemesanan">

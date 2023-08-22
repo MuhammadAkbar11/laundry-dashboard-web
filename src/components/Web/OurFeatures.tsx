@@ -17,21 +17,21 @@ function OurFeatures() {
     >
       <Container>
         <Row>
-          <Col lg={7} m={0} className="my-lg-5 pt-0 pt-lg-5 pe-lg-5">
-            <h6 className="text-accent2 text-uppercase fw-semibold mb-3">
+          <Col lg={7} m={0} className="my-lg-5 pt-0 pt-lg-5 pe-lg-5 ">
+            <h6 className="text-accent2 text-uppercase fw-semibold mb-3  text-center text-sm-start">
               Fitur Kami
             </h6>
-            <h1 className="mb-4 fw-extrabold text-accent1 display-6  ">
+            <h1 className="mb-4 fw-extrabold text-accent1 display-6   text-center text-sm-start">
               Mengapa Memilih Kami
             </h1>
-            <p style={{ fontSize: 17 }}>
+            <p style={{ fontSize: 17 }} className=" text-center text-sm-start">
               Kami adalah pilihan yang tepat untuk layanan cucian Anda. Dengan
               pengalaman yang kami miliki, kami telah menjadi mitra terpercaya
               dalam menyediakan layanan cucian berkualitas. Tim ahli kami siap
               memberikan solusi terbaik untuk kebutuhan cucian Anda.
             </p>
             <div className="row py-2">
-              <div className="col-sm-6 mb-4">
+              <div className="col-sm-6 mb-4 text-center text-sm-start ">
                 <FontAwesomeIcon
                   icon={faCheckCircle}
                   className="fa-3x text-accent2 mb-3"
@@ -42,7 +42,7 @@ function OurFeatures() {
                   untuk memenuhi kebutuhan Anda.
                 </p>
               </div>
-              <div className="col-sm-6 mb-4">
+              <div className="col-sm-6 mb-4 text-center text-sm-start ">
                 {/* <FontAwesomeIcon
                   icon={faLiraSign}
                   className="fa-3x text-accent2 mb-3"
@@ -64,7 +64,7 @@ function OurFeatures() {
                   mengorbankan kualitas.
                 </p>
               </div>
-              <div className="col-sm-6 mb-4">
+              <div className="col-sm-6 mb-4 text-center text-sm-start ">
                 <FontAwesomeIcon
                   icon={faHandshake}
                   className="fa-3x text-accent2 mb-3"
@@ -77,7 +77,7 @@ function OurFeatures() {
                   setiap layanan kami.
                 </p>
               </div>
-              <div className="col-sm-6 mb-4">
+              <div className="col-sm-6 mb-4 text-center text-sm-start text-md-start ">
                 <FontAwesomeIcon
                   icon={faHeart}
                   className="fa-3x text-accent2 mb-3"
@@ -97,7 +97,9 @@ function OurFeatures() {
                 className="fa-5x text-white mb-5"
               />
               <h1 className="display-4 fw-bolder text-white mb-3">Gratis</h1>
-              <h1 className="text-white m-0">Penjemputan & Pengiriman</h1>
+              <h1 className="text-white m-0 text-center">
+                Penjemputan & Pengiriman
+              </h1>
             </div>
           </Col>
         </Row>

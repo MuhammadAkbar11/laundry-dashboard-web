@@ -6,7 +6,7 @@ import AuthLayout from '@layouts/AuthLayout';
 import FormSignIn from '@components/Forms/FormSignIn';
 import { GetServerSidePropsContext } from 'next';
 import { isAuthenticadedService } from '@/services/authSevices';
-import { uIsAuthRedirect } from '@utils/utils';
+import { uIsAuthRedirect, uReplaceURL } from '@utils/utils';
 import { APP_NAME } from '@configs/varsConfig';
 import { useRouter } from 'next/router';
 import FeatherIcon from '@components/Icons/FeatherIcon';
@@ -65,11 +65,13 @@ export default function PagesSignIn({}: Props) {
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
+  const url = uReplaceURL(ctx.req.url as string);
+  const authRedirectUrl = url?.includes('/admin') ? '/admin' : '/';
   try {
     const isAuth = await isAuthenticadedService({
       headers: { Cookie: cookies, 'User-Agent': userAgent },
     });
-    if (isAuth) return uIsAuthRedirect();
+    if (isAuth) return uIsAuthRedirect(authRedirectUrl);
 
     return {
       props: { errorCode: null },

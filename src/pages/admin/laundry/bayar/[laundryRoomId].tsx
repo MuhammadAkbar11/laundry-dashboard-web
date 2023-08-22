@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
 import AdminLayout from '@/layouts/AdminLayout';
-import { Card, Col, Container, Row, Table } from 'react-bootstrap';
+import { Alert, Card, Col, Container, Row, Table } from 'react-bootstrap';
 import * as Interfaces from '@interfaces';
 import { APP_NAME } from '@configs/varsConfig';
 import { getSessionService } from '@services/authSevices';
@@ -96,21 +96,19 @@ export default function DetailRoomPage(props: Props) {
       if (secondsRedirect > 0) {
         const timer = setInterval(() => {
           setSecondsRedirect((prevSeconds: number) => prevSeconds - 1);
-          notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
-          notif.info(`Halaman akan di arahkan dalam ${secondsRedirect}`, {
-            id: `pay-success-redirect-${secondsRedirect}`,
-            duration: 1000,
-          });
+          // notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
+          // notif.info(`Halaman akan di arahkan dalam ${secondsRedirect}`, {
+          //   id: `pay-success-redirect-${secondsRedirect}`,
+          //   duration: 1000,
+          // });
         }, 1000);
 
         return () => {
           clearInterval(timer);
         };
       } else {
-        notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
-        router.push(
-          `/admin/laundry/admin/laundry/room/${laundryRoom?.laundryRoomId}`
-        );
+        // notif.remove(`pay-success-redirect-${secondsRedirect + 1}`);
+        router.push(`/admin/laundry/room/${laundryRoom?.laundryRoomId}`);
         return () => {};
       }
     }
@@ -139,6 +137,15 @@ export default function DetailRoomPage(props: Props) {
       </Head>
       <Container fluid className="p-0">
         <h1 className="h3 mb-4">Pembayaran</h1>
+        {laundryPaymentCtx.isSuccess && secondsRedirect > 0 ? (
+          <Row>
+            <Col xs={12}>
+              <Alert variant="info">
+                Halaman akan di arahkan dalam {secondsRedirect}
+              </Alert>{' '}
+            </Col>
+          </Row>
+        ) : null}
         <Row className="">
           <Col xs={12} md={6} lg={7}>
             <Card>
@@ -306,10 +313,11 @@ export default function DetailRoomPage(props: Props) {
                           totalPrice: Number(
                             (laundryRoom?.total as number) - totalDiscount
                           ),
+                          fetchQueryKey: laundryRoomQueryKey,
                         });
                       }}
                     >
-                      Tanggapi Pembayaran
+                      Proses Pembayaran
                     </BoxButton>
                     {/* {laundryRoom?.laundryQueue?.payment?.paymentMethod ===
                     'BANK_TRANSFER' ? (

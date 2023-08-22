@@ -5,6 +5,7 @@ import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import { Container, Row, Col } from 'react-bootstrap';
 import MemberDropdownProfile from '@components/Web/Dropdowns/MemberDropdownProfile';
 import LoadingPulse from '@components/Utils/LoadingPulse';
+import LogoSmall from '@components/Logo/LogoSmall';
 
 type Props = {};
 
@@ -23,9 +24,9 @@ function MemberTopbar({}: Props) {
           >
             <Link
               href="/"
-              className=" h3 m-0 text-white fw-bolder text-decoration-none "
+              className=" h3 m-0 text-white d-flex gap-2 fw-bolder text-decoration-none "
             >
-              <span className="text-accent2">TANTE LAU</span>NDRY 71
+              <LogoSmall height={28} width={28} />
             </Link>
           </Col>
           <Col
@@ -38,6 +39,7 @@ function MemberTopbar({}: Props) {
               <MemberDropdownProfile
                 isLogin={!!profile}
                 profile={profile as IMemberAuth}
+                isDashboard
               />
             )}
           </Col>

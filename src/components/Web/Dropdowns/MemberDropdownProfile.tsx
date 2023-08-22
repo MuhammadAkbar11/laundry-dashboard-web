@@ -1,16 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
+import clsx from 'classnames';
 import { Dropdown, Nav } from 'react-bootstrap';
 import { IMemberAuth } from '@interfaces';
 // import { useQueryClient } from '@tanstack/react-query';
+// import Image from 'next/image';
+// import { API_URI } from '@configs/varsConfig';
 import { memberProfileNavigationConfigs } from '@configs/navigationConfigs';
-import Image from 'next/image';
-import { API_URI } from '@configs/varsConfig';
 import { useWebLayoutContext } from '@utils/context/WebLayoutContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserAlt } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   isLogin: boolean;
   profile: IMemberAuth;
+  isDashboard?: boolean;
 };
 
 function MemberDropdownProfile(props: Props) {
@@ -25,9 +29,9 @@ function MemberDropdownProfile(props: Props) {
     webLayoutCtx.onToggleModalSignOut();
   };
 
-  const avatar = profile?.avatar
-    ? `${API_URI}${profile?.avatar}`
-    : '/img/avatars/avatar-1.png';
+  // const avatar = profile?.avatar
+  //   ? `${API_URI}${profile?.avatar}`
+  //   : '/img/avatars/avatar-1.png';
 
   return (
     <>
@@ -46,10 +50,10 @@ function MemberDropdownProfile(props: Props) {
               as="a"
               href="#"
               role="button"
-              className="ms-2"
+              className="ms-2 text-decoration-none "
               id="dropdown-profile-toggle"
             >
-              <Image
+              {/* <Image
                 src={avatar}
                 className="rounded-circle"
                 width={32}
@@ -58,7 +62,16 @@ function MemberDropdownProfile(props: Props) {
                 style={{
                   objectFit: 'cover',
                 }}
-              />
+              /> */}
+              <span
+                className={clsx({
+                  'text-primary': !props?.isDashboard,
+                  'text-white': props?.isDashboard,
+                })}
+              >
+                {profile.username}{' '}
+                <FontAwesomeIcon icon={faUserAlt} className="fa-fw ms-1" />{' '}
+              </span>
             </Dropdown.Toggle>
             <Dropdown.Menu as="ul" align="end" className="border-0 shadow ">
               {profileMenu.map((mn, idx) => {
@@ -93,5 +106,9 @@ function MemberDropdownProfile(props: Props) {
     </>
   );
 }
+
+MemberDropdownProfile.defaultProps = {
+  isDashboard: false,
+};
 
 export default MemberDropdownProfile;

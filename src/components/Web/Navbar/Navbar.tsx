@@ -6,6 +6,8 @@ import useMemberAuth from '@hooks/useMemberAuth';
 import { IMemberAuth } from '@interfaces';
 import MemberDropdownProfile from '@components/Web/Dropdowns/MemberDropdownProfile';
 import LoadingPulse from '@components/Utils/LoadingPulse';
+// import LogoSmall from '@components/Logo/LogoSmall';
+import Logo from '@components/Logo/Logo';
 
 function Navbar() {
   const memberAuth = useMemberAuth();
@@ -24,18 +26,15 @@ function Navbar() {
           expand="lg"
           bg="white"
           variant="light"
-          className="py-4 py-lg-2 ps-3 ps-lg-5 "
+          className=" py-1 ps-lg-5 "
           style={{ boxSizing: 'border-box' }}
         >
           <Link passHref legacyBehavior href="/">
-            <BsNavbar.Brand>
-              <h1 className="m-0 text-accent2 fw-bolder ">
-                <span className="text-accent1">TANTE LAU</span>NDRY 71
-              </h1>
-              {/* <Logo /> */}
+            <BsNavbar.Brand className="d-flex gap-3 ">
+              <Logo height={46} width={45 * 3} />
             </BsNavbar.Brand>
           </Link>
-          <BsNavbar.Toggle aria-controls="navbarCollapse" />
+          <BsNavbar.Toggle aria-controls="navbarCollapse" className="me-3" />
           <BsNavbar.Collapse
             id="navbarCollapse"
             className="justify-content-between px-3"

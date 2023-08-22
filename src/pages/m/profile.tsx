@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-new */
 import React from 'react';
 import Head from 'next/head';
@@ -30,7 +31,7 @@ export default function MemberProfilePage({
   memberAuth,
   profile: initialProfile,
 }: PageProps) {
-  const TITLE = `Dashboard | ${APP_NAME}`;
+  const TITLE = `Profil | ${APP_NAME}`;
 
   const profileQuery = useGetMemberProfile({ initialData: initialProfile });
   const profile = profileQuery?.data;
@@ -67,7 +68,7 @@ export default function MemberProfilePage({
           </Row>
         ) : (
           <Row>
-            {!profile?.isValidProfile ? (
+            {/* {!profile?.isValidProfile ? (
               <Col xs={{ span: 12, order: 0 }}>
                 <div className="pb-3">
                   <ProfileInvalidWarning />
@@ -112,7 +113,7 @@ export default function MemberProfilePage({
                   <FeatherIcon name="Edit" /> Ubah
                 </Button>
               </div>
-            </Col>
+            </Col> */}
             <Col md={{ span: 7, order: 1 }}>
               <Form>
                 <Form.Group controlId="username" className="mb-3">

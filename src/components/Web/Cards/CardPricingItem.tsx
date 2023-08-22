@@ -15,7 +15,7 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
   const { authState: profile, isLoading: authLoading } = useMemberAuth();
 
   return (
-    <Col lg={4} mb={4}>
+    <Col lg={4} mb={4} className="mb-3">
       <div className="bg-light text-center font-opensans mb-2 py-4 h-100  d-flex flex-column align-content-between justify-content-center align-items-center ">
         <div
           className={clsx(

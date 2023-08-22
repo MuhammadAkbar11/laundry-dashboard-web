@@ -11,7 +11,7 @@ type Props = {};
 
 function FooterContactInfo({}: Props) {
   return (
-    <Col lg={3} md={6} mb={5}>
+    <Col lg={3} md={6} mb={5} className="mb-3">
       <h4 className="text-white mb-4">Hubungi Kami</h4>
       {/* <p>Dolor clita stet nonumy clita diam vero, et et ipsum diam labore</p> */}
       <p>

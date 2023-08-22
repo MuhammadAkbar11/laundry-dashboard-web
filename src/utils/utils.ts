@@ -11,7 +11,7 @@
 import { FilterFn } from '@tanstack/react-table';
 import { rankItem } from '@tanstack/match-sorter-utils';
 import { NODE_ENV, UNKNOWM_ERROR } from '@configs/varsConfig';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { Faker } from '@faker-js/faker';
 import { faker } from '@faker-js/faker/locale/id_ID';
@@ -108,6 +108,13 @@ export function uDate(_date?: string, type: 'short' | 'long' = 'long') {
       : format(date, 'EEEE, dd MMMM yyyy', { locale: id });
   }
   return null;
+}
+
+export function uDateSetMonthAndYear(month: number, year: number) {
+  const date = new Date();
+  return format(set(date, { year, month: month - 1 }), 'MMMM yyyy', {
+    locale: id,
+  });
 }
 
 export function uHandleDuplicates<T extends Record<string, any>>(
@@ -208,9 +215,13 @@ export function uCheckPermissions(
   return new Promise((resolve) => {
     if (user) {
       const { role } = user;
-      const matchingPage = pagesConfigs?.find((item) =>
-        item?.isDynamicPage ? path?.includes(item.path) : item.path === path
-      );
+      const matchingPage = pagesConfigs?.find((item) => {
+        // eslint-disable-next-line no-console
+        // console.log(item, path);
+        return item?.isDynamicPage
+          ? path?.includes(item.path)
+          : item.path === path;
+      });
       if (matchingPage) {
         const permissions = matchingPage?.permissions as string[];
         if (permissions.includes('*') || permissions.includes(role)) {

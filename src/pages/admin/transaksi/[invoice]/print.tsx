@@ -61,7 +61,7 @@ export default function TransaksiInvoicePage({
     }
   }, [isSuccess, isSuccessSetting]);
 
-  const lgScreen = useMediaQuery('lg');
+  const lgScreen = useMediaQuery('lg-min');
 
   return (
     <>

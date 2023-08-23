@@ -29,7 +29,7 @@ function HomeContactInfo() {
                   Alamat Kami
                 </h5>
                 <p className="m-0 text-white opacity-75">
-                  123 Street, New York, USA
+                  Jatimakmur, Pondok Gede
                 </p>
               </div>
             </div>
@@ -51,7 +51,7 @@ function HomeContactInfo() {
                   Email Kami
                 </h5>
                 <p className="m-0 text-white opacity-75 text-wrap">
-                  tantelaundry71@example.com
+                  tantelaundry71@gmail.com
                 </p>
               </div>
             </div>
@@ -72,7 +72,7 @@ function HomeContactInfo() {
                 <h5 className="text-white mb-1 fw-bold text-uppercase">
                   Telpon
                 </h5>
-                <p className="m-0 text-white opacity-75">+012 345 6789</p>
+                <p className="m-0 text-white opacity-75">+62852 3456 6789</p>
               </div>
             </div>
           </Col>

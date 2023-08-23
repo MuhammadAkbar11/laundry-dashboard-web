@@ -46,9 +46,9 @@ function Navbar() {
               <Link passHref legacyBehavior href="/layanan">
                 <Nav.Link className="nav-item">Layanan</Nav.Link>
               </Link>
-              <Nav.Link href="#" className="nav-item">
-                Harga
-              </Nav.Link>
+              <Link passHref legacyBehavior href="/kontak">
+                <Nav.Link className="nav-item">Kontak</Nav.Link>
+              </Link>
             </Nav>
             <Nav className="py-0 fw-bold text-uppercase border-start ps-2 ms-2 ">
               {authLoading ? (

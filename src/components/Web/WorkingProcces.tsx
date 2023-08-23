@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'classnames';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,8 +8,12 @@ import {
   faTshirt,
   faShippingFast,
 } from '@fortawesome/free-solid-svg-icons';
+import useMediaQuery from '@hooks/useMediaQuery';
 
 function WorkingProcces() {
+  const smMax = useMediaQuery('sm-max');
+  const smMin = useMediaQuery('sm-min');
+
   return (
     <div
       style={{ paddingBottom: 100, paddingTop: 120 }}
@@ -18,7 +23,12 @@ function WorkingProcces() {
         <h6 className="text-accent2 text-uppercase text-center text-accent2 fw-semibold mb-3">
           Proses Kerja
         </h6>
-        <h1 className="display-4 text-center mb-5 fw-extrabold text-accent1 ">
+        <h1
+          className={clsx('text-center mb-5 fw-extrabold text-accent1 ', {
+            'display-4': smMin,
+            'display-6': smMax,
+          })}
+        >
           Bagaimana Kami Bekerja
         </h1>
         <Row>

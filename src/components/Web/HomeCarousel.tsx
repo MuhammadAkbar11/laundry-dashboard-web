@@ -9,7 +9,7 @@ import useMediaQuery from '@hooks/useMediaQuery';
 type Props = {};
 
 function HomeCarousel({}: Props) {
-  const sm = useMediaQuery('sm');
+  const sm = useMediaQuery('sm-max');
   const xs = useMediaQuery('xs');
 
   return (

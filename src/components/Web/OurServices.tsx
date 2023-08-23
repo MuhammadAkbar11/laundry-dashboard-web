@@ -11,10 +11,9 @@ import {
 import useMediaQuery from '@hooks/useMediaQuery';
 
 function SectionOurServices() {
-  const sm = useMediaQuery('sm');
-  const xs = useMediaQuery('xs');
+  const sm = useMediaQuery('sm-max');
+  const md = useMediaQuery('md-min');
 
-  console.log(xs);
   return (
     <div className="container-fluid bg-white  py-5 font-opensans ">
       <Container>
@@ -26,10 +25,10 @@ function SectionOurServices() {
           Layanan Kami
         </h6>
         <h1
-          className={clsx(
-            'display-4 fw-extrabold text-center mb-5 text-accent1 ',
-            { 'display-6': sm || xs }
-          )}
+          className={clsx('fw-extrabold text-center mb-5 text-accent1 ', {
+            'display-6': sm,
+            'display-4': md,
+          })}
         >
           Apa Yang Kami Tawarkan
         </h1>

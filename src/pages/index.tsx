@@ -23,9 +23,9 @@ export default function PagesBlank() {
       <HomeContactInfo />
       <AboutUs />
       <OurServices />
-      <OurFeatures />
       <WorkingProcces />
-      <OurPricingPlan />
+      <OurFeatures />
+      {/* <OurPricingPlan /> */}
     </>
   );
 }

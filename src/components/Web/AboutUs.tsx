@@ -28,7 +28,8 @@ function AboutUs() {
               Tentang Kami
             </h4>
             <h1 className="mb-4 text-capitalize  display-6 font-opensans text-accent1 fw-extrabold ">
-              Kami adalah Penyedia Laundry Berkualitas di Kota Anda
+              Kami adalah Penyedia Laundry Berkualitas di Wilayah Sekitar
+              Jatimakmur
             </h1>
             <p
               style={{ fontSize: 20, lineHeight: '1.5rem' }}

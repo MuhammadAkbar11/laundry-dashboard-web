@@ -19,7 +19,7 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
       <div className="bg-light text-center font-opensans mb-2 py-4 h-100  d-flex flex-column align-content-between justify-content-center align-items-center ">
         <div
           className={clsx(
-            'd-inline-flex flex-column align-items-center justify-content-center rounded-circle shadow mt-2 mb-4',
+            'd-inline-flex flex-column align-items-center justify-content-center rounded-circle shadow mt-2 mb-4 px-1',
             {
               ' bg-accent2': variant === 'accent2',
               ' bg-accent1': variant === 'accent1',
@@ -31,8 +31,10 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
             border: '15px solid #ffffff',
           }}
         >
-          <h4 className="text-white fw-bold text-uppercase ">{title}</h4>
-          <h3 className=" text-white mb-0  ">
+          <h5 className="text-white fw-bold text-wrap text-capitalize ">
+            {title}
+          </h5>
+          <h6 className=" text-white mb-0  ">
             <span>{price}</span>
             {/* <small
               className="align-bottom"
@@ -40,7 +42,7 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
             >
               / KG
             </small> */}
-          </h3>
+          </h6>
         </div>
         <div className="d-flex flex-column align-items-center mb-auto py-2">
           {features.map((feature, index) => {
@@ -49,16 +51,6 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
           })}
         </div>
         <div className="d-flex mt-auto justify-content-center ">
-          {authLoading ? (
-            <Link passHref legacyBehavior href="/daftar">
-              <WebButton
-                variant={variant}
-                className="py-2 px-4 font-opensans text-uppercase "
-              >
-                Daftar Sekarang
-              </WebButton>
-            </Link>
-          ) : null}
           {!authLoading && profile ? (
             <Link passHref legacyBehavior href="/pemesanan">
               <WebButton
@@ -68,7 +60,16 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
                 Pesan Sekarang
               </WebButton>
             </Link>
-          ) : null}
+          ) : (
+            <Link passHref legacyBehavior href="/daftar">
+              <WebButton
+                variant={variant}
+                className="py-2 px-4 font-opensans text-uppercase "
+              >
+                Daftar Sekarang
+              </WebButton>
+            </Link>
+          )}
         </div>
       </div>
     </Col>

@@ -10,12 +10,17 @@ export const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
 
 export const BOOTSTRAP_BREAKPOINTS: Record<BootstrapBreakpointsTypes, string> =
   {
-    xs: '(max-width: 576px)',
-    sm: '(min-width: 576px)',
-    md: '(min-width: 768px)',
-    lg: '(min-width: 992px)',
-    xl: '(min-width: 1200px)',
-    xxl: '(min-width: 1400px)',
+    xs: '(max-width: 576px)', // X-Small devices (portrait phones, less than 576px)
+    'sm-max': '(max-width: 575.98px)', // Small devices and smaller
+    'sm-min': '(min-width: 576px)', // Small devices and larger
+    'md-max': '(max-width: 767.98px)', // Medium devices and smaller
+    'md-min': '(min-width: 768px)', // Medium devices and larger
+    'lg-max': '(max-width: 991.98px)', // Large devices and smaller
+    'lg-min': '(min-width: 992px)', // Large devices and larger
+    'xl-max': '(max-width: 1199.98px)', // X-Large devices and smaller
+    'xl-min': '(min-width: 1200px)', // X-Large devices and larger
+    'xxl-max': '(max-width: 1399.98px)', // XX-Large devices and smaller
+    'xxl-min': '(min-width: 1400px)', // XX-Large devices and larger
   };
 
 export const LAUNDRY_ROOM_STATUS = {

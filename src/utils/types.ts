@@ -13,11 +13,16 @@ export type NotificationVariantTypes =
 
 export type BootstrapBreakpointsTypes =
   | 'xs'
-  | 'sm'
-  | 'md'
-  | 'lg'
-  | 'xl'
-  | 'xxl';
+  | 'sm-max'
+  | 'sm-min'
+  | 'md-max'
+  | 'md-min'
+  | 'lg-max'
+  | 'lg-min'
+  | 'xl-max'
+  | 'xl-min'
+  | 'xxl-max'
+  | 'xxl-min';
 
 export type LaundryQueuePaymentStatusType =
   | 'PENDING'

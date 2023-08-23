@@ -58,7 +58,7 @@ function FormSignIn({}: Props) {
     setLoading(true);
     mutation.mutate(inputs, {
       onSuccess(data) {
-        notif.success(data?.message || 'Login berhasil', { duration: 10000 });
+        notif.success(data?.message || 'Login berhasil');
       },
       onError(error: any) {
         setLoading(false);

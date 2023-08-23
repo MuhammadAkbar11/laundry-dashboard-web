@@ -200,6 +200,27 @@ export async function postMemberOrderService(payload: MemberOrderInputTypes) {
     throw err;
   }
 }
+export async function updateMemberProfileService(payload: {
+  name: string;
+  address: string;
+  phone: string;
+  username: string;
+}) {
+  try {
+    await runInDevAsync(() => uDelayAsync(1000));
+
+    const { data } = await axiosPrivate.put(`${API_URI}/member/profile`, {
+      name: payload.name,
+      address: payload.address,
+      phone: payload.phone,
+      username: payload.username,
+    });
+    return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
 
 export async function postMemberPaymentService(
   payload: MemberPaymentInputTypes & { laundryQueueId: string }
@@ -223,6 +244,22 @@ export async function postMemberPaymentService(
       }
     );
     return data;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function getMemberPaymentInvoiceService(
+  payload: string,
+  config?: AxiosRequestConfig
+): Promise<Interfaces.IInvoice | void> {
+  try {
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/transaction-invoice/${payload}`,
+      config
+    );
+    return data?.invoice;
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;

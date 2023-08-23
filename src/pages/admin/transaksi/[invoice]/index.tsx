@@ -109,7 +109,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     if (!invoiceParam) {
       return {
         redirect: {
-          destination: '/transaksi',
+          destination: '/admin/transaksi',
           permanent: false,
         },
       };

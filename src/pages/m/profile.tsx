@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-new */
 import React from 'react';
@@ -18,14 +19,31 @@ import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
 import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import { getMemberProfileService } from '@services/profileService';
+import { z } from 'zod';
 import Image from 'next/image';
 // import useMediaQuery from '@hooks/useMediaQuery';
 import WebButton from '@components/Buttons/WebButton';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import ProfileInvalidWarning from '@components/Alerts/ProfileInvalidWarning';
 import useGetMemberProfile from '@hooks/useGetMemberProfile';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { updateMemberProfileService } from '@services/memberService';
+import useNotification from '@hooks/useNotification';
 
 type PageProps = IMemberPageProps & { profile: IMemberProfile };
+
+// Define the validation schema using Zod
+const schema = z.object({
+  username: z.string(),
+  // email: z.string().email(),
+  name: z.string(),
+  address: z.string(),
+  phone: z.string(),
+});
+
+type ProfileFormValues = z.infer<typeof schema>;
 
 export default function MemberProfilePage({
   memberAuth,
@@ -37,6 +55,40 @@ export default function MemberProfilePage({
   const profile = profileQuery?.data;
 
   const memberAuthCtx = useMemberAuthContext();
+  const notif = useNotification();
+  const queryClient = useQueryClient();
+
+  const { register, handleSubmit, setValue } = useForm<ProfileFormValues>({
+    defaultValues: {
+      username: profile?.username || '',
+      // email: profile?.email || '',
+      name: profile?.customer.name || '',
+      address: profile?.customer.address || '',
+      phone: profile?.customer.phone || '',
+    },
+    resolver: zodResolver(schema),
+  });
+
+  const updateProfile = useMutation(updateMemberProfileService, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['memberProfile']);
+    },
+  });
+
+  const onSubmit = (inputs: ProfileFormValues) => {
+    updateProfile.mutate(inputs, {
+      onSuccess(data: any) {
+        notif.success(data?.message || 'Update profile berhasil');
+      },
+      onError(error: any) {
+        const errMessage = error?.name?.includes('AUTH')
+          ? error?.message
+          : 'Update profile gagal! silahkan coba lagi';
+        notif.danger(errMessage);
+      },
+    });
+  };
+
   React.useEffect(() => {
     if (memberAuth) memberAuthCtx.onSetMember(memberAuth);
   }, [memberAuth, memberAuthCtx]);
@@ -68,13 +120,14 @@ export default function MemberProfilePage({
           </Row>
         ) : (
           <Row>
-            {/* {!profile?.isValidProfile ? (
+            {!profile?.isValidProfile ? (
               <Col xs={{ span: 12, order: 0 }}>
                 <div className="pb-3">
                   <ProfileInvalidWarning />
                 </div>
               </Col>
             ) : null}
+            {/*
             <Col
               md={{ span: 5, order: 2 }}
               className="px-lg-4 d-flex align-items-center align-items-md-start  flex-column gap-2 "
@@ -115,14 +168,14 @@ export default function MemberProfilePage({
               </div>
             </Col> */}
             <Col md={{ span: 7, order: 1 }}>
-              <Form>
+              <Form method="POST" onSubmit={handleSubmit(onSubmit)}>
                 <Form.Group controlId="username" className="mb-3">
                   <Form.Label>Username</Form.Label>
                   <Form.Control
+                    {...register('username')}
                     type="text"
                     size="lg"
                     className="py-3"
-                    value={profile?.username}
                   />
                 </Form.Group>
 
@@ -132,40 +185,39 @@ export default function MemberProfilePage({
                     type="email"
                     size="lg"
                     className="py-3"
+                    disabled
                     value={profile?.email}
                   />
                 </Form.Group>
                 <Form.Group controlId="name" className="mb-3">
                   <Form.Label>Nama</Form.Label>
                   <Form.Control
+                    {...register('name')}
                     type="text"
                     size="lg"
                     className="py-3"
-                    value={profile?.customer.name}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="address" className="mb-3">
                   <Form.Label>Alamat</Form.Label>
                   <Form.Control
+                    {...register('address')}
                     size="lg"
                     as="textarea"
-                    type="text"
-                    id="note"
                     placeholder="Masukan alamat"
                     className="py-3"
                     rows={3}
-                    value={profile?.customer.address}
                   />
                 </Form.Group>
 
                 <Form.Group controlId="phone" className="mb-3">
                   <Form.Label>No Telp</Form.Label>
                   <Form.Control
+                    {...register('phone')}
                     type="text"
                     size="lg"
                     className="py-3"
-                    value={profile?.customer?.phone}
                   />
                 </Form.Group>
 
@@ -181,7 +233,9 @@ export default function MemberProfilePage({
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <WebButton>Ubah Profil</WebButton>
+                  <WebButton isLoading={updateProfile.isLoading} type="submit">
+                    Ubah Profil
+                  </WebButton>
                 </Form.Group>
               </Form>
             </Col>

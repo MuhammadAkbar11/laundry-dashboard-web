@@ -314,6 +314,17 @@ export interface IReportTrxYears {
   expenseTotal: number;
 }
 
+export interface IReportCashFlow {
+  balance: string;
+  cashflowId: string;
+  cashflowInvoice: string;
+  cashflowType: string;
+  createdAt: string;
+  description: string;
+  total: string;
+  updatedAt: string;
+}
+
 export interface IReportTrxMonth extends IReportTrxYears {
   key: string;
 }

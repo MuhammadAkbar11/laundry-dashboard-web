@@ -73,52 +73,93 @@ import {
 //   },
 // ];
 
-// export async function getReportTransactionService(
-//   _queryOpt: Interfaces.IPaginationOptions,
-//   _typeTrxData?: string
-//   // ): Promise<Interfaces.IServiceWithPaginateReturn<Interfaces.IPayment> | void> {
-// ) {
-//   // const sorting =
-//   //   queryOpt?.sorting?.length !== 0
-//   //     ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
-//   //     : null;
+export async function getReportTransactionService(_queryOpt: {
+  day: string;
+  year: string;
+  month: string;
+  pageIndex: number;
+  pageSize: number;
+}): Promise<Interfaces.IServiceWithPaginateReturn<Interfaces.IReportTrx> | void> {
+  const queries = uQueriesToString({
+    day: _queryOpt.day,
+    month: _queryOpt.month,
+    year: _queryOpt.year,
+    _page: _queryOpt.pageIndex + 1,
+    _limit: _queryOpt.pageSize,
+  });
+  try {
+    await runInDevAsync(() => uDelayAsync(1300));
 
-//   // const orderBy = sorting?.id;
-//   // const sortingBy = sorting ? (!sorting?.desc ? 'asc' : 'desc') : null;
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/report/transaction-full?${queries}`
+    );
+    const responseData = data?.data;
+    return {
+      entriesCount: responseData?.totalItems,
+      rows: responseData?.reportTrx,
+      pageCount: responseData?.totalPages,
+    };
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
 
-//   // const queries = uQueriesToString<
-//   //   Interfaces.IQueriesOptions & { _type?: string }
-//   // >({
-//   //   _page: queryOpt.pageIndex + 1,
-//   //   _limit: queryOpt.pageSize,
-//   //   _search: queryOpt.searchTerm,
-//   //   _orderBy: orderBy,
-//   //   _sortBy: sortingBy,
-//   //   _type: typeTrxData,
-//   // });
-//   try {
-//     await runInDevAsync(() => uDelayAsync(1300));
+export async function getReportTrxPeriodService(_queryOpt: {
+  startDate: string;
+  endDate: string;
+  pageIndex: number;
+  pageSize: number;
+}): Promise<Interfaces.IServiceWithPaginateReturn<Interfaces.IReportTrx> | void> {
+  const queries = uQueriesToString({
+    _page: _queryOpt.pageIndex + 1,
+    _limit: _queryOpt.pageSize,
+  });
+  try {
+    await runInDevAsync(() => uDelayAsync(1300));
 
-//     // const { data } = await axiosPrivate.get(
-//     //   `${API_URI}/payment/all?${queries}`
-//     // );
-//     // const responseData = data?.data;
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/report/transaction-period/${_queryOpt.startDate}/${_queryOpt.endDate}?${queries}`
+    );
+    const responseData = data?.data;
+    return {
+      entriesCount: responseData?.totalItems,
+      rows: responseData?.reportTrx,
+      pageCount: responseData?.totalPages,
+    };
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
 
-//     // return {
-//     //   entriesCount: responseData?.totalItems,
-//     //   rows: responseData?.[typeTrxData || 'transactions'],
-//     //   pageCount: responseData?.totalPages,
-//     // };
-//     return {
-//       entriesCount: dataReportTrx.lastIndexOf,
-//       rows: dataReportTrx,
-//       pageCount: 1,
-//     };
-//   } catch (error: unknown) {
-//     const err = uTranformAxiosError(error);
-//     throw err;
-//   }
-// }
+export async function getReportCashFlowService(_queryOpt: {
+  // startDate: string;
+  // endDate: string;
+  pageIndex: number;
+  pageSize: number;
+}): Promise<Interfaces.IServiceWithPaginateReturn<Interfaces.IReportCashFlow> | void> {
+  const queries = uQueriesToString({
+    _page: _queryOpt.pageIndex + 1,
+    _limit: _queryOpt.pageSize,
+  });
+  try {
+    await runInDevAsync(() => uDelayAsync(1300));
+
+    const { data } = await axiosPrivate.get(
+      `${API_URI}/report/transaction-cashflow?${queries}`
+    );
+    const responseData = data?.data;
+    return {
+      entriesCount: responseData?.totalItems,
+      rows: responseData?.reportCashFlow,
+      pageCount: responseData?.totalPages,
+    };
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
 
 export async function getReportTrxService<T>(
   type: 'year' | 'month' | 'yearmonth',
@@ -152,8 +193,4 @@ export async function getReportTrxService<T>(
     const err = uTranformAxiosError(error);
     throw err;
   }
-}
-
-export function getReportCashFlowService() {
-  return null;
 }

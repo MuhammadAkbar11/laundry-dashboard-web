@@ -6,10 +6,7 @@ import React from 'react';
 import { Button, Card, Col, Form, Row, Spinner, Table } from 'react-bootstrap';
 import { useQuery } from '@tanstack/react-query';
 import * as Interfaces from '@interfaces';
-import {
-  getReportTransactionService,
-  getReportTrxPeriodService,
-} from '@services/reportService';
+import { getReportTrxPeriodService } from '@services/reportService';
 import TableLoadingRow from '../TableLoadingRow';
 import BoxButton from '@components/Buttons/BoxButton';
 import Link from 'next/link';
@@ -23,7 +20,6 @@ import {
 } from '@tanstack/react-table';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import Paginate from '@components/Paginate/Paginate';
-import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 
 type Props = { startDate: Date; endDate: Date; dateStr: string };
@@ -42,8 +38,6 @@ function TableReportTrxPeriod({
       pageIndex: 0,
       pageSize: 20,
     });
-
-  const router = useRouter();
 
   const fetchDataOptions = React.useMemo(
     () => ({

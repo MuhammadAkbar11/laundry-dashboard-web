@@ -2,8 +2,7 @@
 import React from 'react';
 import { Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';
-import DropdownNotification from '../Dropdowns/DropdownNotification/DropdownNotification';
-import DropdownMessages from '../Dropdowns/DropdownMessages/DropdownMessages';
+
 import DropdownUserProfile from '../Dropdowns/DropdownUserProfile/DropdownUserProfile';
 
 function AdminNavbar() {

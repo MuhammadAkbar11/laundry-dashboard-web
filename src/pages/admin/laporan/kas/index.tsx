@@ -16,7 +16,6 @@ import {
 } from '@utils/utils';
 import { IPageProps, IUserAuth } from '@interfaces';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import TableReportTrxYears from '@components/Tables/Report/TableReportTrxYears';
 import TableReportCashFlow from '@components/Tables/Report/TableReportCashFlow';
 
 interface Props extends IPageProps {}

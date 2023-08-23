@@ -8,7 +8,6 @@ import { GetServerSidePropsContext } from 'next';
 import { getSessionService } from '@services/authSevices';
 import {
   uCheckPermissions,
-  uDateSetMonthAndYear,
   uGetStatusCode,
   uIsForbiddenError,
   uIsUnauthorizedError,
@@ -18,7 +17,6 @@ import {
 import { IPageProps, IUserAuth } from '@interfaces';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { useRouter } from 'next/router';
-import TableReportTrxYearMonth from '@components/Tables/Report/TableReportTrxYearMonth';
 import { format, set } from 'date-fns';
 import { id } from 'date-fns/locale';
 import TableReportTrx from '@components/Tables/Report/TableReportTrx';

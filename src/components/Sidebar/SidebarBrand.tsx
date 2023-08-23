@@ -1,5 +1,4 @@
 import Logo from '@components/Logo/Logo';
-import { APP_NAME } from '@configs/varsConfig';
 import Link from 'next/link';
 import React from 'react';
 

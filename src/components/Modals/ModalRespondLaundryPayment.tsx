@@ -16,7 +16,7 @@ type Props = {};
 
 function ModalPaymentProofDetail({}: Props) {
   const [loadingAcc, setLoadingAcc] = React.useState(false);
-  const [loadingReject, setLoadingReject] = React.useState(false);
+  const [loadingReject] = React.useState(false);
   const [fullImg, setFullImg] = React.useState(false);
 
   const notif = useNotification();

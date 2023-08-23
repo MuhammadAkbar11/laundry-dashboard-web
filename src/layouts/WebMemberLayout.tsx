@@ -9,13 +9,14 @@ import clsx from 'classnames';
 import MemberSidebar from '@components/Web/MemberSidebar/MemberSidebar';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import { IMemberPageProps } from '@interfaces';
+import MemberSidebarMobile from '@components/Web/MemberSidebar/MemberSidebarMobile';
 
 type Props = {
   children: React.ReactNode;
 } & IMemberPageProps;
 
 function WebMemberLayout({ children, memberAuth }: Props) {
-  const mdScreen = useMediaQuery('md');
+  const mdScreen = useMediaQuery('md-min');
 
   const memberAuthCtx = useMemberAuthContext();
   React.useEffect(() => {
@@ -41,9 +42,9 @@ function WebMemberLayout({ children, memberAuth }: Props) {
           </Row>
         </Container>
       </div>
-
       <Footer />
       <WebModalConfirmationSignOut />
+      <MemberSidebarMobile />
     </>
   );
 }

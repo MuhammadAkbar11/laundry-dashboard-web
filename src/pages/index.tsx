@@ -9,7 +9,7 @@ import AboutUs from '@components/Web/AboutUs';
 import OurServices from '@components/Web/OurServices';
 import OurFeatures from '@components/Web/OurFeatures';
 import WorkingProcces from '@components/Web/WorkingProcces';
-import OurPricingPlan from '@components/Web/OurPricingPlans';
+// import OurPricingPlan from '@components/Web/OurPricingPlans';
 
 export default function PagesBlank() {
   const TITLE = `Home | ${APP_NAME}`;

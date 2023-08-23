@@ -3,13 +3,12 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Button, Card, Col, Form, Row, Spinner, Table } from 'react-bootstrap';
+import { Card, Spinner, Table } from 'react-bootstrap';
 import { useQuery } from '@tanstack/react-query';
 import * as Interfaces from '@interfaces';
 import { getReportCashFlowService } from '@services/reportService';
 import TableLoadingRow from '../TableLoadingRow';
-import BoxButton from '@components/Buttons/BoxButton';
-import Link from 'next/link';
+
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
 import {
   ColumnDef,
@@ -20,8 +19,6 @@ import {
 } from '@tanstack/react-table';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import Paginate from '@components/Paginate/Paginate';
-import { useRouter } from 'next/router';
-import { format } from 'date-fns';
 
 type Props = {};
 
@@ -31,8 +28,6 @@ function TableReportCashFlow({}: Props) {
       pageIndex: 0,
       pageSize: 10,
     });
-
-  const router = useRouter();
 
   const fetchDataOptions = React.useMemo(
     () => ({
@@ -106,7 +101,6 @@ function TableReportCashFlow({}: Props) {
     () => getReportCashFlowService(fetchDataOptions),
     { keepPreviousData: true }
   );
-  console.log(dataQuery);
   const defaultData = React.useMemo(() => [], []);
 
   const pagination = React.useMemo(
@@ -116,8 +110,6 @@ function TableReportCashFlow({}: Props) {
     }),
     [pageIndex, pageSize]
   );
-
-  console.log(dataQuery);
 
   const table = useReactTable({
     data: dataQuery?.data?.rows ?? defaultData,

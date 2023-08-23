@@ -104,6 +104,13 @@ export default function DetailRoomPage(props: Props) {
 
   const laundriesLength = laundriesDataQuery?.data?.length;
 
+  const laundriesSumTotalPrice = laundriesDataQuery?.data
+    ? laundriesDataQuery?.data?.reduce(
+        (accumulator, currentValue) =>
+          accumulator + Number(currentValue.totalPrice),
+        0
+      )
+    : 0;
   return (
     <>
       <Head>
@@ -149,11 +156,15 @@ export default function DetailRoomPage(props: Props) {
                     />
                   </tbody>
                 </Table>
-                <FormFinishedLaundryRoom
-                  laundryRoom={laundryRoom}
-                  laundryRoomQueryKey={laundryRoomQueryKey}
-                  laundriesLength={(laundriesLength as number) || 0}
-                />
+                {laundriesLength &&
+                laundriesLength >= 1 &&
+                laundriesSumTotalPrice !== 0 ? (
+                  <FormFinishedLaundryRoom
+                    laundryRoom={laundryRoom}
+                    laundryRoomQueryKey={laundryRoomQueryKey}
+                    laundriesLength={(laundriesLength as number) || 0}
+                  />
+                ) : null}
               </Card.Body>
             </Card>
           </Col>

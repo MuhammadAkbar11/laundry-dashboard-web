@@ -312,7 +312,7 @@ export default function MemberDetailLaundryPage({
                   </tbody>
                 </Table>
               </Card.Body>
-              <Card.Footer className="bg-transparent d-none d-lg-flex ">
+              <Card.Footer className="bg-transparent  ">
                 {payButtonContent}
               </Card.Footer>
             </Card>

@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import clsx from 'classnames';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 // import Image from 'next/image';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import LoadingPulse from '@components/Utils/LoadingPulse';
 import { API_URI } from '@configs/varsConfig';
+import { useWebLayoutContext } from '@utils/context/WebLayoutContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {};
 
 function MemberProfileHeader({}: Props) {
   const memberAuthCtx = useMemberAuthContext();
-
+  const layoutCtx = useWebLayoutContext();
   const { member: profile, isLoading: authLoading } = memberAuthCtx;
 
   const avatar = profile?.avatar
@@ -22,7 +25,7 @@ function MemberProfileHeader({}: Props) {
     <div className=" font-opensans bg-white ">
       <Container className={clsx('px-lg-3 pb-4 pt-4')}>
         <Row className={clsx('align-items-center align-content-stretch')}>
-          <Col md={7} className="d-flex  mb-3 mb-md-0 ">
+          <Col xs={6} md={7} className="d-flex  mb-3 mb-md-0 ">
             {/* <div>
               {' '}
               {authLoading ? (
@@ -47,16 +50,19 @@ function MemberProfileHeader({}: Props) {
               </p>
             </div>
           </Col>
-          {/* <Col
+          <Col
+            xs={6}
             md={5}
-            className=" d-flex justify-content-start justify-content-md-end px-md-0 "
+            className="d-md-none d-flex justify-content-end align-items-center px-md-0 "
           >
-            <Link legacyBehavior href="/pemesanan" passHref>
-              <Button variant="accent1" className="px-3">
-                Pesan Sekarang
-              </Button>
-            </Link>
-          </Col> */}
+            <Button
+              variant="accent1"
+              onClick={() => layoutCtx.onToggleMemberSidebar()}
+              className="px-3"
+            >
+              <FontAwesomeIcon icon={faBars} />
+            </Button>
+          </Col>
         </Row>
       </Container>
     </div>

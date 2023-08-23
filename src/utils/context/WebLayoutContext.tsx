@@ -11,13 +11,17 @@ import {
 
 type WebLayoutType = {
   openModalSignOut: boolean;
+  openMemberSidebar: boolean;
   onToggleModalSignOut: () => void;
+  onToggleMemberSidebar: () => void;
   onCloseModalSignOut: () => void;
 };
 
 const webLayoutContextDefaultValues: WebLayoutType = {
   openModalSignOut: false,
+  openMemberSidebar: false,
   onToggleModalSignOut: () => {},
+  onToggleMemberSidebar: () => {},
   onCloseModalSignOut: () => {},
 };
 
@@ -40,10 +44,15 @@ type Props = {
 
 export function WebLayoutCtxProvider({ children }: Props) {
   const [openModalSignOut, setOpenModalSignOut] = useState(false);
+  const [openMemberSidebar, setOpenMemberSidebar] = useState(false);
 
   const onToggleModalSignOut = useCallback(() => {
     setOpenModalSignOut(!openModalSignOut);
   }, [openModalSignOut]);
+
+  const onToggleMemberSidebar = useCallback(() => {
+    setOpenMemberSidebar(!openMemberSidebar);
+  }, [openMemberSidebar]);
 
   const onCloseModalSignOut = useCallback(() => {
     setOpenModalSignOut(false);
@@ -51,11 +60,19 @@ export function WebLayoutCtxProvider({ children }: Props) {
 
   const value: WebLayoutType = useMemo(
     () => ({
+      openMemberSidebar,
+      onToggleMemberSidebar,
       openModalSignOut,
       onToggleModalSignOut,
       onCloseModalSignOut,
     }),
-    [openModalSignOut, onToggleModalSignOut, onCloseModalSignOut]
+    [
+      openModalSignOut,
+      onToggleModalSignOut,
+      onCloseModalSignOut,
+      openMemberSidebar,
+      onToggleMemberSidebar,
+    ]
   );
 
   return <WebLayout.Provider value={value}>{children}</WebLayout.Provider>;

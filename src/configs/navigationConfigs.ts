@@ -90,12 +90,12 @@ const navigationConfigs: INavigation = {
           },
         ],
       },
-      {
-        icon: 'ShoppingCart',
-        name: 'Pengeluaran',
-        href: '/admin/pengeluaran',
-        permissions: ['ADMIN', 'OFFICER'],
-      },
+      // {
+      //   icon: 'ShoppingCart',
+      //   name: 'Pengeluaran',
+      //   href: '/admin/pengeluaran',
+      //   permissions: ['ADMIN', 'OFFICER'],
+      // },
       {
         name: 'Laporan',
         icon: 'FileText',

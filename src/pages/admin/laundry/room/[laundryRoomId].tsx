@@ -105,12 +105,24 @@ export default function DetailRoomPage(props: Props) {
   const laundriesLength = laundriesDataQuery?.data?.length;
 
   const laundriesSumTotalPrice = laundriesDataQuery?.data
-    ? laundriesDataQuery?.data?.reduce(
+    ? (laundriesDataQuery?.data?.reduce(
         (accumulator, currentValue) =>
-          accumulator + Number(currentValue.totalPrice),
+          accumulator + Number(currentValue?.totalPrice as string),
         0
+      ) as number)
+    : 0;
+
+  const laundryItemHasZeroPrice = laundriesDataQuery?.data
+    ? laundriesDataQuery?.data?.some(
+        (item) => Number(item?.totalPrice as string) === 0
       )
     : 0;
+
+  const showFinisedLaundryRoom =
+    laundriesLength &&
+    laundriesLength >= 1 &&
+    laundriesSumTotalPrice !== 0 &&
+    !laundryItemHasZeroPrice;
   return (
     <>
       <Head>
@@ -156,9 +168,7 @@ export default function DetailRoomPage(props: Props) {
                     />
                   </tbody>
                 </Table>
-                {laundriesLength &&
-                laundriesLength >= 1 &&
-                laundriesSumTotalPrice !== 0 ? (
+                {showFinisedLaundryRoom ? (
                   <FormFinishedLaundryRoom
                     laundryRoom={laundryRoom}
                     laundryRoomQueryKey={laundryRoomQueryKey}

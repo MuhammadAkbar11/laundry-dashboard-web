@@ -59,12 +59,12 @@ const navigationConfigs: INavigation = {
         navSubItems: [
           {
             name: 'User',
-            href: '/admin/laundry/member',
+            href: '/admin/laundry/user',
             permissions: ['ADMIN'],
           },
           {
             name: 'Member',
-            href: '/admin/laundry/user',
+            href: '/admin/laundry/member',
             permissions: ['ADMIN'],
           },
         ],

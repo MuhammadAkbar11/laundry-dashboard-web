@@ -4,9 +4,9 @@ import AdminLayout from '@layouts/AdminLayout';
 import CardChartsLine from '@components/Cards/CardChartsLine';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import CardStats from '@components/Cards/CardStats';
-// import CardFlatpickr from '@components/Cards/CardFlatpickr';
+import CardDatePicker from '@components/Cards/CardDatePicker';
 // import CardChartsPie from '@components/Cards/CardChartsPie';
-// import CardWorldMap from '@components/Cards/CardWorldMap';
+import CardWorldMap from '@components/Cards/CardWorldMap';
 // import CardChartsBar from '@components/Cards/CardChartsBar';
 // import CardProjects from '@components/Cards/CardProjects';
 import { GetServerSidePropsContext } from 'next';
@@ -165,9 +165,9 @@ export default function Home() {
         {/* <Col xs={12} md={6} xxl={3} className="d-flex order-2 order-xxl-3">
           <CardChartsPie />
         </Col> */}
-        {/* <Col xs={12} md={6} xxl={3} className="d-flex order-1 order-xxl-1">
-          <CardFlatpickr />
-        </Col> */}
+        <Col xs={12} md={6} xxl={3} className="d-flex order-1 order-xxl-1">
+          <CardDatePicker />
+        </Col>
         <Col xs={12} className="">
           <Card>
             <Card.Body>
@@ -204,10 +204,9 @@ export default function Home() {
             </Card.Body>
           </Card>
         </Col>
-        {/* <Col xl={12} md={12} xxl={6} className="d-flex order-3 order-xxl-2">
-
+        <Col xl={12} md={12} xxl={6} className="d-flex order-3 order-xxl-2">
           <CardWorldMap />
-        </Col> */}
+        </Col>
       </Row>
 
       {/* <Row>

@@ -29,7 +29,7 @@ function HomeContactInfo() {
                   Alamat Kami
                 </h5>
                 <p className="m-0 text-white opacity-75">
-                  Jatimakmur, Pondok Gede
+                  Indonesia
                 </p>
               </div>
             </div>
@@ -51,7 +51,7 @@ function HomeContactInfo() {
                   Email Kami
                 </h5>
                 <p className="m-0 text-white opacity-75 text-wrap">
-                  tantelaundry71@gmail.com
+                  customercuciin@gmail.com
                 </p>
               </div>
             </div>

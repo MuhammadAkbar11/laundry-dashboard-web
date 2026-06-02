@@ -40,19 +40,19 @@ function Topbar({}: Props) {
             >
               <a
                 className="text-white "
-                href="https://www.facebook.com/laundry.tantelaundry71"
+                href="#"
               >
                 <FontAwesomeIcon icon={faFacebookF} />
               </a>
               <a
                 className="text-white "
-                href="https://twitter.com/tantelaundry71"
+                href="#"
               >
                 <FontAwesomeIcon icon={faTwitter} />
               </a>
               <a
                 className="text-white "
-                href="https://www.instagram.com/tantelaundry71"
+                href="#"
               >
                 <FontAwesomeIcon icon={faInstagram} />
               </a>

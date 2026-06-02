@@ -20,7 +20,7 @@ function FooterContactInfo({}: Props) {
       </p>
       <p>
         <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
-        Jatimakmur, Pondok Gede
+        Indonesia
       </p>
       <p>
         <FontAwesomeIcon icon={faPhoneAlt} className="me-2" />
@@ -28,7 +28,7 @@ function FooterContactInfo({}: Props) {
       </p>
       <p>
         <FontAwesomeIcon icon={faEnvelope} className="me-2" />
-        tantelaundry71@gmail.com
+        customercuciin@gmail.com
       </p>
     </Col>
   );

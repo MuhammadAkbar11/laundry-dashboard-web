@@ -53,7 +53,7 @@ function ContactPage() {
                       />
                     </div>
                     <h3 className=" fw-bold font-opensans  text-accent1 m-0 mt-2">
-                      Jatimakmur, Pondok Gede
+                      Indonesia
                     </h3>{' '}
                   </div>
                 </Col>
@@ -73,7 +73,7 @@ function ContactPage() {
                       />
                     </div>
                     <h3 className=" fw-bold font-opensans  text-accent1 m-0 mt-2">
-                      tantelaundry71@gmail.com{' '}
+                      customercuciin@gmail.com{' '}
                     </h3>
                   </div>
                 </Col>

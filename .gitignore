@@ -44,3 +44,6 @@ commitwhiz/
 *.ignore.*
 
 .agent
+
+.yarn/
+.yarnrc.yml

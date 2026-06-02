@@ -12,7 +12,7 @@ function FooterBottom({}: Props) {
       <p className="m-0 text-center text-white">
         &copy;{' '}
         <Link className="text-white font-weight-medium" href="/">
-          Tante Laundry 71
+          CusCuciin
         </Link>
         . All Rights Reserved.
         {/* Credit Link */} All Rights Reserved{' '}

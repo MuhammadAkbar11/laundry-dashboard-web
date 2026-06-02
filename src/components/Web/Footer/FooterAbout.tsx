@@ -10,10 +10,10 @@ function FooterAbout({}: Props) {
     <Col lg={3} md={6} mb={5} className="mb-3">
       <Link href="/">
         {/* <h1 className="text-accent2 fw-bolder mb-3">
-          <span className="text-white">TANTE LAU</span>NDRY 71
+          <span className="text-white">CusCuciin</span>
         </h1> */}
-        <div className="pb-3 d-flex justify-content-center ">
-          <Logo variant="light" height={60} width={60 * 3} />
+        <div className="pb-3 d-flex justify-content-start ">
+          <Logo variant="light" height={55} width={60 * 3} />
         </div>
       </Link>
       <p style={{ fontSize: '1.05rem' }} className="text-justify">

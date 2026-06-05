@@ -16,11 +16,7 @@ function CardDatePicker({}: Props) {
         </Card.Title>
       </Card.Header>
       <Card.Body className="card-body d-flex justify-content-center">
-        <DayPicker
-          mode="single"
-          selected={selected}
-          onSelect={setSelected}
-        />
+        <DayPicker mode="single" selected={selected} onSelect={setSelected} />
       </Card.Body>
     </Card>
   );

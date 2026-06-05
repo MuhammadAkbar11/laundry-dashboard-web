@@ -1,6 +1,11 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+} from 'react-simple-maps';
 import themeConfigs from '@configs/themeConfigs';
 
 type Props = {};
@@ -18,7 +23,7 @@ const markers = [
   { latLng: [-3.70379, 40.416775], name: 'Madrid' },
 ];
 
-const geoUrl = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json";
+const geoUrl = 'https://unpkg.com/world-atlas@2.0.2/countries-110m.json';
 
 function CardWorldMap({}: Props) {
   return (
@@ -29,7 +34,7 @@ function CardWorldMap({}: Props) {
         </Card.Title>
       </Card.Header>
       <Card.Body className="px-4">
-        <div id="world_map" style={{ width: "100%", height: "100%" }}>
+        <div id="world_map" style={{ width: '100%', height: '100%' }}>
           <ComposableMap projection="geoMercator">
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
@@ -45,7 +50,12 @@ function CardWorldMap({}: Props) {
             </Geographies>
             {markers.map(({ name, latLng }) => (
               <Marker key={name} coordinates={latLng as [number, number]}>
-                <circle r={7} fill={themeConfigs.primary} stroke="#fff" strokeWidth={2} />
+                <circle
+                  r={7}
+                  fill={themeConfigs.primary}
+                  stroke="#fff"
+                  strokeWidth={2}
+                />
               </Marker>
             ))}
           </ComposableMap>

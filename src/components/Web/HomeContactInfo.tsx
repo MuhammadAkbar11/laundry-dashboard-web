@@ -28,9 +28,7 @@ function HomeContactInfo() {
                 <h5 className="text-white mb-1 fw-bold text-uppercase ">
                   Alamat Kami
                 </h5>
-                <p className="m-0 text-white opacity-75">
-                  Indonesia
-                </p>
+                <p className="m-0 text-white opacity-75">Indonesia</p>
               </div>
             </div>
           </Col>

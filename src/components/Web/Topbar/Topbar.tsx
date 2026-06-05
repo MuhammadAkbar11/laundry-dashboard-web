@@ -38,22 +38,13 @@ function Topbar({}: Props) {
               className="d-inline-flex align-items-center gap-4"
               style={{ fontSize: 18 }}
             >
-              <a
-                className="text-white "
-                href="#"
-              >
+              <a className="text-white " href="https://facebook.com">
                 <FontAwesomeIcon icon={faFacebookF} />
               </a>
-              <a
-                className="text-white "
-                href="#"
-              >
+              <a className="text-white " href="https://twitter.com">
                 <FontAwesomeIcon icon={faTwitter} />
               </a>
-              <a
-                className="text-white "
-                href="#"
-              >
+              <a className="text-white " href="https://instagram.com">
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
 

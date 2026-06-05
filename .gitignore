@@ -47,3 +47,11 @@ commitwhiz/
 
 .yarn/
 .yarnrc.yml
+
+
+# pnpm directories
+node_modules
+.pnpm-debug.log*
+
+# Only include this if you use pnpm's local store caching feature
+.pnpm-store

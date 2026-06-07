@@ -25,7 +25,7 @@ import {
   Tooltip,
 } from 'react-bootstrap';
 import clsx from 'classnames';
-import { getCustomersService } from '@/services/customerService';
+import { getCustomersService } from '@services/customerService';
 import FeatherIcon from '@components/Icons/FeatherIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';

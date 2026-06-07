@@ -201,7 +201,7 @@ export default function PengeluaranPage({ userAuth }: Props) {
                           <td>{idx + 1}</td>
                           <td>{exp.expensesInvoice}</td>
                           <td>{exp.description}</td>
-                          <td>{uRupiah(exp.total)}</td>
+                          <td>{uRupiah(+exp.total)}</td>
                           <td>
                             {new Date(exp.createdAt).toLocaleDateString(
                               'id-ID',

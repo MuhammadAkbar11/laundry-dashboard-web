@@ -96,6 +96,8 @@ export function uRupiah(value: number) {
   const result = value?.toLocaleString('id', {
     style: 'currency',
     currency: 'IDR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   });
   return result;
 }

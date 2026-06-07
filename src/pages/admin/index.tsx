@@ -1,16 +1,14 @@
 /* eslint-disable no-new */
 import React from 'react';
+import dynamic from 'next/dynamic';
 import AdminLayout from '@layouts/AdminLayout';
-import CardChartsLine from '@components/Cards/CardChartsLine';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
+import CardChartsLine from '@components/Cards/CardChartsLine';
 import CardStats from '@components/Cards/CardStats';
-import CardDatePicker from '@components/Cards/CardDatePicker';
-// import CardChartsPie from '@components/Cards/CardChartsPie';
 import CardWorldMap from '@components/Cards/CardWorldMap';
-// import CardChartsBar from '@components/Cards/CardChartsBar';
-// import CardProjects from '@components/Cards/CardProjects';
+
 import { GetServerSidePropsContext } from 'next';
-import { getSessionService } from '@/services/authSevices';
+
 import {
   uCheckPermissions,
   uGetStatusCode,
@@ -20,6 +18,12 @@ import {
   uReplaceURL,
 } from '@utils/utils';
 import { IUserAuth } from '@utils/interfaces';
+import { getSessionService } from '@services/authSevices';
+
+const CardDatePicker = dynamic(
+  () => import('@components/Cards/CardDatePicker'),
+  { ssr: false }
+);
 
 interface Transaction {
   id: number;
@@ -29,49 +33,49 @@ interface Transaction {
   status: string;
 }
 
+const recentTransactions: Transaction[] = [
+  {
+    id: 1,
+    customerName: 'John Doe',
+    totalAmount: 50000,
+    paymentMethod: 'Cash',
+    status: 'Completed',
+  },
+  {
+    id: 2,
+    customerName: 'Jane Smith',
+    totalAmount: 75000,
+    paymentMethod: 'Credit Card',
+    status: 'Completed',
+  },
+  {
+    id: 3,
+    customerName: 'Michael Johnson',
+    totalAmount: 120000,
+    paymentMethod: 'Bank Transfer',
+    status: 'Pending',
+  },
+  {
+    id: 4,
+    customerName: 'Anna Lee',
+    totalAmount: 100000,
+    paymentMethod: 'Cash',
+    status: 'Completed',
+  },
+  {
+    id: 5,
+    customerName: 'Robert Brown',
+    totalAmount: 85000,
+    paymentMethod: 'Credit Card',
+    status: 'Completed',
+  },
+];
+
 export default function Home() {
   const salesStat = 3382;
   const visitorsStat = 14212;
   const earningsStat = 21300;
   const ordersStat = 64;
-
-  const recentTransactions: Transaction[] = [
-    {
-      id: 1,
-      customerName: 'John Doe',
-      totalAmount: 50000,
-      paymentMethod: 'Cash',
-      status: 'Completed',
-    },
-    {
-      id: 2,
-      customerName: 'Jane Smith',
-      totalAmount: 75000,
-      paymentMethod: 'Credit Card',
-      status: 'Completed',
-    },
-    {
-      id: 3,
-      customerName: 'Michael Johnson',
-      totalAmount: 120000,
-      paymentMethod: 'Bank Transfer',
-      status: 'Pending',
-    },
-    {
-      id: 4,
-      customerName: 'Anna Lee',
-      totalAmount: 100000,
-      paymentMethod: 'Cash',
-      status: 'Completed',
-    },
-    {
-      id: 5,
-      customerName: 'Robert Brown',
-      totalAmount: 85000,
-      paymentMethod: 'Credit Card',
-      status: 'Completed',
-    },
-  ];
 
   return (
     <Container fluid className="p-0">
@@ -79,44 +83,6 @@ export default function Home() {
       <Row className="mt-3">
         <Col xl={6} xxl={5} className="d-flex">
           <div className="w-100">
-            {/* <Row>
-              <Col sm={6}>
-                <CardStats
-                  statTitle="Sales"
-                  statValue="3.382"
-                  statIcon="Truck"
-                  statPercent="-3.65%"
-                  statPercentColor="danger"
-                  statDescription="Since last week"
-                />
-                <CardStats
-                  statTitle="Visitors"
-                  statValue="14.212"
-                  statIcon="Users"
-                  statPercent="5.25%"
-                  statPercentColor="success"
-                  statDescription="Since last week"
-                />
-              </Col>
-              <Col sm={6}>
-                <CardStats
-                  statTitle="Earnings"
-                  statValue="$21.300"
-                  statIcon="DollarSign"
-                  statPercent="6.65%"
-                  statPercentColor="success"
-                  statDescription="Since last week"
-                />
-                <CardStats
-                  statTitle="Orders"
-                  statValue="64"
-                  statIcon="ShoppingCart"
-                  statPercent="-2.25%"
-                  statPercentColor="danger"
-                  statDescription="Since last week"
-                />
-              </Col>
-            </Row> */}
             <Row>
               <Col sm={6}>
                 <CardStats
@@ -162,9 +128,6 @@ export default function Home() {
         </div>
       </Row>
       <Row>
-        {/* <Col xs={12} md={6} xxl={3} className="d-flex order-2 order-xxl-3">
-          <CardChartsPie />
-        </Col> */}
         <Col xs={12} md={6} xxl={3} className="d-flex order-1 order-xxl-1">
           <CardDatePicker />
         </Col>
@@ -188,7 +151,7 @@ export default function Home() {
                       <tr key={transaction.id}>
                         <td>{transaction.id}</td>
                         <td>{transaction.customerName}</td>
-                        <td>
+                        <td suppressHydrationWarning>
                           {new Intl.NumberFormat('id-ID', {
                             style: 'currency',
                             currency: 'IDR',
@@ -208,15 +171,6 @@ export default function Home() {
           <CardWorldMap />
         </Col>
       </Row>
-
-      {/* <Row>
-        <Col xs={12} lg={8} xxl={9} className=" d-flex">
-          <CardProjects />
-        </Col>
-        <Col xs={12} lg={4} xxl={3} className="d-flex">
-          <CardChartsBar />
-        </Col>
-      </Row> */}
     </Container>
   );
 }

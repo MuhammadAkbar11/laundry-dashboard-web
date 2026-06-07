@@ -340,6 +340,17 @@ export interface IReportTrxYearAndMonth {
   expenseTotal: number;
 }
 
+export interface IExpenses {
+  expensesId: string;
+  expensesInvoice: string;
+  description: string;
+  total: number;
+  userId: string;
+  user?: Pick<IUser, 'userId' | 'name' | 'email'>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface IPageProps {
   userAuth: IUserAuth;
 }

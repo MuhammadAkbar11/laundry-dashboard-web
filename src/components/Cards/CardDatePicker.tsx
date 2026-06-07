@@ -10,9 +10,9 @@ function CardDatePicker({}: Props) {
 
   return (
     <Card className="flex-fill">
-      <Card.Header>
+      <Card.Header className="bg-light">
         <Card.Title as="h5" className=" mb-0">
-          Calendar
+          Kalender
         </Card.Title>
       </Card.Header>
       <Card.Body className="card-body d-flex justify-content-center">

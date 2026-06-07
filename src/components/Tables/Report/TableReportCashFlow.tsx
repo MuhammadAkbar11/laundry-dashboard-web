@@ -3,7 +3,7 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Card, Spinner, Table } from 'react-bootstrap';
+import { Badge, Card, Spinner, Table } from 'react-bootstrap';
 import { useQuery } from '@tanstack/react-query';
 import * as Interfaces from '@interfaces';
 import { getReportCashFlowService } from '@services/reportService';
@@ -65,7 +65,11 @@ function TableReportCashFlow({}: Props) {
         header: 'Keterangan',
         cell: (info) => {
           const infoValue = info.getValue() as any;
-          return infoValue === 'IN' ? 'Masuk' : 'Keluar';
+          return infoValue === 'IN' ? (
+            <Badge bg="success">Masuk</Badge>
+          ) : (
+            <Badge bg="danger">Keluar</Badge>
+          );
         },
       },
       {

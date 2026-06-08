@@ -143,9 +143,10 @@ export async function getReportCashFlowService(_queryOpt: {
     _page: _queryOpt.pageIndex + 1,
     _limit: _queryOpt.pageSize,
   });
+
+  console.log(queries, 'getReportCashFlowService');
   try {
     await runInDevAsync(() => uDelayAsync(1300));
-
     const { data } = await axiosPrivate.get(
       `${API_URI}/report/transaction-cashflow?${queries}`
     );

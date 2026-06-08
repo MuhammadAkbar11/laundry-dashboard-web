@@ -3,46 +3,46 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
-import { Badge, Card, Spinner, Table } from 'react-bootstrap';
-import { useQuery } from '@tanstack/react-query';
-import * as Interfaces from '@interfaces';
+import { Badge } from 'react-bootstrap';
+import * as rtb from '@tanstack/react-table';
+import { IReportCashFlow } from '@interfaces';
+import AdminDataTable from '../AdminDataTable';
+import { uDate, uRupiah } from '@utils/utils';
 import { getReportCashFlowService } from '@services/reportService';
-import TableLoadingRow from '../TableLoadingRow';
-
-import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
-import {
-  ColumnDef,
-  PaginationState,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import FeatherIcon from '@components/Icons/FeatherIcon';
-import Paginate from '@components/Paginate/Paginate';
+import useDataQuery from '@hooks/useDataQuery';
 
 type Props = {};
 
 function TableReportCashFlow({}: Props) {
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: 0,
-      pageSize: 10,
-    });
+  const {
+    sorting,
+    setSorting,
+    globalFilter,
+    setGlobalFilter,
+    pagination,
+    setPagination,
+    dataQuery,
+  } = useDataQuery<
+    | {
+        rows: IReportCashFlow[];
+        entriesCount?: number;
+        pageCount?: number;
+      }
+    | IReportCashFlow[]
+  >({
+    queryKeyPrefix: 'report-cashflow',
+    queryFn: (opt) => {
+      return getReportCashFlowService({
+        pageIndex: opt.pageIndex,
+        pageSize: opt.pageSize,
+      });
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    defaultData: { rows: [], entriesCount: 0, pageCount: 0 } as any,
+    defaultSorting: [],
+  });
 
-  const fetchDataOptions = React.useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  );
-
-  const fetchQueryKey = React.useMemo(
-    () => ['report-cashflow', fetchDataOptions],
-    [fetchDataOptions]
-  );
-
-  const columnsDefs = React.useMemo<ColumnDef<Interfaces.IReportCashFlow>[]>(
+  const columns = React.useMemo<rtb.ColumnDef<IReportCashFlow>[]>(
     () => [
       {
         enableSorting: false,
@@ -50,7 +50,7 @@ function TableReportCashFlow({}: Props) {
         header: 'Waktu',
         cell: (info) => {
           const infoValue = info.getValue() as string;
-          return uDate(infoValue);
+          return uDate(infoValue, 'short');
         },
       },
       {
@@ -74,8 +74,6 @@ function TableReportCashFlow({}: Props) {
       },
       {
         enableSorting: false,
-
-        // eslint-disable-next-line no-underscore-dangle
         accessorFn: (row) => row.total,
         id: 'total',
         header: () => 'Total',
@@ -86,8 +84,6 @@ function TableReportCashFlow({}: Props) {
       },
       {
         enableSorting: false,
-
-        // eslint-disable-next-line no-underscore-dangle
         accessorFn: (row) => row.balance,
         id: 'balance',
         header: () => 'Saldo',
@@ -100,177 +96,27 @@ function TableReportCashFlow({}: Props) {
     []
   );
 
-  const dataQuery = useQuery(
-    fetchQueryKey,
-    () => getReportCashFlowService(fetchDataOptions),
-    { keepPreviousData: true }
-  );
-  const defaultData = React.useMemo(() => [], []);
-
-  const pagination = React.useMemo(
-    () => ({
-      pageIndex,
-      pageSize,
-    }),
-    [pageIndex, pageSize]
-  );
-
-  const table = useReactTable({
-    data: dataQuery?.data?.rows ?? defaultData,
-    columns: columnsDefs,
-    pageCount: dataQuery?.data?.pageCount ?? -1,
-    state: {
-      pagination,
-    },
-    filterFns: {
-      fuzzy: fuzzyFilter,
-    },
-    onPaginationChange: setPagination,
-    getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    // getPaginationRowModel: getPaginationRowModel(), // If only doing manual pagination, you don't need this
-    debugTable: false,
-  });
-
-  const rows = table?.getRowModel()?.rows;
-  const headers = table.getFlatHeaders();
+  const apiData = dataQuery?.data as any;
+  const rows: IReportCashFlow[] = apiData?.rows || [];
 
   return (
-    <Card>
-      <Card.Header className="pt-4 d-flex justify-content-between align-items-center ">
-        <Card.Title className=" mb-0">Semua Data Laporan Kas</Card.Title>
-      </Card.Header>
-      <Card.Body>
-        <Table striped bordered hover>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      style={{ width: header.getSize() }}
-                      className="text-nowrap"
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div
-                          {...{
-                            className: ` d-flex align-items-center justify-content-between ${
-                              header.column.getCanSort()
-                                ? 'cursor-pointer select-none'
-                                : ''
-                            }`,
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                          {{
-                            asc: (
-                              <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
-                                  className=" text-dark mb-n1"
-                                  name="ChevronUp"
-                                  size={18}
-                                />
-                                <FeatherIcon
-                                  className=" text-muted mt-n1 "
-                                  name="ChevronDown"
-                                  size={18}
-                                />
-                              </span>
-                            ),
-                            desc: (
-                              <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
-                                  className=" text-muted mb-n1"
-                                  name="ChevronUp"
-                                  size={18}
-                                />
-                                <FeatherIcon
-                                  className=" text-dark mt-n1 "
-                                  name="ChevronDown"
-                                  size={18}
-                                />
-                              </span>
-                            ),
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            <TableLoadingRow
-              isError={dataQuery?.isError}
-              rows={rows}
-              isLoading={dataQuery.isLoading}
-              headerLength={headers.length}
-            />
-
-            {rows.map((row) => {
-              return (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </Card.Body>
-      <Card.Footer className=" d-flex gap-3 justify-content-between flex-wrap">
-        <div className="d-flex align-items-center">
-          <div className="d-flex align-items-center gap-1">
-            <span>Menampilan</span>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} dari{' '}
-              {table.getPageCount()} halaman
-            </strong>{' '}
-            dari {dataQuery?.data?.entriesCount} data |
-            <span> {table.getRowModel().rows.length} baris ditampilakan</span>
-          </div>
-        </div>
-        <div className="d-flex flex-wrap justify-content-end align-items-center   ">
-          {dataQuery.isFetching ? (
-            <div className="me-3 h-100 d-flex align-items-center ">
-              <Spinner
-                size="sm"
-                animation="border"
-                variant="primary"
-                role="status"
-              >
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          ) : null}
-          <Paginate
-            onPrevPage={() => table.previousPage()}
-            isHasPrevPage={table.getCanPreviousPage()}
-            onNextPage={() => table.nextPage()}
-            isHasNextPage={table.getCanNextPage()}
-            totalPages={table.getPageCount()}
-            loading={dataQuery?.isLoading}
-            activePage={table.getState().pagination.pageIndex + 1}
-            onSetPage={table.setPageIndex}
-          />
-        </div>
-      </Card.Footer>
-    </Card>
+    <AdminDataTable<IReportCashFlow>
+      title="Semua Data Laporan Kas"
+      columns={columns}
+      data={rows}
+      isLoading={dataQuery?.isLoading}
+      isError={dataQuery?.isError}
+      pageCount={apiData?.pageCount ?? 0}
+      pageIndex={pagination.pageIndex}
+      pageSize={pagination.pageSize}
+      entriesCount={apiData?.entriesCount ?? 0}
+      sorting={sorting}
+      globalFilter={globalFilter}
+      onSortingChange={setSorting}
+      onPaginationChange={setPagination}
+      onGlobalFilterChange={setGlobalFilter}
+      searchPlaceholder="Cari data laporan kas"
+    />
   );
 }
 

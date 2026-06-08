@@ -25,7 +25,6 @@ function FormSignUp({}: Props) {
   const onSubmitHandler = (inputs: SignUpInputTypes) => {
     setLoading(true);
     // eslint-disable-next-line no-console
-    console.log(inputs);
     router.push('/');
   };
 

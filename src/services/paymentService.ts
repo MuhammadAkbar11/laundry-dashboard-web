@@ -55,7 +55,6 @@ export async function postRespondPaymentService(payload: {
       { type: payload.type }
     );
     // eslint-disable-next-line no-console
-    console.log(data);
     return data;
     // eslint-disable-next-line no-console
     // console.log(payload);

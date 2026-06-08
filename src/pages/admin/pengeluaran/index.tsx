@@ -1,20 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-  Table,
-} from 'react-bootstrap';
+import { Button, Container, Form, Modal } from 'react-bootstrap';
 import AdminLayout from '@layouts/AdminLayout';
-import { getSessionService } from '@services/authSevices';
+import { getSessionService } from '@/services/authSevices';
 import {
   uCheckPermissions,
   uGetStatusCode,
@@ -22,16 +12,10 @@ import {
   uIsUnauthorizedError,
   uNotAuthRedirect,
   uReplaceURL,
-  uRupiah,
 } from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
-import {
-  IPageProps,
-  IUserAuth,
-  IExpenses,
-  IPaginationOptions,
-} from '@utils/interfaces';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { IPageProps, IUserAuth, IExpenses } from '@utils/interfaces';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getExpensesService,
   postExpensesService,
@@ -39,6 +23,8 @@ import {
   deleteExpensesService,
 } from '@services/expensesService';
 import useNotification from '@hooks/useNotification';
+import TableExpenses from '@components/Tables/TableExpenses';
+import useDataQuery from '@hooks/useDataQuery';
 
 interface Props extends IPageProps {}
 
@@ -60,15 +46,33 @@ export default function PengeluaranPage({ userAuth }: Props) {
     userAuthCtx.onSetUser(userAuth);
   }, [userAuth, userAuthCtx]);
 
-  const queryOpt: IPaginationOptions = {
-    pageIndex: 0,
-    pageSize: 20,
-    searchTerm: '',
-  };
-
-  const { data, isLoading } = useQuery({
-    queryKey: ['expenses'],
-    queryFn: () => getExpensesService(queryOpt),
+  const {
+    sorting,
+    setSorting,
+    globalFilter,
+    setGlobalFilter,
+    pagination,
+    setPagination,
+    dataQuery,
+  } = useDataQuery<
+    | {
+        rows: IExpenses[];
+        entriesCount?: number;
+        pageCount?: number;
+      }
+    | IExpenses[]
+  >({
+    queryKeyPrefix: 'expenses',
+    queryFn: (opt) =>
+      getExpensesService({
+        pageIndex: opt.pageIndex,
+        pageSize: opt.pageSize,
+        searchTerm: opt.searchTerm,
+        sorting: opt.sorting,
+      }),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    defaultData: { rows: [], entriesCount: 0, pageCount: 0 } as any,
+    defaultSorting: [],
   });
 
   const resetForm = () => {
@@ -153,7 +157,8 @@ export default function PengeluaranPage({ userAuth }: Props) {
     setShowDeleteModal(true);
   };
 
-  const expenses: IExpenses[] = (data as any)?.rows || [];
+  const apiData = dataQuery?.data as any;
+  const rows: IExpenses[] = apiData?.rows || [];
 
   return (
     <>
@@ -167,77 +172,22 @@ export default function PengeluaranPage({ userAuth }: Props) {
             + Tambah Pengeluaran
           </Button>
         </div>
-        <Row>
-          <Col xs={12}>
-            <Card>
-              <Card.Body>
-                <Table striped bordered hover responsive>
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Invoice</th>
-                      <th>Deskripsi</th>
-                      <th>Total</th>
-                      <th>Tanggal</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {isLoading ? (
-                      <tr>
-                        <td colSpan={6} className="text-center">
-                          Memuat data...
-                        </td>
-                      </tr>
-                    ) : expenses.length === 0 ? (
-                      <tr>
-                        <td colSpan={6} className="text-center">
-                          Belum ada data pengeluaran
-                        </td>
-                      </tr>
-                    ) : (
-                      expenses.map((exp, idx) => (
-                        <tr key={exp.expensesId}>
-                          <td>{idx + 1}</td>
-                          <td>{exp.expensesInvoice}</td>
-                          <td>{exp.description}</td>
-                          <td>{uRupiah(+exp.total)}</td>
-                          <td>
-                            {new Date(exp.createdAt).toLocaleDateString(
-                              'id-ID',
-                              {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric',
-                              }
-                            )}
-                          </td>
-                          <td>
-                            <Button
-                              variant="outline-primary"
-                              size="sm"
-                              className="me-1"
-                              onClick={() => openEditModal(exp)}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              variant="outline-danger"
-                              size="sm"
-                              onClick={() => openDeleteModal(exp)}
-                            >
-                              Hapus
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </Table>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+        <TableExpenses
+          rows={rows}
+          isLoading={dataQuery?.isLoading}
+          isError={dataQuery?.isError}
+          pageCount={apiData?.pageCount ?? 0}
+          pageIndex={pagination.pageIndex}
+          pageSize={pagination.pageSize}
+          entriesCount={apiData?.entriesCount ?? 0}
+          sorting={sorting}
+          globalFilter={globalFilter}
+          onSortingChange={setSorting}
+          onPaginationChange={setPagination}
+          onGlobalFilterChange={setGlobalFilter}
+          onEdit={openEditModal}
+          onDelete={openDeleteModal}
+        />
       </Container>
 
       {/* Create Modal */}

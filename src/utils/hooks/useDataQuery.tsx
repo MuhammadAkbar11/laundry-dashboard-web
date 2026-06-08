@@ -10,9 +10,9 @@ interface FetchDataOptions {
 }
 
 interface UseDataQueryProps<TData> {
-  // queryFn: QueryFunction<TData, [string, FetchDataOptions]>;
   queryKeyPrefix: string;
-  queryFn: (options: FetchDataOptions) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  queryFn: (options: FetchDataOptions) => any;
   defaultData: TData[];
   defaultSorting: SortingState;
   defaultPagination?: PaginationState;

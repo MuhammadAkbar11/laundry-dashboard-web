@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { BANKS, PAYMENT_METHODS } from '@configs/varsConfig';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { PAYMENT_METHODS } from '@configs/varsConfig';
+import { getSettingService } from '@services/settingService';
 import {
   faCheckCircle,
   faHandHoldingDollar,
@@ -15,7 +17,6 @@ import {
 } from '@utils/schema/memberSchema';
 import { ILaundryItem, ILaundryQueue } from '@interfaces';
 import { uRupiah } from '@utils/utils';
-import { useMutation } from '@tanstack/react-query';
 import useNotification from '@hooks/useNotification';
 import { useRouter } from 'next/router';
 import WebButton from '@components/Buttons/WebButton';
@@ -73,6 +74,27 @@ function FormMemberPayment({ laundries, laundryQueue }: Props) {
         Number(customer?.customerLevel?.discount || 0)) /
       100
     : 0;
+
+  const { data: settingData } = useQuery({
+    queryKey: ['setting-bank'],
+    queryFn: () => getSettingService(),
+  });
+
+  const bankInfo = React.useMemo(() => {
+    if (!settingData) return [];
+    try {
+      const bankStr = settingData.bank_info?.value;
+      if (bankStr) {
+        return JSON.parse(bankStr) as {
+          bank_name: string;
+          no_rek: string;
+        }[];
+      }
+    } catch {
+      // parse error
+    }
+    return [];
+  }, [settingData]);
 
   const paymentMethod = watch('paymentMethod');
 
@@ -144,7 +166,7 @@ function FormMemberPayment({ laundries, laundryQueue }: Props) {
                 <Form.Group className="mt-2">
                   {' '}
                   <div className="row px-2">
-                    {BANKS?.map((bnk, idx) => {
+                    {bankInfo?.map((bnk, idx) => {
                       const key = idx;
                       return (
                         <div key={key} className="col-6 col-lg-4 p-1">
@@ -154,7 +176,7 @@ function FormMemberPayment({ laundries, laundryQueue }: Props) {
                                 <span>{bnk?.no_rek}</span>
                               </h4>
                               <p className="text-spacing-0  text-capitalize mb-1">
-                                {bnk?.name}
+                                {settingData?.name?.value || ''}
                               </p>
                               <Card.Title className="mt-1 mb-0">
                                 {bnk?.bank_name}

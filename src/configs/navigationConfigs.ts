@@ -71,6 +71,17 @@ const navigationConfigs: INavigation = {
       },
     ],
   },
+  settings: {
+    title: 'Pengaturan',
+    navItems: [
+      {
+        icon: 'Settings',
+        name: 'Pengaturan',
+        href: '/admin/pengaturan',
+        permissions: ['ADMIN'],
+      },
+    ],
+  },
   transactions: {
     title: 'Transaksi & Laporan',
     navItems: [

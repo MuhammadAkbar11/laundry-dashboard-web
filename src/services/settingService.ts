@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { API_URI } from '@configs/varsConfig';
-import { axiosApi } from '@utils/apiUtils';
+import { axiosApi, axiosPrivate } from '@utils/apiUtils';
 import * as Interfaces from '@interfaces';
 import { uTranformAxiosError } from '@utils/utils';
 
@@ -23,6 +23,32 @@ export async function getSettingService(): Promise<Interfaces.ISetting | void> {
     const settingData = data?.settings;
     const settingObj = settingArrayToObject(settingData) as Interfaces.ISetting;
     return settingObj;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function getSettingsRawService(): Promise<
+  Interfaces.ISettingItem[] | void
+> {
+  try {
+    const { data } = await axiosPrivate.get(`${API_URI}/setting/all`);
+    return data?.settings;
+  } catch (error: unknown) {
+    const err = uTranformAxiosError(error);
+    throw err;
+  }
+}
+
+export async function putSettingsService(
+  settings: { name: string; value: string }[]
+): Promise<{ settings: Interfaces.ISettingItem[]; message: string } | void> {
+  try {
+    const { data } = await axiosPrivate.put(`${API_URI}/setting/all`, {
+      settings,
+    });
+    return data;
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;

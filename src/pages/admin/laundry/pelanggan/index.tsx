@@ -3,8 +3,8 @@ import React from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
 import { Col, Container, Offcanvas, Row } from 'react-bootstrap';
-import AdminLayout from '@/layouts/AdminLayout';
-import { getSessionService } from '@/services/authSevices';
+import AdminLayout from '@layouts/AdminLayout';
+import { getSessionService } from '@services/authSevices';
 import {
   uCheckPermissions,
   uGetStatusCode,

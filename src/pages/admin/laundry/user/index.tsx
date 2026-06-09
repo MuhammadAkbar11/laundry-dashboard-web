@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 import React from 'react';
-import AdminLayout from '@/layouts/AdminLayout';
+import AdminLayout from '@layouts/AdminLayout';
 import Head from 'next/head';
 import { Col, Container, Offcanvas, Row } from 'react-bootstrap';
 import { APP_NAME } from '@configs/varsConfig';

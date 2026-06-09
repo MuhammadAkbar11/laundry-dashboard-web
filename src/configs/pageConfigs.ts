@@ -44,6 +44,12 @@ const pagesConfigs: IPageConfig[] = [
     permissions: ['ADMIN'],
     isDynamicPage: true,
   },
+  { path: '/admin/laundry/member/', permissions: ['*'], isDynamicPage: true },
+  {
+    path: '/admin/laundry/member/[memberId]',
+    permissions: ['*'],
+    isDynamicPage: true,
+  },
 ];
 
 export default pagesConfigs;

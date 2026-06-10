@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import useDataQuery from '@hooks/useDataQuery';
@@ -103,7 +103,7 @@ function TableLaundryService({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Edit" size={14} />
+                <AppIcon name="Edit" size={14} />
               </Button>
               <Button
                 size="sm"
@@ -115,7 +115,7 @@ function TableLaundryService({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Trash" size={14} />
+                <AppIcon name="Trash" size={14} />
               </Button>
             </div>
           );
@@ -251,12 +251,12 @@ function TableLaundryService({}: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -265,12 +265,12 @@ function TableLaundryService({}: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

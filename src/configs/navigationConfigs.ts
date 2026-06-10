@@ -20,7 +20,7 @@ const navigationConfigs: INavigation = {
     ],
   },
   laundry: {
-    title: 'Laundry',
+    title: 'Cucian',
     navItems: [
       {
         name: 'Antrian',
@@ -48,26 +48,26 @@ const navigationConfigs: INavigation = {
       // },
       {
         name: 'Pelanggan',
-        icon: 'UserCheck',
+        icon: 'LucideBookUser',
         href: '/admin/laundry/pelanggan',
         permissions: ['ADMIN', 'OFFICER'],
       },
-
+    ],
+  },
+  user: {
+    title: 'Manajemen User',
+    navItems: [
       {
-        name: 'User',
-        icon: 'User',
-        navSubItems: [
-          {
-            name: 'User',
-            href: '/admin/laundry/user',
-            permissions: ['ADMIN'],
-          },
-          {
-            name: 'Member',
-            href: '/admin/laundry/member',
-            permissions: ['ADMIN'],
-          },
-        ],
+        name: 'Staff',
+        icon: 'ShieldUser',
+        href: '/admin/laundry/user',
+        permissions: ['ADMIN'],
+      },
+      {
+        name: 'Member',
+        icon: 'Users',
+        href: '/admin/laundry/member',
+        permissions: ['ADMIN'],
       },
     ],
   },

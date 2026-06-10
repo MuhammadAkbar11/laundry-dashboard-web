@@ -4,7 +4,7 @@ import { Badge, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import BoxButton from '@components/Buttons/BoxButton';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import ShowMore from '@components/Utils/ShowMore';
@@ -196,7 +196,7 @@ function TableLaundryQueue({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Info" size={14} />
+                <AppIcon name="Info" size={14} />
               </Button>
 
               <Button
@@ -212,7 +212,7 @@ function TableLaundryQueue({}: Props) {
                   }
                 }}
               >
-                <FeatherIcon name="XCircle" size={14} />
+                <AppIcon name="XCircle" size={14} />
               </Button>
             </div>
           );
@@ -350,12 +350,12 @@ function TableLaundryQueue({}: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -364,12 +364,12 @@ function TableLaundryQueue({}: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import useDataQuery from '@hooks/useDataQuery';
@@ -131,7 +131,7 @@ function TableUser({}: Props) {
                   }}
                   className="text-dark"
                 >
-                  <FeatherIcon name="Lock" size={14} />
+                  <AppIcon name="Lock" size={14} />
                 </Button>
               </OverlayTrigger>
               <Button
@@ -144,7 +144,7 @@ function TableUser({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Edit" size={14} />
+                <AppIcon name="Edit" size={14} />
               </Button>
               <Button
                 size="sm"
@@ -156,7 +156,7 @@ function TableUser({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Trash" size={14} />
+                <AppIcon name="Trash" size={14} />
               </Button>
             </div>
           );
@@ -292,12 +292,12 @@ function TableUser({}: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -306,12 +306,12 @@ function TableUser({}: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

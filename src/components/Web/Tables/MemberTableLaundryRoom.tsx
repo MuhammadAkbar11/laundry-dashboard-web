@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button, Card, Spinner, Table } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import useDataQuery from '@hooks/useDataQuery';
@@ -105,7 +105,7 @@ function MemberTableLaundryRoom({}: Props) {
                 href={`/m/cucian/${data?.laundryQueueId}`}
               >
                 <Button size="sm" variant="blue">
-                  <FeatherIcon name="Info" size={14} />
+                  <AppIcon name="Info" size={14} />
                 </Button>
               </Link>
             </div>
@@ -193,12 +193,12 @@ function MemberTableLaundryRoom({}: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -207,12 +207,12 @@ function MemberTableLaundryRoom({}: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

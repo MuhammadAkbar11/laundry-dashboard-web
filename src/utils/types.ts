@@ -1,7 +1,7 @@
 import themeConfigs from '@configs/themeConfigs';
-import * as RFIcon from 'react-feather';
+import * as Lucide from 'lucide-react';
 
-export type FeatherIconsTypes = keyof typeof RFIcon;
+export type LucideIconTypes = keyof typeof Lucide;
 export type ThemeTypes = keyof typeof themeConfigs;
 
 export type NotificationVariantTypes =

@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'classnames';
 import { Pagination } from 'react-bootstrap';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import PaginateNumbers from './PaginateNumbers';
 
 type Props = {
@@ -35,7 +35,7 @@ function Paginate({
         disabled={!isHasPrevPage}
       >
         <span className="d-flex align-items-center  h-100 ">
-          <FeatherIcon size={14} name="ChevronLeft" />
+          <AppIcon size={14} name="ChevronLeft" />
         </span>
       </Pagination.Prev>
       {totalPages > 0 ? (
@@ -53,7 +53,7 @@ function Paginate({
         disabled={!isHasNextPage}
       >
         <span className="d-flex align-items-center  h-100 ">
-          <FeatherIcon size={14} name="ChevronRight" />
+          <AppIcon size={14} name="ChevronRight" />
         </span>
       </Pagination.Next>
     </Pagination>

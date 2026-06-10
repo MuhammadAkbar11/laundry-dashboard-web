@@ -1,13 +1,13 @@
-import { FeatherIconsTypes, ThemeTypes } from '@utils/types';
+import { LucideIconTypes, ThemeTypes } from '@utils/types';
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import clsx from 'classnames';
-import FeatherIcon from '../Icons/FeatherIcon';
+import AppIcon from '../Icons/AppIcon';
 
 type Props = {
   statTitle: string | number;
   statValue: string;
-  statIcon: FeatherIconsTypes;
+  statIcon: LucideIconTypes;
   statIconColor?: ThemeTypes;
   statDescription: string;
   statPercent: string;
@@ -40,7 +40,7 @@ function CardStats({
           </Col>
           <Col xs="auto" className="col-auto">
             <div className={statIconClsx}>
-              <FeatherIcon name={statIcon} className="align-middle" size={18} />
+              <AppIcon name={statIcon} className="align-middle" size={18} />
             </div>
           </Col>
         </Row>

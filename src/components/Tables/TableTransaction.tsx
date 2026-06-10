@@ -8,7 +8,7 @@ import useDataQuery from '@hooks/useDataQuery';
 import { IPayment, IServiceWithPaginateReturn } from '@interfaces';
 // import useNotification from '@hooks/useNotification';
 import { getTransactionService } from '@services/transactionService';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import { fuzzyFilter, uDate, uRupiah } from '@utils/utils';
 import Paginate from '@components/Paginate/Paginate';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
@@ -87,7 +87,7 @@ function TableTransaction({ typeQueryKey }: Props) {
                 href={`/admin/transaksi/${trxInfo?.invoice}`}
               >
                 <Button size="sm" variant="primary">
-                  <FeatherIcon name="Info" size={14} />
+                  <AppIcon name="Info" size={14} />
                 </Button>
               </Link>
             </div>
@@ -215,12 +215,12 @@ function TableTransaction({ typeQueryKey }: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -229,12 +229,12 @@ function TableTransaction({ typeQueryKey }: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

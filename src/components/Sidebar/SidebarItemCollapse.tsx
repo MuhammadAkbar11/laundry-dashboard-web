@@ -1,8 +1,8 @@
 import React from 'react';
 import { Collapse } from 'react-bootstrap';
 import clsx from 'classnames';
-import FeatherIcon from '@components/Icons/FeatherIcon';
-import { FeatherIconsTypes, ThemeTypes } from '@utils/types';
+import AppIcon from '@components/Icons/AppIcon';
+import { LucideIconTypes, ThemeTypes } from '@utils/types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
@@ -16,7 +16,7 @@ type SubLinkItems = {
 
 type Props = {
   name: string;
-  icon: FeatherIconsTypes;
+  icon: LucideIconTypes;
   links: SubLinkItems[];
 };
 
@@ -52,7 +52,7 @@ function SidebarItemCollapse({ icon, name, links }: Props) {
         data-bs-toggle="collapse"
         className={sidebarLinkClsx}
       >
-        <FeatherIcon className="align-middle" name={icon} />
+        <AppIcon className="align-middle" name={icon} />
         <span className="align-middle ms-1">{name}</span>
       </a>
       <Collapse in={open}>

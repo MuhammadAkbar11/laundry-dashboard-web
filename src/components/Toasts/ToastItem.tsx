@@ -2,15 +2,15 @@ import React from 'react';
 import { Button, Toast } from 'react-bootstrap';
 import reactHotToast, { Toast as IToast } from 'react-hot-toast';
 import clsx from 'classnames';
-import FeatherIcon from '@components/Icons/FeatherIcon';
-import { FeatherIconsTypes, NotificationVariantTypes } from '@utils/types';
+import AppIcon from '@components/Icons/AppIcon';
+import { LucideIconTypes, NotificationVariantTypes } from '@utils/types';
 
 type Props = {
   toast: IToast;
   updateHeight: (toastId: string, height: number) => void;
 };
 
-const iconNames: { [key: string]: FeatherIconsTypes } = {
+const iconNames: { [key: string]: LucideIconTypes } = {
   success: 'Check',
   primary: 'Bell',
   warning: 'AlertTriangle',
@@ -56,7 +56,7 @@ function ToastItem({ toast, updateHeight }: Props) {
         <Toast.Body>
           <div className="toast-content">
             <div className={toastIconClsx}>
-              <FeatherIcon name={toastIconName} size={16} />
+              <AppIcon name={toastIconName} size={16} />
             </div>
             <span className="ms-2 my-0 ">{toastMsg}</span>
           </div>
@@ -69,7 +69,7 @@ function ToastItem({ toast, updateHeight }: Props) {
                 setLoading(true);
               }}
             >
-              <FeatherIcon size={17} name="X" />
+              <AppIcon size={17} name="X" />
             </Button>
           </div>
         </Toast.Body>

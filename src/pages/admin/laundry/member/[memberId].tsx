@@ -37,7 +37,7 @@ import {
 } from '@services/adminMemberService';
 import useNotification from '@hooks/useNotification';
 import { API_URI } from '@configs/varsConfig';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 
 interface Props extends IPageProps {
   memberId: string;
@@ -191,7 +191,7 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
           <h1 className="h3 mb-0">Detail Member</h1>
           <div className="d-flex gap-2">
             <Button variant="warning" onClick={() => setShowResetModal(true)}>
-              <FeatherIcon name="Unlock" />
+              <AppIcon name="Unlock" />
               <span className="ms-2">Reset Password</span>
             </Button>
             {member?.avatar && member.avatar !== '/img/avatars/avatar.jpg' && (
@@ -202,12 +202,12 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
               >
                 {avatarMutation.isLoading ? (
                   <>
-                    <FeatherIcon name="Loader" />
+                    <AppIcon name="Loader" />
                     <span className="ms-2">Mereset...</span>
                   </>
                 ) : (
                   <>
-                    <FeatherIcon name="Trash2" />
+                    <AppIcon name="Trash2" />
                     <span className="ms-2">Reset Foto</span>
                   </>
                 )}
@@ -252,7 +252,7 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
                           style={{ objectFit: 'cover' }}
                         />
                         <div className="avatar-upload-img-icon text-white rounded-circle">
-                          <FeatherIcon name="Upload" />
+                          <AppIcon name="Upload" />
                         </div>
                       </div>
                     </Form.Label>
@@ -446,7 +446,7 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
                 <Card.Footer className="bg-light pt-0 ">
                   {!editMode ? (
                     <Button variant="primary" onClick={() => setEditMode(true)}>
-                      <FeatherIcon name="Edit" />
+                      <AppIcon name="Edit" />
                       <span className="ms-2">Edit</span>
                     </Button>
                   ) : (
@@ -458,12 +458,12 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
                       >
                         {updateMutation.isLoading ? (
                           <>
-                            <FeatherIcon name="Loader" />
+                            <AppIcon name="Loader" />
                             <span className="ms-2">Mereset...</span>
                           </>
                         ) : (
                           <>
-                            <FeatherIcon name="Save" />
+                            <AppIcon name="Save" />
                             <span className="ms-2">Simpan</span>
                           </>
                         )}
@@ -472,7 +472,7 @@ export default function AdminMemberDetailPage({ userAuth, memberId }: Props) {
                         variant="secondary"
                         onClick={() => setEditMode(false)}
                       >
-                        <FeatherIcon name="X" />
+                        <AppIcon name="X" />
                         <span className="ms-2">Batal</span>
                       </Button>
                     </div>

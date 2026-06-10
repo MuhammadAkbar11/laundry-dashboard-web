@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import Link from 'next/link';
-import * as Icon from 'react-feather';
+import * as Icon from 'lucide-react';
 import { Dropdown, NavItem } from 'react-bootstrap';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { API_URI } from '@configs/varsConfig';

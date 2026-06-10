@@ -9,7 +9,7 @@ import { isAuthenticadedService } from '@/services/authSevices';
 import { uIsAuthRedirect, uReplaceURL } from '@utils/utils';
 import { APP_NAME } from '@configs/varsConfig';
 import { useRouter } from 'next/router';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 
 type Props = {
   // userAuth: IUserAuth;
@@ -43,7 +43,7 @@ export default function PagesSignIn({}: Props) {
             <Card>
               <Card.Body className="pt-4">
                 <Card.Title className="text-primary text-center ">
-                  <FeatherIcon name="Sliders" size={30} />
+                  <AppIcon name="Sliders" size={30} />
                 </Card.Title>
                 <Card.Title className=" text-center text-dark text-uppercase ">
                   {' '}

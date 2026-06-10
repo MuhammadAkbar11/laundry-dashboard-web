@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import * as Icon from 'react-feather';
+import { Heart } from 'lucide-react';
 
 type Props = {};
 
@@ -56,7 +56,7 @@ function CardProfileActivities({}: Props) {
               libero venenatis faucibus. Nullam quis ante.
             </div>
             <a href="/#" className="btn btn-sm btn-danger mt-1">
-              <Icon.Heart size={14} /> Like
+              <Heart size={14} /> Like
             </a>
           </div>
         </div>
@@ -127,7 +127,7 @@ function CardProfileActivities({}: Props) {
               </div>
             </div>
             <a href="/#" className="btn btn-sm btn-danger mt-1">
-              <Icon.Heart size={14} /> Like
+              <Heart size={14} /> Like
             </a>
           </div>
         </div>

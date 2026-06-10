@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown, NavItem } from 'react-bootstrap';
-import * as Icon from 'react-feather';
+import * as Icon from 'lucide-react';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';
 import DropdownToggle from '../DropdownToggle';
 import DropdownNotificationItem from './DropdownNotificationItem';

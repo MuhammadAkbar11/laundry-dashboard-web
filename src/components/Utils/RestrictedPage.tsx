@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { APP_NAME } from '@configs/varsConfig';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import BoxButton from '@components/Buttons/BoxButton';
 import Link from 'next/link';
 
@@ -20,7 +20,7 @@ function RestrictedPage() {
               <div className="d-table-cell align-middle">
                 <div className="text-center">
                   <div className="display-1 font-weight-bold pb-3 text-dark">
-                    <FeatherIcon width={100} height={100} name="Lock" />
+                    <AppIcon width={100} height={100} name="Lock" />
                   </div>
                   <p className="h1">
                     Anda tidak memiliki izin untuk melihat halaman ini

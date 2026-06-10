@@ -10,7 +10,7 @@ import { getCustomersService } from '@/services/customerService';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLaundryQueueCreateContext } from '@utils/context/Laundry/LaundryQueue/LaundryQueueCreateContext';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import {
   CreateLaundryQueueInputTypes,
   createLaundryQueueSchema,
@@ -44,7 +44,7 @@ const CustomToggle = React.forwardRef<HTMLButtonElement, CustomToggleProps>(
       >
         {children}
         <span>
-          <FeatherIcon name="ChevronDown" />
+          <AppIcon name="ChevronDown" />
         </span>
       </Form.Control>
       {invalidMessage ? (

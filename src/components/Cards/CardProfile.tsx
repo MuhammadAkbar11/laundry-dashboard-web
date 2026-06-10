@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import * as Icon from 'react-feather';
+import { MessageSquare, Home, Briefcase, MapPin } from 'lucide-react';
 
 type Props = {};
 
@@ -26,7 +26,7 @@ function CardProfile({}: Props) {
             Follow
           </a>
           <a className="btn btn-primary btn-sm" href="/#">
-            <Icon.MessageSquare size={14} /> Message
+            <MessageSquare size={14} /> Message
           </a>
         </div>
       </Card.Body>
@@ -66,16 +66,15 @@ function CardProfile({}: Props) {
         <h5 className="h6 card-title">About</h5>
         <ul className="list-unstyled mb-0">
           <li className="mb-1">
-            <span data-feather="home" className="feather-sm me-1" /> Lives in{' '}
+            <Home size={14} className="me-1" /> Lives in{' '}
             <a href="/#">San Francisco, SA</a>
           </li>
           <li className="mb-1">
-            <span data-feather="briefcase" className="feather-sm me-1" /> Works
-            at <a href="/#">GitHub</a>
+            <Briefcase size={14} className="me-1" /> Works at{' '}
+            <a href="/#">GitHub</a>
           </li>
           <li className="mb-1">
-            <span data-feather="map-pin" className="feather-sm me-1" /> From{' '}
-            <a href="/#">Boston</a>
+            <MapPin size={14} className="me-1" /> From <a href="/#">Boston</a>
           </li>
         </ul>
       </div>

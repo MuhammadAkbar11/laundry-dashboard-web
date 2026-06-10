@@ -1,7 +1,7 @@
 import React from 'react';
 import clsx from 'classnames';
 import { Badge } from 'react-bootstrap';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 
 type LQStatusBadgeProps = {
   value: string;
@@ -35,7 +35,7 @@ function LQStatusBadge({
         className={clsNm}
         onClick={onClick}
       >
-        <FeatherIcon name="Activity" size={12} />
+        <AppIcon name="Activity" size={12} />
         <span className="ms-1">Proses</span>
         {endIcon}
       </Badge>
@@ -48,7 +48,7 @@ function LQStatusBadge({
         className={clsNm}
         onClick={onClick}
       >
-        <FeatherIcon name="CheckCircle" size={12} />
+        <AppIcon name="CheckCircle" size={12} />
         <span className="ms-1">Selesai</span>
         {endIcon}
       </Badge>
@@ -61,7 +61,7 @@ function LQStatusBadge({
         className={clsNm}
         onClick={onClick}
       >
-        <FeatherIcon name="MinusCircle" size={12} />
+        <AppIcon name="MinusCircle" size={12} />
         <span className="ms-1">Menunggu</span>
         {endIcon}
       </Badge>
@@ -74,7 +74,7 @@ function LQStatusBadge({
         className={clsNm}
         onClick={onClick}
       >
-        <FeatherIcon name="XCircle" size={12} />
+        <AppIcon name="XCircle" size={12} />
         <span className="ms-1">DiBatalkan</span>
         {endIcon}
       </Badge>
@@ -87,7 +87,7 @@ function LQStatusBadge({
         className={clsNm}
         onClick={onClick}
       >
-        <FeatherIcon name="RefreshCcw" size={12} />
+        <AppIcon name="RefreshCcw" size={12} />
         <span className="ms-1">Cuci</span>
         {endIcon}
       </Badge>

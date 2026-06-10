@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import LQStatusBadge from '@components/Badges/LQStatusBadge';
@@ -90,9 +90,7 @@ function FromUpdateLaundryQueueStatus({
         <LQStatusBadge
           disabled={mutation.isLoading}
           value={value}
-          endIcon={
-            <FeatherIcon name="ChevronDown" size={12} className="ms-1" />
-          }
+          endIcon={<AppIcon name="ChevronDown" size={12} className="ms-1" />}
         />
       </Dropdown.Toggle>
 

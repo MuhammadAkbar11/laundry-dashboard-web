@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  FeatherIconsTypes,
+  LucideIconTypes,
   LaundryQueuePaymentStatusType,
   LaundryQueueStatusType,
   LaundryRoomStatusTypes,
@@ -22,7 +22,7 @@ export interface INavigationSubItems {
 
 export interface INavigationItem {
   name: string;
-  icon: FeatherIconsTypes;
+  icon: LucideIconTypes;
   href?: string;
   disabled?: boolean;
   badge?: string;
@@ -51,7 +51,7 @@ export interface INotification {
   message: string;
   timestamp: Date;
   read: boolean;
-  icon?: FeatherIconsTypes;
+  icon?: LucideIconTypes;
   iconColor?: ThemeTypes;
 }
 

@@ -26,7 +26,7 @@ import {
 } from 'react-bootstrap';
 import clsx from 'classnames';
 import { getCustomersService } from '@services/customerService';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
 import { fuzzyFilter } from '@utils/utils';
@@ -154,10 +154,10 @@ function TableCustomer({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Edit" size={14} />
+                <AppIcon name="Edit" size={14} />
               </Button>
               {/* <Button size="sm" variant="info">
-                <FeatherIcon name="Info" size={14} />
+                <AppIcon name="Info" size={14} />
               </Button> */}
               <Button
                 size="sm"
@@ -169,7 +169,7 @@ function TableCustomer({}: Props) {
                   });
                 }}
               >
-                <FeatherIcon name="Trash" size={14} />
+                <AppIcon name="Trash" size={14} />
               </Button>
             </div>
           );
@@ -255,7 +255,7 @@ function TableCustomer({}: Props) {
           }}
         >
           <span className="d-flex gap-2 align-items-center">
-            <FeatherIcon name="Plus" />
+            <AppIcon name="Plus" />
             Tambah
           </span>
         </Button>
@@ -339,12 +339,12 @@ function TableCustomer({}: Props) {
                           {{
                             asc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mt-n1 "
                                   name="ChevronDown"
                                   size={18}
@@ -353,12 +353,12 @@ function TableCustomer({}: Props) {
                             ),
                             desc: (
                               <span className="d-flex flex-column justify-content-center ms-2">
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-muted mb-n1"
                                   name="ChevronUp"
                                   size={18}
                                 />
-                                <FeatherIcon
+                                <AppIcon
                                   className=" text-dark mt-n1 "
                                   name="ChevronDown"
                                   size={18}

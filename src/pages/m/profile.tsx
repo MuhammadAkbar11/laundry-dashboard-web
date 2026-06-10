@@ -23,7 +23,7 @@ import { z } from 'zod';
 import Image from 'next/image';
 // import useMediaQuery from '@hooks/useMediaQuery';
 import WebButton from '@components/Buttons/WebButton';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import ProfileInvalidWarning from '@components/Alerts/ProfileInvalidWarning';
 import useGetMemberProfile from '@hooks/useGetMemberProfile';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -163,7 +163,7 @@ export default function MemberProfilePage({
                   variant="accent1"
                   className="d-flex mx-auto align-items-center gap-2"
                 >
-                  <FeatherIcon name="Edit" /> Ubah
+                  <AppIcon name="Edit" /> Ubah
                 </Button>
               </div>
             </Col> */}

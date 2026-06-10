@@ -4,12 +4,12 @@ import React from 'react';
 
 import { Button, ButtonProps, Spinner } from 'react-bootstrap';
 import clsx from 'classnames';
-import { FeatherIconsTypes } from '@utils/types';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import { LucideIconTypes } from '@utils/types';
+import AppIcon from '@components/Icons/AppIcon';
 
 interface BoxButtonProps extends ButtonProps {
   isLoading?: boolean;
-  icon?: FeatherIconsTypes | null;
+  icon?: LucideIconTypes | null;
   iconPos?: 'start' | 'end';
   iconSize?: number | string;
   children?: React.ReactNode;
@@ -44,7 +44,7 @@ const BoxButton = React.forwardRef<HTMLButtonElement, BoxButtonProps>(
           })}
           style={{ transform: 'translateY(-2px)' }}
         >
-          <FeatherIcon name={icon} size={iconSize} />
+          <AppIcon name={icon} size={Number(iconSize)} />
         </span>
       );
     }

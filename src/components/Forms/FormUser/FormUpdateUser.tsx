@@ -14,7 +14,7 @@ import { putUserService } from '@services/userService';
 import { useUserActionsContext } from '@utils/context/User/UserActionsContext';
 import { UserRoleTypes } from '@types';
 import { API_URI } from '@configs/varsConfig';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 
 function FormUpdateUser() {
   const notif = useNotification();
@@ -109,7 +109,7 @@ function FormUpdateUser() {
           alt=""
         />
         <div className="avatar-upload-img-icon text-white">
-          <FeatherIcon name="Upload" />
+          <AppIcon name="Upload" />
         </div>
       </div>
     ) : (
@@ -126,7 +126,7 @@ function FormUpdateUser() {
           alt=""
         />
         <div className="avatar-upload-img-icon text-white">
-          <FeatherIcon name="Upload" />
+          <AppIcon name="Upload" />
         </div>
       </div>
     );

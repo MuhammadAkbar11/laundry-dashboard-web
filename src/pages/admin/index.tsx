@@ -19,6 +19,7 @@ import {
 } from '@utils/utils';
 import { IUserAuth } from '@utils/interfaces';
 import { getSessionService } from '@services/authSevices';
+import AppIcon from '@components/Icons/AppIcon';
 
 const CardDatePicker = dynamic(
   () => import('@components/Cards/CardDatePicker'),

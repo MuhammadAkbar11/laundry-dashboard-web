@@ -21,7 +21,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Alert, Button, Card, Form, Spinner, Table } from 'react-bootstrap';
 import { IPerson } from '@utils/interfaces';
 import { fetchDataPagination } from '@utils/dummyData/persons';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import Paginate from '@components/Paginate/Paginate';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import { fuzzyFilter } from '@utils/utils';
@@ -86,13 +86,13 @@ function TablePerson({}: Props) {
         cell: () => (
           <div className="d-flex gap-1">
             <Button size="sm" variant="primary">
-              <FeatherIcon name="Edit" size={14} />
+              <AppIcon name="Edit" size={14} />
             </Button>
             <Button size="sm" variant="info">
-              <FeatherIcon name="Info" size={14} />
+              <AppIcon name="Info" size={14} />
             </Button>
             <Button size="sm" variant="danger">
-              <FeatherIcon name="Trash" size={14} />
+              <AppIcon name="Trash" size={14} />
             </Button>
           </div>
         ),
@@ -263,12 +263,12 @@ function TablePerson({}: Props) {
                             {{
                               asc: (
                                 <span className="d-flex flex-column justify-content-center ms-2">
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-dark mb-n1"
                                     name="ChevronUp"
                                     size={18}
                                   />
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-muted mt-n1 "
                                     name="ChevronDown"
                                     size={18}
@@ -277,12 +277,12 @@ function TablePerson({}: Props) {
                               ),
                               desc: (
                                 <span className="d-flex flex-column justify-content-center ms-2">
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-muted mb-n1"
                                     name="ChevronUp"
                                     size={18}
                                   />
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-dark mt-n1 "
                                     name="ChevronDown"
                                     size={18}

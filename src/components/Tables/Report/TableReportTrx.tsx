@@ -18,7 +18,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import FeatherIcon from '@components/Icons/FeatherIcon';
+import AppIcon from '@components/Icons/AppIcon';
 import Paginate from '@components/Paginate/Paginate';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
@@ -107,7 +107,7 @@ function TableReportTrx({ year, month, day, date }: Props) {
                   href={`/admin/transaksi/${infoData.invoice}`}
                 >
                   <Button size="sm" variant="primary">
-                    <FeatherIcon name="Info" size={14} />
+                    <AppIcon name="Info" size={14} />
                   </Button>
                 </Link>
               </div>
@@ -249,12 +249,12 @@ function TableReportTrx({ year, month, day, date }: Props) {
                             {{
                               asc: (
                                 <span className="d-flex flex-column justify-content-center ms-2">
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-dark mb-n1"
                                     name="ChevronUp"
                                     size={18}
                                   />
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-muted mt-n1 "
                                     name="ChevronDown"
                                     size={18}
@@ -263,12 +263,12 @@ function TableReportTrx({ year, month, day, date }: Props) {
                               ),
                               desc: (
                                 <span className="d-flex flex-column justify-content-center ms-2">
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-muted mb-n1"
                                     name="ChevronUp"
                                     size={18}
                                   />
-                                  <FeatherIcon
+                                  <AppIcon
                                     className=" text-dark mt-n1 "
                                     name="ChevronDown"
                                     size={18}

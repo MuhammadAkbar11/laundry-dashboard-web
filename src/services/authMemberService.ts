@@ -1,7 +1,12 @@
 import { API_URI } from '@configs/varsConfig';
 import { IMemberAuth } from '@interfaces';
-import { axiosPrivate } from '@utils/apiUtils';
-import { SignInInputTypes, SignUpInputTypes } from '@utils/schema/authSchema';
+import { axiosApi, axiosPrivate } from '@utils/apiUtils';
+import {
+  ForgotPasswordInputTypes,
+  ResetPasswordInputTypes,
+  SignInInputTypes,
+  SignUpInputTypes,
+} from '@utils/schema/authSchema';
 import {
   runInDevAsync,
   uConvertKeysToCamelCase,
@@ -81,6 +86,49 @@ export async function postMemberSignOutService(config?: AxiosRequestConfig) {
     );
     return response.data;
   } catch (error) {
+    throw uTranformAxiosError(error);
+  }
+}
+
+/**
+ * Issue 015-B — Request a password reset email.
+ *
+ * Uses the public `axiosApi` instance (no auth cookies needed; the
+ * caller is unauthenticated). The endpoint is intentionally generic
+ * server-side to avoid account-enumeration leaks, so the response
+ * body is not relied upon by the UI.
+ */
+export async function postForgotPasswordService(
+  payload: ForgotPasswordInputTypes
+) {
+  try {
+    const res = await axiosApi.post(
+      `${API_URI}/member/forgot-password`,
+      payload
+    );
+    return res.data;
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
+
+/**
+ * Issue 015-B — Submit a new password using a reset token.
+ *
+ * `payload.token` is the value pulled from the URL query string by
+ * the page; the API does not derive it from a cookie. The endpoint
+ * is unauthenticated and may consume the token on success.
+ */
+export async function postResetPasswordService(
+  payload: ResetPasswordInputTypes
+) {
+  try {
+    const res = await axiosApi.post(`${API_URI}/member/reset-password`, {
+      token: payload.token,
+      password: payload.newPassword,
+    });
+    return res.data;
+  } catch (error: unknown) {
     throw uTranformAxiosError(error);
   }
 }

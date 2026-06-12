@@ -14,7 +14,6 @@ import {
   uIsUnauthorizedError,
   uNotAuthRedirect,
   uReplaceURL,
-  uRupiah,
 } from '@utils/utils';
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { IPageProps, IUserAuth } from '@utils/interfaces';
@@ -22,6 +21,7 @@ import useDataQuery from '@hooks/useDataQuery';
 import { getAdminMembersService } from '@services/adminMemberService';
 import AdminDataTable from '@components/Tables/AdminDataTable';
 import Link from 'next/link';
+import AppIcon from '@components/Icons/AppIcon';
 
 interface Props extends IPageProps {}
 
@@ -115,7 +115,7 @@ export default function AdminMemberListPage({ userAuth }: Props) {
             legacyBehavior
           >
             <Button size="sm" variant="primary" as="a">
-              Detail
+              <AppIcon name="Info" />
             </Button>
           </Link>
         ),

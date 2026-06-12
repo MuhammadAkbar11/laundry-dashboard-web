@@ -127,21 +127,12 @@ function FormMemberSignIn({}: Props) {
           </Form.Control.Feedback>
         ) : null}
 
-        {/* <div className="mt-2">
-          <label className="form-check" style={{ cursor: 'pointer' }}>
-            <input
-              className="form-check-input"
-              type="checkbox"
-              defaultValue="remember-me"
-              name="remember-me"
-              onChange={() => {
-                setShowPassword((prevSt) => !prevSt);
-              }}
-              defaultChecked={showPassword}
-            />
-            <span className="form-check-label">Tampilkan kata sandi?</span>
-          </label>
-        </div> */}
+        {/* Issue 015-B: link to the forgot-password flow. */}
+        <div className="d-flex justify-content-end mt-2">
+          <Link href="/forgot-password" className="small text-decoration-none">
+            Lupa kata sandi?
+          </Link>
+        </div>
       </div>
       <div className="d-flex flex-column mt-4 align-items-center gap-3  ">
         <WebButton

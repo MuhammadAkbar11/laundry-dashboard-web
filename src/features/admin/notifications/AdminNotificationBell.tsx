@@ -6,44 +6,26 @@ import { Badge, Dropdown, Spinner } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import {
-  useMarkAllMemberNotificationsRead,
-  useMarkMemberNotificationRead,
-  useMemberNotificationsList,
-  useMemberUnreadNotificationCount,
-} from '@hooks/useMemberNotifications';
+  useMarkAllUserNotificationsRead,
+  useMarkUserNotificationRead,
+  useUserNotificationsList,
+  useUserUnreadNotificationCount,
+} from '@hooks/useUserNotifications';
 import type { IPaginationOptions } from '@interfaces';
 import {
-  MemberNotificationEmptyRow,
-  MemberNotificationErrorRow,
-  MemberNotificationItem,
-  MemberNotificationLoadingRow,
-} from './MemberNotificationItem';
+  AdminNotificationEmptyRow,
+  AdminNotificationErrorRow,
+  AdminNotificationItem,
+  AdminNotificationLoadingRow,
+} from './AdminNotificationItem';
 
 type Props = {};
 
 const DROPDOWN_PAGE_SIZE = 5;
 
-/**
- * Notification bell + dropdown. Lives in the member topbar.
- *
- * Behaviour:
- * - Polls the unread count every 60s; the count is also refreshed
- *   whenever a mark-read mutation completes (via query invalidation).
- * - Opens a Bootstrap `Dropdown` containing the most recent
- *   notifications (top 5) when clicked. The list is fetched on
- *   first open and then cached.
- * - Clicking a notification in the dropdown marks it as read.
- * - "Tandai semua dibaca" in the dropdown header marks every
- *   notification as read.
- * - "Lihat semua notifikasi" at the dropdown footer deep-links to
- *   the full `/m/notifications` page.
- *
- * The bell is rendered only on authenticated member pages (the
- * topbar receives the `profile` from `MemberAuthContext`).
- */
-function MemberNotificationBell({}: Props) {
+function AdminNotificationBell({}: Props) {
   const [open, setOpen] = React.useState(false);
-  const unreadQuery = useMemberUnreadNotificationCount();
+  const unreadQuery = useUserUnreadNotificationCount();
 
   const dropdownPagination: IPaginationOptions = React.useMemo(
     () => ({
@@ -54,26 +36,18 @@ function MemberNotificationBell({}: Props) {
     []
   );
 
-  // Fetch the dropdown list lazily — only when the dropdown is
-  // opened for the first time. After that, React Query caches the
-  // result and the same `enabled: open` flag keeps it in sync.
-  const listQuery = useMemberNotificationsList(dropdownPagination);
+  const listQuery = useUserNotificationsList(dropdownPagination);
   React.useEffect(() => {
     if (open) {
       listQuery.refetch();
     }
-    // We intentionally do not depend on listQuery.refetch — refetch
-    // identity changes on every render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
-  const markRead = useMarkMemberNotificationRead();
-  const markAllRead = useMarkAllMemberNotificationsRead();
+  const markRead = useMarkUserNotificationRead();
+  const markAllRead = useMarkAllUserNotificationsRead();
 
-  const onItemClick = (notification: {
-    id: string;
-    isRead: boolean;
-  }) => {
+  const onItemClick = (notification: { id: string; isRead: boolean }) => {
     if (!notification.isRead) {
       markRead.mutate(notification.id);
     }
@@ -81,7 +55,6 @@ function MemberNotificationBell({}: Props) {
 
   const unreadCount = unreadQuery.data ?? 0;
   const displayCount = unreadCount > 99 ? '99+' : String(unreadCount);
-
   return (
     <Dropdown
       show={open}
@@ -91,9 +64,9 @@ function MemberNotificationBell({}: Props) {
     >
       <Dropdown.Toggle
         as="button"
-        id="member-notification-bell"
+        id="admin-notification-bell"
         type="button"
-        className="btn btn-link nav-link text-white position-relative px-2"
+        className="btn btn-link nav-link text-dark position-relative px-2"
         aria-label={
           unreadCount > 0
             ? `Notifikasi, ${unreadCount} belum dibaca`
@@ -106,7 +79,7 @@ function MemberNotificationBell({}: Props) {
             bg="danger"
             pill
             className="position-absolute top-0 start-100 translate-middle"
-            data-testid="member-notification-unread-badge"
+            data-testid="admin-notification-unread-badge"
           >
             {displayCount}
           </Badge>
@@ -141,22 +114,22 @@ function MemberNotificationBell({}: Props) {
         </Dropdown.Header>
         <div
           style={{ maxHeight: 360, overflowY: 'auto' }}
-          data-testid="member-notification-dropdown-list"
+          data-testid="admin-notification-dropdown-list"
         >
           {listQuery.isLoading ? (
-            <MemberNotificationLoadingRow layout="dropdown" />
+            <AdminNotificationLoadingRow layout="dropdown" />
           ) : listQuery.isError ? (
-            <MemberNotificationErrorRow
+            <AdminNotificationErrorRow
               layout="dropdown"
               message={
                 (listQuery.error as any)?.message || 'Gagal memuat notifikasi.'
               }
             />
           ) : (listQuery.data?.rows?.length ?? 0) === 0 ? (
-            <MemberNotificationEmptyRow layout="dropdown" />
+            <AdminNotificationEmptyRow layout="dropdown" />
           ) : (
             listQuery.data?.rows?.map((n) => (
-              <MemberNotificationItem
+              <AdminNotificationItem
                 key={n.id}
                 notification={n}
                 layout="dropdown"
@@ -168,7 +141,7 @@ function MemberNotificationBell({}: Props) {
         <Dropdown.Divider />
         <div className="text-center py-2">
           <Link
-            href="/m/notifications"
+            href="/admin/notifikasi"
             className="small text-decoration-none"
             onClick={() => setOpen(false)}
           >
@@ -180,4 +153,4 @@ function MemberNotificationBell({}: Props) {
   );
 }
 
-export default MemberNotificationBell;
+export default AdminNotificationBell;

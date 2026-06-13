@@ -4,6 +4,8 @@ import { Nav, Navbar as BsNavbar } from 'react-bootstrap';
 import { useAdminLayoutContext } from '@utils/context/AdminLayoutContext';
 
 import DropdownUserProfile from '../Dropdowns/DropdownUserProfile/DropdownUserProfile';
+import AdminNotificationBell from '@features/admin/notifications/AdminNotificationBell';
+import AppIcon from '@components/Icons/AppIcon';
 
 function AdminNavbar() {
   const { onToggleSidebar } = useAdminLayoutContext();
@@ -21,8 +23,14 @@ function AdminNavbar() {
       </a>
       <BsNavbar.Collapse>
         <Nav className="navbar-align">
-          {/* <DropdownNotification /> */}
-          {/* <DropdownMessages /> */}
+          <AdminNotificationBell />
+          <div className="d-flex align-items-center justify-content-center">
+            <AppIcon
+              name="Minus"
+              style={{ transform: 'rotate(90deg)' }}
+              size={25}
+            />
+          </div>
           <DropdownUserProfile />
         </Nav>
       </BsNavbar.Collapse>

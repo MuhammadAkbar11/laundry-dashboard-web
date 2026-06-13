@@ -1,11 +1,12 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-new */
 import React from 'react';
 import Head from 'next/head';
-import { APP_NAME } from '@configs/varsConfig';
-import WebMemberLayout from '@layouts/WebMemberLayout';
 import { GetServerSidePropsContext } from 'next';
+import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { APP_NAME } from '@configs/varsConfig';
+import AdminLayout from '@layouts/AdminLayout';
+import { getSessionService } from '@services/authSevices';
 import {
   uGetStatusCode,
   uIsForbiddenError,
@@ -13,55 +14,49 @@ import {
   uNotAuthRedirect,
   uReplaceURL,
 } from '@utils/utils';
-import { getMemberSessionService } from '@services/authMemberService';
-import { IMemberAuth, IMemberPageProps } from '@interfaces';
-import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
-import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import { Button, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { IPageProps, IUserAuth } from '@utils/interfaces';
+import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import {
-  useMarkAllMemberNotificationsRead,
-  useMarkMemberNotificationRead,
-  useMemberNotificationsList,
-  useMemberUnreadNotificationCount,
-} from '@hooks/useMemberNotifications';
+  useMarkAllUserNotificationsRead,
+  useMarkUserNotificationRead,
+  useUserNotificationsList,
+  useUserUnreadNotificationCount,
+} from '@hooks/useUserNotifications';
 import {
-  MemberNotificationEmptyRow,
-  MemberNotificationErrorRow,
-  MemberNotificationItem,
-  MemberNotificationLoadingRow,
-} from '@features/member/notifications/MemberNotificationItem';
+  AdminNotificationEmptyRow,
+  AdminNotificationErrorRow,
+  AdminNotificationItem,
+  AdminNotificationLoadingRow,
+} from '@features/admin/notifications/AdminNotificationItem';
 
 const PAGE_SIZE = 10;
 
-type PageProps = IMemberPageProps;
+type PageProps = IPageProps;
 
-export default function MemberNotificationsPage({ memberAuth }: PageProps) {
+export default function AdminNotificationsPage({ userAuth }: PageProps) {
   const TITLE = `Notifikasi | ${APP_NAME}`;
-  const memberAuthCtx = useMemberAuthContext();
+  const userAuthCtx = useUserAuthContext();
 
   React.useEffect(() => {
-    if (memberAuth) memberAuthCtx.onSetMember(memberAuth);
-  }, [memberAuth, memberAuthCtx]);
+    if (userAuth) userAuthCtx.onSetUser(userAuth);
+  }, [userAuth, userAuthCtx]);
 
   const [pageIndex, setPageIndex] = React.useState(0);
-  const listQuery = useMemberNotificationsList({
+  const listQuery = useUserNotificationsList({
     pageIndex,
     pageSize: PAGE_SIZE,
     searchTerm: '',
   });
-  const unreadQuery = useMemberUnreadNotificationCount();
-  const markRead = useMarkMemberNotificationRead();
-  const markAllRead = useMarkAllMemberNotificationsRead();
+  const unreadQuery = useUserUnreadNotificationCount();
+  const markRead = useMarkUserNotificationRead();
+  const markAllRead = useMarkAllUserNotificationsRead();
 
   const rows = listQuery.data?.rows ?? [];
   const totalPages = listQuery.data?.pageCount ?? 0;
   const totalCount = listQuery.data?.entriesCount ?? 0;
   const unreadCount = unreadQuery.data ?? 0;
 
-  const onItemClick = (notification: {
-    id: string;
-    isRead: boolean;
-  }) => {
+  const onItemClick = (notification: { id: string; isRead: boolean }) => {
     if (!notification.isRead) {
       markRead.mutate(notification.id);
     }
@@ -72,12 +67,12 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <MemberPageHeader title="Notifikasi" />
 
-      <Container className="pb-5">
-        <Row className="mb-3 align-items-center">
+      <Container fluid className="p-0">
+        <Row className="mb-3 align-items-center mx-0">
           <Col>
-            <div className="text-muted small">
+            <h1 className="h3 mb-0">Notifikasi</h1>
+            <div className="text-muted small mt-1">
               {unreadCount > 0
                 ? `${unreadCount} notifikasi belum dibaca.`
                 : 'Semua notifikasi sudah dibaca.'}
@@ -90,7 +85,7 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
               size="sm"
               onClick={() => markAllRead.mutate()}
               disabled={unreadCount === 0 || markAllRead.isPending}
-              data-testid="mark-all-read"
+              data-testid="admin-mark-all-read"
             >
               {markAllRead.isPending ? (
                 <Spinner animation="border" size="sm" />
@@ -101,16 +96,16 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
           </Col>
         </Row>
 
-        <Row>
-          <Col xs={12}>
+        <Row className="mx-0">
+          <Col xs={12} className="px-0">
             <ul
               className="list-group shadow-none border"
-              data-testid="member-notification-list"
+              data-testid="admin-notification-list"
             >
               {listQuery.isLoading ? (
-                <MemberNotificationLoadingRow layout="page" />
+                <AdminNotificationLoadingRow layout="page" />
               ) : listQuery.isError ? (
-                <MemberNotificationErrorRow
+                <AdminNotificationErrorRow
                   layout="page"
                   message={
                     (listQuery.error as any)?.message ||
@@ -118,10 +113,10 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
                   }
                 />
               ) : rows.length === 0 ? (
-                <MemberNotificationEmptyRow layout="page" />
+                <AdminNotificationEmptyRow layout="page" />
               ) : (
                 rows.map((n) => (
-                  <MemberNotificationItem
+                  <AdminNotificationItem
                     key={n.id}
                     notification={n}
                     onItemClick={onItemClick}
@@ -133,7 +128,7 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
         </Row>
 
         {totalPages > 1 ? (
-          <Row className="mt-3 align-items-center">
+          <Row className="mt-3 align-items-center mx-0">
             <Col>
               <div className="text-muted small">
                 Halaman {pageIndex + 1} dari {totalPages}
@@ -172,23 +167,23 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const userAgent = ctx.req.headers['user-agent'];
   const cookies = ctx.req.headers.cookie;
   const url = uReplaceURL(ctx.req.url as string);
+
   try {
-    const memberAuth = (await getMemberSessionService({
+    const userAuth = (await getSessionService({
       headers: { Cookie: cookies, 'User-Agent': userAgent },
-    })) as IMemberAuth;
-    if (!memberAuth) return uNotAuthRedirect(url, '/login');
+    })) as IUserAuth;
+    if (!userAuth) return uNotAuthRedirect(url);
 
     return {
       props: {
-        memberAuth,
+        userAuth,
       },
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     if (uIsUnauthorizedError(err) || uIsForbiddenError(err)) {
       return {
         redirect: {
-          destination: `/login?redirect=${url}`,
+          destination: `/admin/login?redirect=${url}`,
           permanent: false,
         },
       };
@@ -196,10 +191,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
     return {
       props: {
         errorCode: uGetStatusCode(err),
-        memberAuth: null,
+        userAuth: null,
       },
     };
   }
 }
 
-MemberNotificationsPage.layout = WebMemberLayout;
+AdminNotificationsPage.layout = AdminLayout;

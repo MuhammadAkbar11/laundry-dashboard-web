@@ -183,14 +183,42 @@ export interface IMemberProfile extends IMember {
 }
 
 export interface IMemberNotification {
+  id: string;
   notificationId: string;
-  title: string;
-  message: string;
-  type?: string;
-  data?: Record<string, any> | null;
-  read: boolean;
+  memberId: string;
+  isRead: boolean;
+  readAt: string | null;
   createdAt: string;
   updatedAt: string;
+  notification: {
+    id: string;
+    notificationTypeId: string;
+    title: string;
+    message: string;
+    metadata: Record<string, any> | null;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface IUserNotification {
+  id: string;
+  notificationId: string;
+  userId: string | null;
+  isRead: boolean;
+  isGlobal: boolean;
+  readAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  notification: {
+    id: string;
+    notificationTypeId: string;
+    title: string;
+    message: string;
+    metadata: Record<string, any> | null;
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

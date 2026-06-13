@@ -3,7 +3,7 @@
 import React from 'react';
 import { GetServerSidePropsContext } from 'next';
 import Head from 'next/head';
-import AdminLayout from '@/layouts/AdminLayout';
+import AdminLayout from '@layouts/AdminLayout';
 import { Card, Col, Container, Offcanvas, Row, Table } from 'react-bootstrap';
 import * as Interfaces from '@interfaces';
 import { APP_NAME } from '@configs/varsConfig';

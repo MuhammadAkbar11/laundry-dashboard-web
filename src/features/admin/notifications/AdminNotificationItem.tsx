@@ -8,19 +8,20 @@ import {
   faCircle,
   faCircleDot,
   faBell,
+  faGlobe,
 } from '@fortawesome/free-solid-svg-icons';
 import { formatDistance } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import type { IMemberNotification } from '@interfaces';
+import type { IUserNotification } from '@interfaces';
 
 type Props = {
-  notification: IMemberNotification;
-  onItemClick?: (notification: IMemberNotification) => void;
+  notification: IUserNotification;
+  onItemClick?: (notification: IUserNotification) => void;
   showStatus?: boolean;
   layout?: 'dropdown' | 'page';
 };
 
-function MemberNotificationItem({
+function AdminNotificationItem({
   notification,
   onItemClick,
   showStatus = true,
@@ -47,11 +48,21 @@ function MemberNotificationItem({
         size="xs"
       />
       <div className="flex-grow-1">
-        <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center gap-2 flex-wrap">
           <strong className="d-block">{notification.notification.title}</strong>
           {!notification.isRead && showStatus ? (
             <Badge bg="accent1" pill className="text-white">
               Baru
+            </Badge>
+          ) : null}
+          {notification.isGlobal ? (
+            <Badge
+              bg="light"
+              text="dark"
+              className="border d-inline-flex align-items-center gap-1"
+            >
+              <FontAwesomeIcon icon={faGlobe} size="xs" />
+              Global
             </Badge>
           ) : null}
         </div>
@@ -91,7 +102,7 @@ function MemberNotificationItem({
       aria-label={`Notifikasi: ${notification.notification.title}`}
     >
       <Link
-        href="/m/notifications"
+        href="/admin/notifikasi"
         onClick={(e) => e.stopPropagation()}
         className="stretched-link d-none"
         aria-hidden
@@ -102,7 +113,7 @@ function MemberNotificationItem({
   );
 }
 
-function MemberNotificationLoadingRow({
+function AdminNotificationLoadingRow({
   layout,
 }: {
   layout: 'dropdown' | 'page';
@@ -127,7 +138,7 @@ function MemberNotificationLoadingRow({
   );
 }
 
-function MemberNotificationEmptyRow({
+function AdminNotificationEmptyRow({
   layout,
 }: {
   layout: 'dropdown' | 'page';
@@ -149,13 +160,13 @@ function MemberNotificationEmptyRow({
       />
       <div className="fw-semibold">Tidak ada notifikasi</div>
       <div className="small">
-        Notifikasi pesanan dan pembayaran akan muncul di sini.
+        Notifikasi pesanan, pembayaran, dan aktivitas admin akan muncul di sini.
       </div>
     </li>
   );
 }
 
-function MemberNotificationErrorRow({
+function AdminNotificationErrorRow({
   layout,
   message,
 }: {
@@ -177,9 +188,9 @@ function MemberNotificationErrorRow({
 }
 
 export {
-  MemberNotificationItem,
-  MemberNotificationLoadingRow,
-  MemberNotificationEmptyRow,
-  MemberNotificationErrorRow,
+  AdminNotificationItem,
+  AdminNotificationLoadingRow,
+  AdminNotificationEmptyRow,
+  AdminNotificationErrorRow,
 };
-export type { Props as MemberNotificationItemProps };
+export type { Props as AdminNotificationItemProps };

@@ -182,6 +182,17 @@ export interface IMemberProfile extends IMember {
   isValidProfile: boolean;
 }
 
+export interface IMemberNotification {
+  notificationId: string;
+  title: string;
+  message: string;
+  type?: string;
+  data?: Record<string, any> | null;
+  read: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IUserAuth {
   userId: string;

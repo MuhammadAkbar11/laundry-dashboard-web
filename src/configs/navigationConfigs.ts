@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import {
   faBagShopping,
+  faBell,
   faChartBar,
   faExchangeAlt,
   faTShirt,
@@ -153,6 +154,11 @@ export const memberNavigationConfigs = [
     name: 'Transaksi',
     href: '/m/transaksi',
     icon: faExchangeAlt,
+  },
+  {
+    name: 'Notifikasi',
+    href: '/m/notifications',
+    icon: faBell,
   },
 ];
 

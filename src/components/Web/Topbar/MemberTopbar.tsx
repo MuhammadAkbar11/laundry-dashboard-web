@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import MemberDropdownProfile from '@components/Web/Dropdowns/MemberDropdownProfile';
 import LoadingPulse from '@components/Utils/LoadingPulse';
 import LogoSmall from '@components/Logo/LogoSmall';
+import MemberNotificationBell from '@features/member/notifications/MemberNotificationBell';
 
 type Props = {};
 
@@ -31,16 +32,19 @@ function MemberTopbar({}: Props) {
           </Col>
           <Col
             xs={6}
-            className="text-center text-md-end d-flex justify-content-end "
+            className="text-center text-md-end d-flex justify-content-end align-items-center gap-1"
           >
             {authLoading ? (
               <LoadingPulse />
             ) : (
-              <MemberDropdownProfile
-                isLogin={!!profile}
-                profile={profile as IMemberAuth}
-                isDashboard
-              />
+              <>
+                {profile ? <MemberNotificationBell /> : null}
+                <MemberDropdownProfile
+                  isLogin={!!profile}
+                  profile={profile as IMemberAuth}
+                  isDashboard
+                />
+              </>
             )}
           </Col>
         </Row>

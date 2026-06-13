@@ -17,7 +17,15 @@ import { getMemberSessionService } from '@services/authMemberService';
 import { IMemberAuth, IMemberPageProps, IMemberProfile } from '@interfaces';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
+import {
+  Alert,
+  Button,
+  Col,
+  Container,
+  Form,
+  Row,
+  Spinner,
+} from 'react-bootstrap';
 import { getMemberProfileService } from '@services/profileService';
 import { z } from 'zod';
 import Image from 'next/image';
@@ -31,6 +39,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateMemberProfileService } from '@services/memberService';
 import useNotification from '@hooks/useNotification';
+// Issue 016-B — verification reminder banner.
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 type PageProps = IMemberPageProps & { profile: IMemberProfile };
 
@@ -125,6 +137,41 @@ export default function MemberProfilePage({
                 <div className="pb-3">
                   <ProfileInvalidWarning />
                 </div>
+              </Col>
+            ) : null}
+
+            {profile?.status === 'PENDING' ? (
+              <Col xs={12}>
+                <Alert
+                  variant="warning"
+                  className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2"
+                  data-testid="email-verification-reminder"
+                >
+                  <div className="d-flex align-items-start gap-2">
+                    <FontAwesomeIcon
+                      icon={faEnvelope}
+                      className="mt-1"
+                      aria-hidden
+                    />
+                    <div>
+                      <strong>Email belum diverifikasi.</strong>
+                      <div className="small">
+                        Periksa kotak masuk email Anda atau minta tautan
+                        verifikasi baru.
+                      </div>
+                    </div>
+                  </div>
+                  <Link href="/resend-verification" legacyBehavior passHref>
+                    <WebButton
+                      as="a"
+                      size="sm"
+                      variant="warning"
+                      className="text-dark"
+                    >
+                      Kirim ulang verifikasi
+                    </WebButton>
+                  </Link>
+                </Alert>
               </Col>
             ) : null}
             {/*

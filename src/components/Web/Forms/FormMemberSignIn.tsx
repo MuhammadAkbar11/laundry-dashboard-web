@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import Link from 'next/link';
-import { Form, InputGroup } from 'react-bootstrap';
+import { Alert, Form, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignInInputTypes, signInSchema } from '@utils/schema/authSchema';
@@ -20,6 +20,8 @@ type Props = {};
 function FormMemberSignIn({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [alert, setAlert] = React.useState(false);
+  const [alertMsg, setAlertMsg] = React.useState('');
 
   const router = useRouter();
   const notif = useNotification();
@@ -71,17 +73,26 @@ function FormMemberSignIn({}: Props) {
       },
       onError(error: any) {
         setLoading(false);
-
         const errMessage = error?.name?.includes('AUTH')
           ? error?.message
           : 'Login gagal! silahkan coba lagi';
-        notif.danger(errMessage);
+        if (error?.name === 'AUTH_VERIFICATION') {
+          setAlert(true);
+          setAlertMsg(errMessage);
+        } else {
+          notif.danger(errMessage);
+        }
       },
     });
   };
 
   return (
     <Form method="POST" onSubmit={handleSubmit(onSubmitHandler)}>
+      {alert ? (
+        <Alert variant="danger" onClose={() => setAlert(false)} dismissible>
+          <p>{alertMsg}</p>
+        </Alert>
+      ) : null}
       <div className="mb-3">
         <Form.Label htmlFor="email">Email</Form.Label>
         <Form.Control

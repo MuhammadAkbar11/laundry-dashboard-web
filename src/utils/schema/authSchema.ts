@@ -22,24 +22,10 @@ export const signUpSchema = z
     path: ['passwordConfirmation'],
   });
 
-/**
- * Issue 015-B — Forgot password request.
- *
- * Single email field. The backend always returns a generic
- * "if-an-account-exists" message to avoid account-enumeration leaks
- * (see issue 015-B §7 "Forgot Password Response"), so the form does
- * not branch on the response body.
- */
 export const forgotPasswordSchema = z.object({
   email: z.string().nonempty('Email wajib diisi').email('Email tidak valid'),
 });
 
-/**
- * Issue 015-B — Reset password request.
- *
- * `token` is read from the URL query string by the page and passed in.
- * `newPassword` and `confirmPassword` must match.
- */
 export const resetPasswordSchema = z
   .object({
     token: z.string().nonempty('Token reset tidak valid'),
@@ -54,7 +40,14 @@ export const resetPasswordSchema = z
     path: ['confirmPassword'],
   });
 
+export const resendVerificationSchema = z.object({
+  email: z.string().nonempty('Email wajib diisi').email('Email tidak valid'),
+});
+
 export type SignInInputTypes = z.TypeOf<typeof signInSchema>;
 export type SignUpInputTypes = z.TypeOf<typeof signUpSchema>;
 export type ForgotPasswordInputTypes = z.TypeOf<typeof forgotPasswordSchema>;
 export type ResetPasswordInputTypes = z.TypeOf<typeof resetPasswordSchema>;
+export type ResendVerificationInputTypes = z.TypeOf<
+  typeof resendVerificationSchema
+>;

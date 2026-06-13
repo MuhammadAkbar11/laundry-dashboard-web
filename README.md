@@ -139,5 +139,3 @@ Import aliases are configured in `tsconfig.json`:
 ## Notes
 
 - The `.env.local` file is committed (contains `localhost` dev values). For production, update `NEXT_PUBLIC_API_URI` to the actual API URL and `UPLOAD_DOMAINS` to the production domain.
-- `husky` is listed in `devDependencies` but no `.husky/` directory exists — pre-commit hooks are **not active** (see `.dev/TECHNICAL_DEBT.md` KI-03).
-- See `AGENTS.md` in the repo root for full development conventions and known issues.

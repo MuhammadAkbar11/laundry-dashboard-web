@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Line } from 'react-chartjs-2';
@@ -25,9 +26,13 @@ ChartJS.register(
   Filler
 );
 
-type Props = {};
+type Props = {
+  labels: string[];
+  data: number[];
+  title: string;
+};
 
-const labels = [
+const defaultLabels = [
   'Jan',
   'Feb',
   'Mar',
@@ -42,12 +47,17 @@ const labels = [
   'Dec',
 ];
 
-function CardChartsLine({}: Props) {
-  const data = {
-    labels,
+const defaultData = [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79];
+
+function CardChartsLine({ labels, data, title }: Props) {
+  const chartLabels = labels && labels.length > 0 ? labels : defaultLabels;
+  const chartData = data && data.length > 0 ? data : defaultData;
+
+  const lineData = {
+    labels: chartLabels,
     datasets: [
       {
-        label: 'Penjualan',
+        label: title || 'Penjualan',
         fill: true,
         backgroundColor: (ctx: {
           chart: { ctx: CanvasRenderingContext2D };
@@ -58,7 +68,7 @@ function CardChartsLine({}: Props) {
           return gradient;
         },
         borderColor: themeConfigs.primary,
-        data: [54, 67, 41, 55, 62, 45, 55, 73, 60, 76, 48, 79],
+        data: chartData,
         pointBackgroundColor: themeConfigs.primary,
         tension: 0.3,
       },
@@ -79,7 +89,7 @@ function CardChartsLine({}: Props) {
           color: 'rgba(0,0,0,0.05)',
         },
         ticks: {
-          stepSize: 20,
+          stepSize: Math.max(...chartData) > 100 ? undefined : 20,
         },
       },
       x: {
@@ -91,13 +101,13 @@ function CardChartsLine({}: Props) {
   };
 
   return (
-    <Card className="flex-fill w-100">
-      <Card.Header className="bg-light">
-        <Card.Title className="mb-0">Statistik</Card.Title>
+    <Card className="flex-fill w-100 shadow-none ">
+      <Card.Header className="bg-light px-0">
+        <Card.Title className="mb-0">{title || 'Statistik'}</Card.Title>
       </Card.Header>
-      <Card.Body className="py-3">
-        <div className="chart chart-sm" style={{ height: 225 }}>
-          <Line data={data} options={options} />
+      <Card.Body className="px-0">
+        <div className="chart chart" style={{ height: 225 }}>
+          <Line data={lineData} options={options} />
         </div>
       </Card.Body>
     </Card>

@@ -1,14 +1,21 @@
-/* eslint-disable no-new */
-import React from 'react';
+/* eslint-disable no-nested-ternary */
+import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import AdminLayout from '@layouts/AdminLayout';
-import { Card, Col, Container, Row, Table } from 'react-bootstrap';
+import {
+  Card,
+  Col,
+  Container,
+  Row,
+  Table,
+  Badge,
+  Form,
+  Spinner,
+} from 'react-bootstrap';
 import CardChartsLine from '@components/Cards/CardChartsLine';
+import CardChartsPie from '@components/Cards/CardChartsPie';
 import CardStats from '@components/Cards/CardStats';
-import CardWorldMap from '@components/Cards/CardWorldMap';
-
 import { GetServerSidePropsContext } from 'next';
-
 import {
   uCheckPermissions,
   uGetStatusCode,
@@ -16,160 +23,368 @@ import {
   uIsUnauthorizedError,
   uNotAuthRedirect,
   uReplaceURL,
+  uRupiah,
 } from '@utils/utils';
 import { IUserAuth } from '@utils/interfaces';
 import { getSessionService } from '@services/authSevices';
-import AppIcon from '@components/Icons/AppIcon';
+import { getAdminDashboardService } from '@services/dashboardService';
 
 const CardDatePicker = dynamic(
   () => import('@components/Cards/CardDatePicker'),
   { ssr: false }
 );
 
-interface Transaction {
-  id: number;
-  customerName: string;
-  totalAmount: number;
-  paymentMethod: string;
+interface StatusSummary {
   status: string;
+  count: number;
 }
 
-const recentTransactions: Transaction[] = [
-  {
-    id: 1,
-    customerName: 'John Doe',
-    totalAmount: 50000,
-    paymentMethod: 'Cash',
-    status: 'Completed',
-  },
-  {
-    id: 2,
-    customerName: 'Jane Smith',
-    totalAmount: 75000,
-    paymentMethod: 'Credit Card',
-    status: 'Completed',
-  },
-  {
-    id: 3,
-    customerName: 'Michael Johnson',
-    totalAmount: 120000,
-    paymentMethod: 'Bank Transfer',
-    status: 'Pending',
-  },
-  {
-    id: 4,
-    customerName: 'Anna Lee',
-    totalAmount: 100000,
-    paymentMethod: 'Cash',
-    status: 'Completed',
-  },
-  {
-    id: 5,
-    customerName: 'Robert Brown',
-    totalAmount: 85000,
-    paymentMethod: 'Credit Card',
-    status: 'Completed',
-  },
-];
+interface RecentOrder {
+  orderNumber: string;
+  customerName: string | null;
+  status: string;
+  createdAt: string;
+  total: number;
+}
+
+interface RecentMember {
+  memberId: string;
+  username: string;
+  email: string;
+  status: string;
+  createdAt: string;
+}
+
+interface DashboardData {
+  kpi: {
+    revenueToday: number;
+    revenueThisMonth: number;
+    activeOrders: number;
+    finishedOrdersToday: number;
+    newMembersThisMonth: number;
+  };
+  laundryStatusSummary: StatusSummary[];
+  paymentStatusSummary: StatusSummary[];
+  revenueAnalytics: {
+    labels: string[];
+    data: number[];
+    period: string;
+  };
+  recentOrders: RecentOrder[];
+  recentMembers: RecentMember[];
+}
+
+const STATUS_COLORS: Record<string, string> = {
+  PENDING: '#ffc107',
+  ONHOLD: '#0dcaf0',
+  WASHED: '#0d6efd',
+  FINISHED: '#198754',
+  CANCELED: '#dc3545',
+};
+
+const PAYMENT_STATUS_COLORS: Record<string, string> = {
+  PENDING: '#ffc107',
+  PROCESSED: '#0d6efd',
+  REJECTED: '#dc3545',
+  FINISHED: '#198754',
+};
+
+function translateStatus(status: string): string {
+  const map: Record<string, string> = {
+    PENDING: 'Menunggu',
+    ONHOLD: 'Ditahan',
+    WASHED: 'Dicuci',
+    FINISHED: 'Selesai',
+    CANCELED: 'Dibatalkan',
+    PROCESSED: 'Diproses',
+    REJECTED: 'Ditolak',
+  };
+  return map[status] || status;
+}
 
 export default function Home() {
-  const salesStat = 3382;
-  const visitorsStat = 14212;
-  const earningsStat = 21300;
-  const ordersStat = 64;
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState('7');
+
+  const fetchData = useCallback(async (selectedPeriod: string) => {
+    setLoading(true);
+    try {
+      const res = await getAdminDashboardService(selectedPeriod);
+      setData(res);
+    } catch {
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData(period);
+  }, [fetchData, period]);
+
+  const kpi = data?.kpi;
+  const revenue = data?.revenueAnalytics;
+
+  const revenueChartLabels = revenue?.labels || [];
+  const revenueChartData = revenue?.data || [];
+
+  const laundryPieLabels =
+    data?.laundryStatusSummary?.map((s) => translateStatus(s.status)) || [];
+  const laundryPieData = data?.laundryStatusSummary?.map((s) => s.count) || [];
+  const laundryPieColors =
+    data?.laundryStatusSummary?.map(
+      (s) => STATUS_COLORS[s.status] || '#6c757d'
+    ) || [];
+
+  const paymentPieLabels =
+    data?.paymentStatusSummary?.map((s) => translateStatus(s.status)) || [];
+  const paymentPieData = data?.paymentStatusSummary?.map((s) => s.count) || [];
+  const paymentPieColors =
+    data?.paymentStatusSummary?.map(
+      (s) => PAYMENT_STATUS_COLORS[s.status] || '#6c757d'
+    ) || [];
+
+  const periodOptions = [
+    { value: '7', label: '7 Hari Terakhir' },
+    { value: '30', label: '30 Hari Terakhir' },
+    { value: '365', label: '12 Bulan Terakhir' },
+  ];
 
   return (
     <Container fluid className="p-0">
       <h1 className="h3">Dashboard</h1>
-      <Row className="mt-3">
-        <Col xl={6} xxl={5} className="d-flex">
-          <div className="w-100">
-            <Row>
-              <Col sm={6}>
-                <CardStats
-                  statTitle="Penjualan"
-                  statValue={salesStat.toLocaleString()}
-                  statIcon="Truck"
-                  statPercent="-3.65%"
-                  statPercentColor="danger"
-                  statDescription="Sejak minggu lalu"
-                />
-                <CardStats
-                  statTitle="Pengunjung"
-                  statValue={visitorsStat.toLocaleString()}
-                  statIcon="User"
-                  statPercent="5.25%"
-                  statPercentColor="success"
-                  statDescription="Sejak minggu lalu"
-                />
-              </Col>
-              <Col sm={6}>
-                <CardStats
-                  statTitle="Pendapatan"
-                  statValue={earningsStat.toLocaleString()}
-                  statIcon="DollarSign"
-                  statPercent="6.65%"
-                  statPercentColor="success"
-                  statDescription="Sejak minggu lalu"
-                />
-                <CardStats
-                  statTitle="Pesanan"
-                  statValue={`${ordersStat}`}
-                  statIcon="ShoppingCart"
-                  statPercent="-2.25%"
-                  statPercentColor="danger"
-                  statDescription="Sejak minggu lalu"
-                />
-              </Col>
-            </Row>
-          </div>
+      <Row className="g-3">
+        <Col sm={6} lg={3}>
+          <CardStats
+            statTitle="Pendapatan Hari Ini"
+            statValue={loading ? '...' : uRupiah(kpi?.revenueToday || 0)}
+            statIcon="DollarSign"
+            statPercent=""
+            statPercentColor="success"
+            statDescription=""
+          />
         </Col>
-        <div className="col-xl-6 col-xxl-7">
-          <CardChartsLine />
-        </div>
+        <Col sm={6} lg={3}>
+          <CardStats
+            statTitle="Pendapatan Bulan Ini"
+            statValue={loading ? '...' : uRupiah(kpi?.revenueThisMonth || 0)}
+            statIcon="TrendingUp"
+            statPercent=""
+            statPercentColor="success"
+            statDescription=""
+          />
+        </Col>
+        <Col sm={6} lg={3}>
+          <CardStats
+            statTitle="Cucian Aktif"
+            statValue={loading ? '...' : `${kpi?.activeOrders || 0}`}
+            statIcon="ShoppingCart"
+            statPercent=""
+            statPercentColor="success"
+            statDescription=""
+          />
+        </Col>
+        <Col sm={6} lg={3}>
+          <CardStats
+            statTitle="Anggota Baru"
+            statValue={loading ? '...' : `${kpi?.newMembersThisMonth || 0}`}
+            statIcon="Users"
+            statPercent=""
+            statPercentColor="success"
+            statDescription="Bulan ini"
+          />
+        </Col>
       </Row>
-      <Row>
-        <Col xs={12} md={6} xxl={3} className="d-flex order-1 order-xxl-1">
-          <CardDatePicker />
-        </Col>
-        <Col xs={12} className="">
+      <Row className=" g-3">
+        <Col xl={12}>
           <Card>
+            <Card.Header className=" d-flex justify-content-between border-bottom align-items-center flex-wrap bg-light ">
+              <Card.Title className="mb-0">
+                {period === '365'
+                  ? 'Pendapatan 12 Bulan Terakhir'
+                  : period === '30'
+                  ? 'Pendapatan 30 Hari Terakhir'
+                  : 'Pendapatan 7 Hari Terakhir'}
+              </Card.Title>
+              <Form.Select
+                className="w-auto"
+                size="sm"
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+              >
+                {periodOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </Form.Select>
+            </Card.Header>
             <Card.Body>
               <div>
-                <h3>Transaksi Terbaru</h3>
-                <Table striped bordered hover responsive>
+                {loading ? (
+                  <div
+                    style={{ height: 200 }}
+                    className="d-flex align-items-center flex-column justify-content-center text-muted gap-2"
+                  >
+                    <Spinner animation="border" /> <span>Memuat grafik...</span>{' '}
+                  </div>
+                ) : (
+                  <CardChartsLine
+                    labels={revenueChartLabels}
+                    data={revenueChartData}
+                    title=""
+                  />
+                )}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      <Row className="mt-3">
+        <Col md={5}>
+          <CardDatePicker />
+        </Col>
+        <Col xs={12} md={7}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Anggota Terbaru</Card.Title>
+              <div>
+                <Table striped hover responsive size="sm">
                   <thead>
                     <tr>
-                      <th>ID Transaksi</th>
-                      <th>Nama Pelanggan</th>
-                      <th>Total Amount</th>
-                      <th>Metode Pembayaran</th>
+                      <th>Username</th>
+                      <th>Email</th>
                       <th>Status</th>
+                      <th>Tanggal Daftar</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {recentTransactions.map((transaction) => (
-                      <tr key={transaction.id}>
-                        <td>{transaction.id}</td>
-                        <td>{transaction.customerName}</td>
-                        <td suppressHydrationWarning>
-                          {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR',
-                          }).format(transaction.totalAmount)}
-                        </td>
-                        <td>{transaction.paymentMethod}</td>
-                        <td>{transaction.status}</td>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={4}>Memuat...</td>
                       </tr>
-                    ))}
+                    ) : (
+                      data?.recentMembers?.map((member) => (
+                        <tr key={member.memberId}>
+                          <td className="text-nowrap">{member.username}</td>
+                          <td>{member.email}</td>
+                          <td>
+                            <Badge
+                              bg={
+                                member.status === 'ACTIVE'
+                                  ? 'success'
+                                  : 'warning'
+                              }
+                            >
+                              {member.status}
+                            </Badge>
+                          </td>
+                          <td>
+                            {new Date(member.createdAt).toLocaleDateString(
+                              'id-ID'
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </Table>
               </div>
             </Card.Body>
           </Card>
         </Col>
-        <Col xl={12} md={12} xxl={6} className="d-flex order-3 order-xxl-2">
-          <CardWorldMap />
+      </Row>
+
+      <Row className="mt-3 g-3">
+        <Col md={6}>
+          {loading ? (
+            <Card className="h-100">
+              <Card.Body className="d-flex align-items-center justify-content-center text-muted">
+                Memuat...
+              </Card.Body>
+            </Card>
+          ) : (
+            <CardChartsPie
+              title="Distribusi Status Cucian"
+              labels={laundryPieLabels}
+              data={laundryPieData}
+              colors={laundryPieColors}
+            />
+          )}
+        </Col>
+        <Col md={6}>
+          {loading ? (
+            <Card className="h-100">
+              <Card.Body className="d-flex align-items-center justify-content-center text-muted">
+                Memuat...
+              </Card.Body>
+            </Card>
+          ) : (
+            <CardChartsPie
+              title="Distribusi Status Pembayaran"
+              labels={paymentPieLabels}
+              data={paymentPieData}
+              colors={paymentPieColors}
+            />
+          )}
+        </Col>
+      </Row>
+
+      <Row className="mt-3 g-3">
+        <Col xs={12} lg={12}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Laundry Terbaru</Card.Title>
+              <div>
+                <Table striped hover responsive size="lg">
+                  <thead>
+                    <tr>
+                      <th>No Laundry</th>
+                      <th>Pelanggan</th>
+                      <th>Status</th>
+                      <th>Tanggal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={4}>Memuat...</td>
+                      </tr>
+                    ) : (
+                      data?.recentOrders?.map((order) => (
+                        <tr key={order.orderNumber}>
+                          <td>{order.orderNumber}</td>
+                          <td className="text-nowrap">
+                            {order.customerName || '-'}
+                          </td>
+                          <td>
+                            <Badge
+                              bg={
+                                order.status === 'FINISHED'
+                                  ? 'success'
+                                  : order.status === 'CANCELED'
+                                  ? 'danger'
+                                  : 'warning'
+                              }
+                            >
+                              {translateStatus(order.status)}
+                            </Badge>
+                          </td>
+                          <td>
+                            {new Date(order.createdAt).toLocaleDateString(
+                              'id-ID'
+                            )}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </Table>
+              </div>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </Container>

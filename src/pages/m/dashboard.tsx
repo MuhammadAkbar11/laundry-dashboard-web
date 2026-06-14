@@ -1,5 +1,6 @@
-/* eslint-disable no-new */
-import React from 'react';
+/* eslint-disable no-nested-ternary */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { APP_NAME } from '@configs/varsConfig';
 import WebMemberLayout from '@layouts/WebMemberLayout';
@@ -13,42 +14,20 @@ import {
   uRupiah,
 } from '@utils/utils';
 import { getMemberSessionService } from '@services/authMemberService';
+import { getMemberDashboardService } from '@services/dashboardService';
 import { IMemberAuth, IMemberPageProps } from '@interfaces';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import { Card, Col, Container, Row, Table } from 'react-bootstrap';
+import { Card, Col, Container, Row, Table, Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoneyBillAlt, faTshirt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMoneyBillAlt,
+  faTshirt,
+  faCheckCircle,
+  faClock,
+} from '@fortawesome/free-solid-svg-icons';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
-const dummyData = {
-  totalLaundry: 5,
-  totalTransaction: 12,
-  points: 30,
-  laundryQueueData: [
-    {
-      queueNumber: 'Q001',
-      status: 'Sedang Dalam Proses',
-      deliveryDate: '2023-07-30',
-      deliveryAddress: 'Jl. Contoh No. 123, Kota Contoh',
-      totalPayment: 75000,
-    },
-    {
-      queueNumber: 'Q002',
-      status: 'Selesai',
-      deliveryDate: '2023-07-28',
-      deliveryAddress: 'Jl. Dummy No. 456, Kota Dummy',
-      totalPayment: 50000,
-    },
-    {
-      queueNumber: 'Q003',
-      status: 'Menunggu Pembayaran',
-      deliveryDate: '2023-07-29',
-      deliveryAddress: 'Jl. Testing No. 789, Kota Testing',
-      totalPayment: 90000,
-    },
-  ],
-};
+import MemberStatisticCard from '@components/Web/Cards/MemberStatisticCard';
 
 type PageProps = IMemberPageProps;
 
@@ -58,35 +37,24 @@ interface StatisticCardProps {
   icon: IconProp;
 }
 
-function StatisticCard({ title, value, icon }: StatisticCardProps) {
-  return (
-    <Card className="shadow-none border border-slate ">
-      <Card.Body>
-        <Row>
-          <Col className=" mt-0">
-            <Card.Title as="h5">{title}</Card.Title>
-          </Col>
-          <Col xs="auto" className="col-auto">
-            <div className="stat">
-              <FontAwesomeIcon icon={icon} size="lg" className="align-middle" />
-            </div>
-          </Col>
-        </Row>
-        <h1 className="mt-1 fw-bold text-dark  ">{value}</h1>
-      </Card.Body>
-    </Card>
-  );
-}
-
 export default function MemberDashboard({ memberAuth }: PageProps) {
   const TITLE = `Dashboard | ${APP_NAME}`;
   const memberAuthCtx = useMemberAuthContext();
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
   React.useEffect(() => {
     if (memberAuth) memberAuthCtx.onSetMember(memberAuth);
   }, [memberAuth, memberAuthCtx]);
 
-  const { totalLaundry, totalTransaction, points, laundryQueueData } =
-    dummyData;
+  useEffect(() => {
+    getMemberDashboardService()
+      .then((res) => setData(res))
+      .catch(() => setData(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const summary = data?.summary;
 
   return (
     <>
@@ -96,58 +64,154 @@ export default function MemberDashboard({ memberAuth }: PageProps) {
       <MemberPageHeader title="Dashboard" />
       <Container>
         <Row>
-          <Col md={4}>
-            <StatisticCard
+          <Col md={3} className="mb-3">
+            <MemberStatisticCard
               title="Total Cucian"
-              value={totalLaundry}
+              value={loading ? '...' : summary?.totalOrders || 0}
               icon={faTshirt}
             />
           </Col>
-          <Col md={4}>
-            <StatisticCard
-              title="Total Transaksi"
-              value={totalTransaction}
-              icon={faMoneyBillAlt}
+          <Col md={3} className="mb-3">
+            <MemberStatisticCard
+              title="Cucian Aktif"
+              value={loading ? '...' : summary?.activeOrders || 0}
+              icon={faClock}
             />
           </Col>
-          <Col md={4}>
-            <StatisticCard
-              title="Poin Anda"
-              value={`${points} Poin`}
+          <Col md={3} className="mb-3">
+            <MemberStatisticCard
+              title="Cucian Selesai"
+              value={loading ? '...' : summary?.completedOrders || 0}
+              icon={faCheckCircle}
+            />
+          </Col>
+          <Col md={3} className="mb-3">
+            <MemberStatisticCard
+              title="Total Pengeluaran"
+              value={loading ? '...' : uRupiah(summary?.totalSpending || 0)}
               icon={faMoneyBillAlt}
             />
           </Col>
         </Row>
+
         <Row className="mt-2">
-          <Col md={12}>
-            <Card className=" shadow-none border ">
+          <Col md={6} className="mb-3 ">
+            <Card className="shadow-none border h-100">
               <Card.Body>
-                <Card.Title>Antrian</Card.Title>
-                <Table striped bordered hover responsive>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Nomor Antrian</th>
-                      <th>Status</th>
-                      <th>Tanggal Pengiriman</th>
-                      <th>Alamat Pengiriman</th>
-                      <th>Total Pembayaran</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {laundryQueueData.map((queue, index) => (
-                      // eslint-disable-next-line react/no-array-index-key
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{queue.queueNumber}</td>
-                        <td>{queue.status}</td>
-                        <td>{queue.deliveryDate}</td>
-                        <td>{queue.deliveryAddress}</td>
-                        <td>{uRupiah(queue.totalPayment)}</td>
+                <Card.Title>Ringkasan Pengeluaran</Card.Title>
+                <Row className="mt-3">
+                  <Col xs={6}>
+                    <h5 className="text-muted">Bulan Ini</h5>
+                    <h3 className="fw-bold">
+                      {loading
+                        ? '...'
+                        : uRupiah(summary?.currentMonthSpending || 0)}
+                    </h3>
+                  </Col>
+                  <Col xs={6}>
+                    <h5 className="text-muted">Total</h5>
+                    <h3 className="fw-bold">
+                      {loading ? '...' : uRupiah(summary?.totalSpending || 0)}
+                    </h3>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6} className="mb-3  ">
+            <Card className="shadow-none border h-100">
+              <Card.Body>
+                <Card.Title>Cucian Terbaru</Card.Title>
+                {loading ? (
+                  <p>Memuat...</p>
+                ) : data?.recentOrders?.length === 0 ? (
+                  <p className="text-muted">Tidak ada Cucian.</p>
+                ) : (
+                  <Table striped bordered hover responsive size="sm">
+                    <thead>
+                      <tr>
+                        <th>Nomor Cucian</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
+                    </thead>
+                    <tbody>
+                      {data?.recentOrders?.map((queue: any) => (
+                        <tr key={queue.orderNumber}>
+                          <td>{queue.orderNumber}</td>
+                          <td>
+                            <Badge
+                              bg={
+                                queue.status === 'FINISHED'
+                                  ? 'success'
+                                  : queue.status === 'CANCELED'
+                                  ? 'danger'
+                                  : 'warning'
+                              }
+                            >
+                              {queue.status}
+                            </Badge>
+                          </td>
+                          <td>
+                            {new Date(queue.createdAt).toLocaleDateString(
+                              'id-ID'
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="mt-2">
+          <Col md={6} className="mb-3">
+            <Card className="shadow-none border">
+              <Card.Body>
+                <Card.Title>Cucian Aktif</Card.Title>
+                {loading ? (
+                  <p>Memuat...</p>
+                ) : data?.activeLaundryQueues?.length === 0 ? (
+                  <p className="text-muted">Tidak ada Cucian aktif.</p>
+                ) : (
+                  <Table striped bordered hover responsive size="sm">
+                    <thead>
+                      <tr>
+                        <th>Nomor Cucian</th>
+                        <th>Status</th>
+                        <th>Tanggal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data?.activeLaundryQueues?.map((queue: any) => (
+                        <tr key={queue.orderNumber}>
+                          <td>{queue.orderNumber}</td>
+                          <td>
+                            <Badge
+                              bg={
+                                queue.status === 'FINISHED'
+                                  ? 'success'
+                                  : queue.status === 'CANCELED'
+                                  ? 'danger'
+                                  : 'warning'
+                              }
+                            >
+                              {queue.status}
+                            </Badge>
+                          </td>
+                          <td>
+                            {new Date(queue.createdAt).toLocaleDateString(
+                              'id-ID'
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                )}
               </Card.Body>
             </Card>
           </Col>

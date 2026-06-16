@@ -5,6 +5,7 @@ import {
   faChartBar,
   faExchangeAlt,
   faTShirt,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { INavigation } from '@interfaces';
 
@@ -134,32 +135,32 @@ export const memberProfileNavigationConfigs = [
   { text: 'Pengaturan', href: '/m/pengaturan' },
 ];
 
-export const memberNavigationConfigs = [
+export const memberNavigationGroups = [
   {
-    name: 'Dashboard',
-    href: '/m/dashboard',
-    icon: faChartBar,
+    title: 'Menu',
+    items: [
+      { name: 'Dashboard', href: '/m/dashboard', icon: faChartBar },
+      { name: 'Antrian', href: '/m/antrian', icon: faBagShopping },
+      { name: 'Cucian', href: '/m/cucian', icon: faTShirt },
+      { name: 'Transaksi', href: '/m/transaksi', icon: faExchangeAlt },
+      { name: 'Notifikasi', href: '/m/notifications', icon: faBell },
+    ],
   },
   {
-    name: 'Antrian',
-    href: '/m/antrian',
-    icon: faBagShopping,
-  },
-  {
-    name: 'Cucian',
-    href: '/m/cucian',
-    icon: faTShirt,
-  },
-  {
-    name: 'Transaksi',
-    href: '/m/transaksi',
-    icon: faExchangeAlt,
-  },
-  {
-    name: 'Notifikasi',
-    href: '/m/notifications',
-    icon: faBell,
+    title: 'Akun',
+    items: [{ name: 'Profile', href: '/m/profile', icon: faUser }],
   },
 ];
+
+export const memberNavigationConfigs = memberNavigationGroups.flatMap(
+  (group) => group.items
+);
+
+// Dashboard is the index route, so it must match exactly; nested routes
+// (e.g. /m/cucian/[id]) should still highlight their parent item.
+export const isMemberNavActive = (pathname: string, href: string): boolean => {
+  if (href === '/m/dashboard') return pathname === href;
+  return pathname.startsWith(href);
+};
 
 export default navigationConfigs;

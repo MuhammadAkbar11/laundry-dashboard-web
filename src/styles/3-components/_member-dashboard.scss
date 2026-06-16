@@ -1,0 +1,30 @@
+// Member dashboard layout & widgets
+
+.member-sidebar-sticky {
+  position: sticky;
+  top: 4.6rem;
+}
+
+.member-sidebar-group-title {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.member-welcome {
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+.member-quick-action {
+  transition: border-color 0.15s ease-in-out, transform 0.15s ease-in-out;
+
+  &:hover {
+    border-color: $accent1 !important;
+    transform: translateY(-2px);
+  }
+}
+
+.member-status-tile {
+  background-color: rgba($accent1, 0.04);
+}

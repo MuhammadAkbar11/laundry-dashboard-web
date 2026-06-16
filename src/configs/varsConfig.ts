@@ -2,6 +2,7 @@
 import { BootstrapBreakpointsTypes } from '@utils/types';
 
 export const APP_NAME = 'CusCuciin';
+export const APP_VERSION = '0.1.0';
 export const UNKNOWM_ERROR = 'UNKNOWM_ERROR';
 export const API_URI = process.env.NEXT_PUBLIC_API_URI;
 export const NODE_ENV = process.env.NODE_ENV;

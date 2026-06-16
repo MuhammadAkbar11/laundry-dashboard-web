@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
@@ -18,24 +17,21 @@ import { getMemberDashboardService } from '@services/dashboardService';
 import { IMemberAuth, IMemberPageProps } from '@interfaces';
 import { useMemberAuthContext } from '@utils/context/MemberAuthContext';
 import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
-import { Card, Col, Container, Row, Table, Badge } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Card, Col, Placeholder, Row } from 'react-bootstrap';
 import {
   faMoneyBillAlt,
   faTshirt,
   faCheckCircle,
   faClock,
+  faBagShopping,
 } from '@fortawesome/free-solid-svg-icons';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import MemberStatisticCard from '@components/Web/Cards/MemberStatisticCard';
+import MemberWelcome from '@features/member/dashboard/MemberWelcome';
+import MemberQuickActions from '@features/member/dashboard/MemberQuickActions';
+import MemberOrderList from '@features/member/dashboard/MemberOrderList';
+import MemberStatusSummary from '@features/member/dashboard/MemberStatusSummary';
 
 type PageProps = IMemberPageProps;
-
-interface StatisticCardProps {
-  title: string;
-  value: string | number;
-  icon: IconProp;
-}
 
 export default function MemberDashboard({ memberAuth }: PageProps) {
   const TITLE = `Dashboard | ${APP_NAME}`;
@@ -55,6 +51,8 @@ export default function MemberDashboard({ memberAuth }: PageProps) {
   }, []);
 
   const summary = data?.summary;
+  const activeLaundryQueues = data?.activeLaundryQueues || [];
+  const recentOrders = data?.recentOrders || [];
 
   return (
     <>
@@ -62,161 +60,111 @@ export default function MemberDashboard({ memberAuth }: PageProps) {
         <title>{TITLE}</title>
       </Head>
       <MemberPageHeader title="Dashboard" />
-      <Container>
-        <Row>
-          <Col md={3} className="mb-3">
-            <MemberStatisticCard
-              title="Total Cucian"
-              value={loading ? '...' : summary?.totalOrders || 0}
-              icon={faTshirt}
-            />
-          </Col>
-          <Col md={3} className="mb-3">
-            <MemberStatisticCard
-              title="Cucian Aktif"
-              value={loading ? '...' : summary?.activeOrders || 0}
-              icon={faClock}
-            />
-          </Col>
-          <Col md={3} className="mb-3">
-            <MemberStatisticCard
-              title="Cucian Selesai"
-              value={loading ? '...' : summary?.completedOrders || 0}
-              icon={faCheckCircle}
-            />
-          </Col>
-          <Col md={3} className="mb-3">
-            <MemberStatisticCard
-              title="Total Pengeluaran"
-              value={loading ? '...' : uRupiah(summary?.totalSpending || 0)}
-              icon={faMoneyBillAlt}
-            />
-          </Col>
-        </Row>
 
-        <Row className="mt-2">
-          <Col md={6} className="mb-3 ">
-            <Card className="shadow-none border h-100">
-              <Card.Body>
-                <Card.Title>Ringkasan Pengeluaran</Card.Title>
-                <Row className="mt-3">
-                  <Col xs={6}>
-                    <h5 className="text-muted">Bulan Ini</h5>
-                    <h3 className="fw-bold">
-                      {loading
-                        ? '...'
-                        : uRupiah(summary?.currentMonthSpending || 0)}
-                    </h3>
-                  </Col>
-                  <Col xs={6}>
-                    <h5 className="text-muted">Total</h5>
-                    <h3 className="fw-bold">
-                      {loading ? '...' : uRupiah(summary?.totalSpending || 0)}
-                    </h3>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={6} className="mb-3  ">
-            <Card className="shadow-none border h-100">
-              <Card.Body>
-                <Card.Title>Cucian Terbaru</Card.Title>
-                {loading ? (
-                  <p>Memuat...</p>
-                ) : data?.recentOrders?.length === 0 ? (
-                  <p className="text-muted">Tidak ada Cucian.</p>
-                ) : (
-                  <Table striped bordered hover responsive size="sm">
-                    <thead>
-                      <tr>
-                        <th>Nomor Cucian</th>
-                        <th>Status</th>
-                        <th>Tanggal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.recentOrders?.map((queue: any) => (
-                        <tr key={queue.orderNumber}>
-                          <td>{queue.orderNumber}</td>
-                          <td>
-                            <Badge
-                              bg={
-                                queue.status === 'FINISHED'
-                                  ? 'success'
-                                  : queue.status === 'CANCELED'
-                                  ? 'danger'
-                                  : 'warning'
-                              }
-                            >
-                              {queue.status}
-                            </Badge>
-                          </td>
-                          <td>
-                            {new Date(queue.createdAt).toLocaleDateString(
-                              'id-ID'
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+      <MemberWelcome
+        activeOrders={summary?.activeOrders || 0}
+        loading={loading}
+      />
 
-        <Row className="mt-2">
-          <Col md={6} className="mb-3">
-            <Card className="shadow-none border">
-              <Card.Body>
-                <Card.Title>Cucian Aktif</Card.Title>
+      <MemberQuickActions />
+
+      <Row className="mt-2">
+        <Col sm={6} lg={3} className="mb-3">
+          <MemberStatisticCard
+            title="Total Cucian"
+            value={summary?.totalOrders || 0}
+            icon={faTshirt}
+            loading={loading}
+          />
+        </Col>
+        <Col sm={6} lg={3} className="mb-3">
+          <MemberStatisticCard
+            title="Cucian Aktif"
+            value={summary?.activeOrders || 0}
+            icon={faClock}
+            loading={loading}
+          />
+        </Col>
+        <Col sm={6} lg={3} className="mb-3">
+          <MemberStatisticCard
+            title="Cucian Selesai"
+            value={summary?.completedOrders || 0}
+            icon={faCheckCircle}
+            loading={loading}
+          />
+        </Col>
+        <Col sm={6} lg={3} className="mb-3">
+          <MemberStatisticCard
+            title="Total Pengeluaran"
+            value={uRupiah(summary?.totalSpending || 0)}
+            icon={faMoneyBillAlt}
+            loading={loading}
+          />
+        </Col>
+      </Row>
+
+      <Row className="mt-2">
+        <Col lg={8} className="mb-3">
+          <MemberOrderList
+            title="Cucian Aktif"
+            orders={activeLaundryQueues}
+            loading={loading}
+            emptyTitle="Tidak ada cucian aktif"
+            emptyDescription="Cucian yang sedang berjalan akan muncul di sini."
+            emptyIcon={faClock}
+            viewAllHref="/m/cucian"
+          />
+        </Col>
+        <Col lg={4} className="mb-3">
+          <MemberStatusSummary orders={activeLaundryQueues} loading={loading} />
+        </Col>
+      </Row>
+
+      <Row className="mt-2">
+        <Col lg={8} className="mb-3">
+          <MemberOrderList
+            title="Cucian Terbaru"
+            orders={recentOrders}
+            loading={loading}
+            emptyTitle="Belum ada cucian"
+            emptyDescription="Riwayat cucian terbaru Anda akan muncul di sini."
+            emptyIcon={faBagShopping}
+            viewAllHref="/m/cucian"
+          />
+        </Col>
+        <Col lg={4} className="mb-3">
+          <Card className="shadow-none border h-100">
+            <Card.Body>
+              <Card.Title>Ringkasan Pengeluaran</Card.Title>
+              <div className="mt-3">
+                <h6 className="text-muted mb-1">Bulan Ini</h6>
                 {loading ? (
-                  <p>Memuat...</p>
-                ) : data?.activeLaundryQueues?.length === 0 ? (
-                  <p className="text-muted">Tidak ada Cucian aktif.</p>
+                  <Placeholder as="h3" animation="glow">
+                    <Placeholder xs={6} />
+                  </Placeholder>
                 ) : (
-                  <Table striped bordered hover responsive size="sm">
-                    <thead>
-                      <tr>
-                        <th>Nomor Cucian</th>
-                        <th>Status</th>
-                        <th>Tanggal</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.activeLaundryQueues?.map((queue: any) => (
-                        <tr key={queue.orderNumber}>
-                          <td>{queue.orderNumber}</td>
-                          <td>
-                            <Badge
-                              bg={
-                                queue.status === 'FINISHED'
-                                  ? 'success'
-                                  : queue.status === 'CANCELED'
-                                  ? 'danger'
-                                  : 'warning'
-                              }
-                            >
-                              {queue.status}
-                            </Badge>
-                          </td>
-                          <td>
-                            {new Date(queue.createdAt).toLocaleDateString(
-                              'id-ID'
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                  <h3 className="fw-bold">
+                    {uRupiah(summary?.currentMonthSpending || 0)}
+                  </h3>
                 )}
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+              </div>
+              <hr />
+              <div>
+                <h6 className="text-muted mb-1">Total Keseluruhan</h6>
+                {loading ? (
+                  <Placeholder as="h3" animation="glow">
+                    <Placeholder xs={6} />
+                  </Placeholder>
+                ) : (
+                  <h3 className="fw-bold">
+                    {uRupiah(summary?.totalSpending || 0)}
+                  </h3>
+                )}
+              </div>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
     </>
   );
 }

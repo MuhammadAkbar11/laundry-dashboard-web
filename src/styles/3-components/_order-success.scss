@@ -1,0 +1,52 @@
+// Member order success page
+
+.order-success-hero {
+  background-color: rgba($success, 0.08);
+}
+
+.order-reference-card {
+  background-color: rgba($accent1, 0.06);
+
+  .order-reference-number {
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+.order-timeline {
+  .order-timeline-item {
+    position: relative;
+
+    .order-timeline-dot {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      background-color: $gray-300;
+      color: $white;
+      z-index: 1;
+    }
+
+    // Connector line between markers.
+    .order-timeline-marker::after {
+      content: '';
+      position: absolute;
+      top: 28px;
+      bottom: 0;
+      width: 2px;
+      background-color: $gray-300;
+    }
+
+    &:last-child .order-timeline-marker::after {
+      display: none;
+    }
+
+    &.is-done .order-timeline-dot,
+    &.is-active .order-timeline-dot {
+      background-color: $accent1;
+    }
+
+    &.is-active .order-timeline-dot {
+      box-shadow: 0 0 0 4px rgba($accent1, 0.2);
+    }
+  }
+}

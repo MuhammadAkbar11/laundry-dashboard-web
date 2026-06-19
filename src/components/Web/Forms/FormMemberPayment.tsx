@@ -55,7 +55,7 @@ function FormMemberPayment({ laundries, laundryQueue }: Props) {
         onSuccess() {
           formReset();
           router.push(
-            `/pembayaran/sukses?laundryQueue=${laundryQueue?.laundryQueueId}`
+            `/m/pembayaran/sukses?laundryQueue=${laundryQueue?.laundryQueueId}`
           );
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

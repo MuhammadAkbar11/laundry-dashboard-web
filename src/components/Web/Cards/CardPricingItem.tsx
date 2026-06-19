@@ -52,7 +52,7 @@ function CardPricingItem({ title, price, features, variant }: PricingProps) {
         </div>
         <div className="d-flex mt-auto justify-content-center ">
           {!authLoading && profile ? (
-            <Link passHref legacyBehavior href="/pemesanan">
+            <Link passHref legacyBehavior href="/m/pemesanan">
               <WebButton
                 variant={variant}
                 className="py-2 px-4 font-opensans text-uppercase "

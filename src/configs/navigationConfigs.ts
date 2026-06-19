@@ -2,6 +2,7 @@
 import {
   faBagShopping,
   faBell,
+  faCartPlus,
   faChartBar,
   faExchangeAlt,
   faTShirt,
@@ -146,6 +147,7 @@ export const memberNavigationGroups = [
     title: 'Menu',
     items: [
       { name: 'Dashboard', href: '/m/dashboard', icon: faChartBar },
+      { name: 'Pesan Cucian', href: '/m/pemesanan', icon: faCartPlus },
       { name: 'Antrian', href: '/m/antrian', icon: faBagShopping },
       { name: 'Cucian', href: '/m/cucian', icon: faTShirt },
       { name: 'Transaksi', href: '/m/transaksi', icon: faExchangeAlt },

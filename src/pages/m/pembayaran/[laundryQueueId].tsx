@@ -19,8 +19,8 @@ import { getMemberLaundryQueueDetailService } from '@services/memberService';
 import { useQuery } from '@tanstack/react-query';
 import useGetMemberLaundryQueueLaundries from '@hooks/useGetMemberLaundryQueueLaundries';
 import { Container } from 'react-bootstrap';
-import WebLayout from '@layouts/WebLayout';
-import PageHeader from '@components/Web/PageHeader/PageHeader';
+import WebMemberLayout from '@layouts/WebMemberLayout';
+import MemberPageHeader from '@components/Web/PageHeader/MemberPageHeader';
 import FormMemberPayment from '@components/Web/Forms/FormMemberPayment';
 
 type Props = {
@@ -71,20 +71,10 @@ export default function MemberPaymentPage({
       <Head>
         <title>{TITLE}</title>
       </Head>
-      <PageHeader
-        title="Pembayaran"
-        size="sm"
-        history={[{ name: 'Pembayaran', disabled: true }]}
-      />{' '}
-      {/* <MemberTableLaundryRoom /> */}
-      <div className="container-fluid bg-white font-opensans py-5  ">
-        <Container className="pb-5 px-md-2 px-md-3 h-100">
-          <FormMemberPayment
-            laundryQueue={laundryQueue}
-            laundries={laundries}
-          />
-        </Container>
-      </div>
+      <MemberPageHeader title="Pembayaran" />
+      <Container className="pb-5">
+        <FormMemberPayment laundryQueue={laundryQueue} laundries={laundries} />
+      </Container>
     </>
   );
 }
@@ -146,4 +136,4 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 }
 
-MemberPaymentPage.layout = WebLayout;
+MemberPaymentPage.layout = WebMemberLayout;

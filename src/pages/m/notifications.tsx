@@ -58,10 +58,7 @@ export default function MemberNotificationsPage({ memberAuth }: PageProps) {
   const totalCount = listQuery.data?.entriesCount ?? 0;
   const unreadCount = unreadQuery.data ?? 0;
 
-  const onItemClick = (notification: {
-    id: string;
-    isRead: boolean;
-  }) => {
+  const onItemClick = (notification: { id: string; isRead: boolean }) => {
     if (!notification.isRead) {
       markRead.mutate(notification.id);
     }

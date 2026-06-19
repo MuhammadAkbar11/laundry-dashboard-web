@@ -120,7 +120,7 @@ export default function MemberDetailLaundryPage({
   const payButtonContent = !hidePayBtn ? (
     <div className="mb-2 w-100 ">
       <Link
-        href={`/pembayaran/${laundryRoom?.laundryQueueId}`}
+        href={`/m/pembayaran/${laundryRoom?.laundryQueueId}`}
         legacyBehavior
         passHref
       >
@@ -137,7 +137,7 @@ export default function MemberDetailLaundryPage({
   ) : null;
 
   const laundriesContent = (
-    <Card className="bg-light shadow-none h-100">
+    <Card className="bg-light border shadow-none h-100">
       <Card.Header className=" pt-4 bg-transparent">
         <Card.Title className=" mb-0 text-accent1 ">Daftar Cucian</Card.Title>
       </Card.Header>
@@ -193,7 +193,7 @@ export default function MemberDetailLaundryPage({
       <Container className="pt-3 pb-5">
         <Row className="align-content-stretch mb-4 mb-lg-0 ">
           <Col xs={12} lg={6} className="mb-4 mb-lg-0">
-            <Card className="shadow-none bg-light my-0 h-100">
+            <Card className="shadow-none border bg-light my-0 h-100">
               <Card.Header className="pt-4  bg-transparent">
                 <Card.Title className=" mb-0 text-accent1 ">
                   Info Cucian
@@ -241,7 +241,7 @@ export default function MemberDetailLaundryPage({
             {laundriesContent}
           </Col>
           <Col xs={12} lg={6}>
-            <Card className="shadow-none bg-light h-100 ">
+            <Card className="shadow-none border bg-light h-100 ">
               <Card.Header className="pt-4 bg-transparent">
                 <Card.Title className=" mb-0  text-accent1 ">
                   Pengiriman & Pembayaran

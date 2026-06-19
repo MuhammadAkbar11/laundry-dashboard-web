@@ -25,6 +25,15 @@
   }
 }
 
+.member-quick-action-primary {
+  background-color: $accent1;
+
+  &:hover {
+    filter: brightness(0.92);
+    transform: translateY(-2px);
+  }
+}
+
 .member-status-tile {
   background-color: rgba($accent1, 0.04);
 }

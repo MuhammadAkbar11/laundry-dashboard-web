@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBagShopping,
   faBell,
+  faCartPlus,
   faExchangeAlt,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
@@ -27,26 +28,46 @@ type Props = {};
 
 function MemberQuickActions({}: Props) {
   return (
-    <Row className="g-3 mb-2">
-      {actions.map((action) => (
-        <Col xs={6} md={3} key={action.href}>
-          <Link href={action.href} className="text-decoration-none">
-            <Card className="member-quick-action shadow-none border h-100">
-              <Card.Body className="d-flex flex-column align-items-center justify-content-center text-center py-3">
+    <>
+      <Row className="g-3 mb-2">
+        <Col xs={12}>
+          <Link href="/m/pemesanan" className="text-decoration-none">
+            <Card className="member-quick-action member-quick-action-primary shadow-none border-0 h-100">
+              <Card.Body className="d-flex flex-row align-items-center justify-content-center gap-2 py-3">
                 <FontAwesomeIcon
-                  icon={action.icon}
-                  className="text-accent1 mb-2"
+                  icon={faCartPlus}
+                  className="text-white"
                   size="lg"
                 />
-                <span className="fw-semibold text-dark small">
-                  {action.label}
+                <span className="fw-bold text-white">
+                  Pesan Cucian Sekarang
                 </span>
               </Card.Body>
             </Card>
           </Link>
         </Col>
-      ))}
-    </Row>
+      </Row>
+      <Row className="g-3 mb-2">
+        {actions.map((action) => (
+          <Col xs={6} md={3} key={action.href}>
+            <Link href={action.href} className="text-decoration-none">
+              <Card className="member-quick-action shadow-none border h-100">
+                <Card.Body className="d-flex flex-column align-items-center justify-content-center text-center py-3">
+                  <FontAwesomeIcon
+                    icon={action.icon}
+                    className="text-accent1 mb-2"
+                    size="lg"
+                  />
+                  <span className="fw-semibold text-dark small">
+                    {action.label}
+                  </span>
+                </Card.Body>
+              </Card>
+            </Link>
+          </Col>
+        ))}
+      </Row>
+    </>
   );
 }
 

@@ -221,6 +221,26 @@ export interface IUserNotification {
   };
 }
 
+export interface INotificationTemplate {
+  id: string;
+  notificationTypeId: string;
+  channel: string;
+  titleTemplate: string;
+  messageTemplate: string;
+  defaultTitleTemplate: string | null;
+  defaultMessageTemplate: string | null;
+  supportedVariables: string[] | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+  notificationType: {
+    id: string;
+    code: string;
+    name: string;
+    description: string | null;
+  };
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IUserAuth {
   userId: string;

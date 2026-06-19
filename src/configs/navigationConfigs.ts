@@ -82,6 +82,12 @@ const navigationConfigs: INavigation = {
         href: '/admin/pengaturan',
         permissions: ['ADMIN'],
       },
+      {
+        icon: 'Bell',
+        name: 'Template Notifikasi',
+        href: '/admin/template-notifikasi',
+        permissions: ['ADMIN'],
+      },
     ],
   },
   transactions: {

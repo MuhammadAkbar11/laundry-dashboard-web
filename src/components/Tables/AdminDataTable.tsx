@@ -234,12 +234,6 @@ function AdminDataTable<TData>({
             ))}
           </thead>
           <tbody>
-            <TableLoadingRow
-              isError={isError}
-              rows={tableRows}
-              isLoading={isLoading}
-              headerLength={tableHeaders.length}
-            />
             {tableRows.map((row) => {
               const clickable = Boolean(onRowClick);
               return (
@@ -273,6 +267,12 @@ function AdminDataTable<TData>({
                 </tr>
               );
             })}
+            <TableLoadingRow
+              isError={isError}
+              rows={tableRows}
+              isLoading={isLoading}
+              headerLength={tableHeaders.length}
+            />
           </tbody>
         </Table>
       </Card.Body>

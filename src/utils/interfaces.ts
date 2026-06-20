@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  AuditActionTypes,
+  AuditEntityTypeTypes,
   LucideIconTypes,
   LaundryQueuePaymentStatusType,
   LaundryQueueStatusType,
@@ -416,4 +418,16 @@ export interface IPageProps {
 
 export interface IMemberPageProps {
   memberAuth: IMemberAuth;
+}
+
+export interface IAuditLog {
+  auditLogId: string;
+  action: AuditActionTypes;
+  entityType: AuditEntityTypeTypes;
+  entityId: string;
+  actorId: string | null;
+  actorName: string | null;
+  actorRole: string | null;
+  metadata: Record<string, any> | null;
+  createdAt: string;
 }

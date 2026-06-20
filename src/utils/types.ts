@@ -40,3 +40,21 @@ export type LaundryRoomStatusTypes = 'READY' | 'WASHED' | 'FINISHED';
 export type UserRoleTypes = 'ADMIN' | 'CASHIER' | 'OFFICER';
 export type UserStatusTypes = 'PENDING' | 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
 export type PaymentMethodTypes = 'BANK_TRANSFER' | 'CASH';
+
+export type AuditActionTypes =
+  | 'CREATE'
+  | 'UPDATE'
+  | 'DELETE'
+  | 'LOGIN'
+  | 'LOGOUT'
+  | 'PASSWORD_RESET'
+  | 'STATUS_CHANGE';
+
+export type AuditEntityTypeTypes =
+  | 'USER'
+  | 'MEMBER'
+  | 'ORDER'
+  | 'PAYMENT'
+  | 'EXPENSE'
+  | 'NOTIFICATION_TEMPLATE'
+  | 'SETTINGS';

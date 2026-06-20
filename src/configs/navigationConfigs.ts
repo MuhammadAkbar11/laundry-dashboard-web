@@ -89,6 +89,12 @@ const navigationConfigs: INavigation = {
         href: '/admin/template-notifikasi',
         permissions: ['ADMIN'],
       },
+      {
+        icon: 'FileText',
+        name: 'Audit Log',
+        href: '/admin/audit-log',
+        permissions: ['ADMIN'],
+      },
     ],
   },
   transactions: {

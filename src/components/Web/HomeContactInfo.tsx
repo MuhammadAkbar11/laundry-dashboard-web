@@ -10,7 +10,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 function HomeContactInfo() {
   return (
     <div className="container-fluid contact-info mt-5 " style={{ zIndex: 10 }}>
-      <Container className="">
+      <Container className="px-0 px-lg-3">
         <Row>
           <Col
             md={4}

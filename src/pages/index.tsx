@@ -9,6 +9,8 @@ import AboutUs from '@components/Web/AboutUs';
 import OurServices from '@components/Web/OurServices';
 import OurFeatures from '@components/Web/OurFeatures';
 import WorkingProcces from '@components/Web/WorkingProcces';
+import Testimonials from '@components/Web/Testimonials';
+import FinalCTA from '@components/Web/FinalCTA';
 // import OurPricingPlan from '@components/Web/OurPricingPlans';
 
 export default function PagesBlank() {
@@ -25,6 +27,8 @@ export default function PagesBlank() {
       <OurServices />
       <WorkingProcces />
       <OurFeatures />
+      <Testimonials />
+      <FinalCTA />
       {/* <OurPricingPlan /> */}
     </>
   );

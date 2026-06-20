@@ -2,96 +2,94 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCheckCircle,
-  faHandHoldingUsd,
-  faHandshake,
-  faHeart,
+  faBell,
+  faBolt,
+  faClockRotateLeft,
+  faMobileScreenButton,
+  faTags,
   faTruck,
+  IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
+
+type Feature = {
+  icon: IconDefinition;
+  title: string;
+  description: string;
+};
+
+const FEATURES: Feature[] = [
+  {
+    icon: faMobileScreenButton,
+    title: 'Status Laundry Real-Time',
+    description:
+      'Pantau setiap tahap proses cucian Anda langsung dari aplikasi.',
+  },
+  {
+    icon: faClockRotateLeft,
+    title: 'Riwayat Pesanan',
+    description:
+      'Akses seluruh riwayat pesanan dan transaksi Anda kapan saja.',
+  },
+  {
+    icon: faBell,
+    title: 'Notifikasi Otomatis',
+    description:
+      'Dapatkan pemberitahuan setiap kali status pesanan diperbarui.',
+  },
+  {
+    icon: faTags,
+    title: 'Harga Transparan',
+    description: 'Harga jelas tanpa biaya tersembunyi sebelum Anda memesan.',
+  },
+  {
+    icon: faBolt,
+    title: 'Layanan Cepat',
+    description: 'Proses pengerjaan yang cepat dengan kualitas tetap terjaga.',
+  },
+];
 
 function OurFeatures() {
   return (
     <div
-      className="container-fluid  bg-light font-opensans"
+      className="container-fluid bg-white font-opensans"
       style={{ paddingTop: 100, paddingBottom: 100 }}
     >
       <Container>
         <Row>
-          <Col lg={7} m={0} className="my-lg-5 pt-0 pt-lg-5 pe-lg-5 ">
-            <h6 className="text-accent2 text-uppercase fw-semibold mb-3  text-center text-sm-start">
-              Fitur Kami
-            </h6>
-            <h1 className="mb-4 fw-extrabold text-accent1 display-6   text-center text-sm-start">
+          <Col lg={7} className="my-lg-5 pt-0 pt-lg-5 pe-lg-5">
+            <h6 className="text-accent2 text-uppercase fw-semibold mb-3 text-center text-sm-start">
               Mengapa Memilih Kami
+            </h6>
+            <h1 className="mb-4 fw-extrabold text-accent1 display-6 text-center text-sm-start">
+              Lebih Dari Sekadar Laundry
             </h1>
-            <p style={{ fontSize: 17 }} className=" text-center text-sm-start">
-              Kami adalah pilihan yang tepat untuk layanan cucian Anda. Dengan
-              pengalaman yang kami miliki, kami telah menjadi mitra terpercaya
-              dalam menyediakan layanan cucian berkualitas. Tim ahli kami siap
-              memberikan solusi terbaik untuk kebutuhan cucian Anda.
+            <p
+              style={{ fontSize: 17 }}
+              className="text-grey text-center text-sm-start mb-4"
+            >
+              CusCuciin menggabungkan layanan laundry berkualitas dengan
+              kemudahan teknologi, sehingga Anda dapat memesan dan memantau
+              cucian tanpa repot.
             </p>
-            <div className="row py-2">
-              <div className="col-sm-6 mb-4 text-center text-sm-start ">
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  className="fa-3x text-accent2 mb-3"
-                />
-                <h5 className="fw-bold text-accent1 ">Pelayanan Profesional</h5>
-                <p className="text-muted">
-                  Kami memberikan pelayanan profesional yang berkualitas tinggi
-                  untuk memenuhi kebutuhan Anda.
-                </p>
-              </div>
-              <div className="col-sm-6 mb-4 text-center text-sm-start ">
-                {/* <FontAwesomeIcon
-                  icon={faLiraSign}
-                  className="fa-3x text-accent2 mb-3"
-                />
-                <h5 className="fw-bold text-accent1 ">Terjangkau</h5>
-                <p className="text-muted">
-                 Kami menjamin pengiriman cepat dan tepat waktu untuk menjaga
-                  kenyamanan Anda.
-                  Tanpa Biaya Tambahan! Anda hanya membayar sesuai dengan harga
-                  yang ditetapkan oleh kami.
-                </p> */}
-                <FontAwesomeIcon
-                  icon={faHandHoldingUsd}
-                  className="fa-3x text-accent2 mb-3"
-                />
-                <h5 className="fw-bold text-accent1">Layanan Terjangkau</h5>
-                <p className="text-muted">
-                  Kami menyediakan layanan dengan harga terjangkau tanpa
-                  mengorbankan kualitas.
-                </p>
-              </div>
-              <div className="col-sm-6 mb-4 text-center text-sm-start ">
-                <FontAwesomeIcon
-                  icon={faHandshake}
-                  className="fa-3x text-accent2 mb-3"
-                />
-                <h5 className="fw-bold text-accent1 ">
-                  Komitmen Terhadap Kualitas
-                </h5>
-                <p className="text-muted">
-                  Kami berkomitmen untuk memberikan kualitas terbaik dalam
-                  setiap layanan kami.
-                </p>
-              </div>
-              <div className="col-sm-6 mb-4 text-center text-sm-start text-md-start ">
-                <FontAwesomeIcon
-                  icon={faHeart}
-                  className="fa-3x text-accent2 mb-3"
-                />
-                <h5 className="fw-bold text-accent1 ">Kepuasan Pelanggan</h5>
-                <p className="text-muted">
-                  Kepuasan pelanggan adalah prioritas utama kami. Kami senang
-                  dapat memberikan layanan yang memuaskan.
-                </p>
-              </div>
-            </div>
+            <Row className="py-2">
+              {FEATURES.map((feature) => (
+                <Col
+                  key={feature.title}
+                  sm={6}
+                  className="mb-4 text-center text-sm-start"
+                >
+                  <FontAwesomeIcon
+                    icon={feature.icon}
+                    className="fa-3x text-accent2 mb-3"
+                  />
+                  <h5 className="fw-bold text-accent1">{feature.title}</h5>
+                  <p className="text-muted m-0">{feature.description}</p>
+                </Col>
+              ))}
+            </Row>
           </Col>
-          <Col lg={5}>
-            <div className="d-flex flex-column text-uppercase  align-items-center justify-content-center bg-accent2 h-100 py-5 px-3">
+          <Col lg={5} className="mt-4 mt-lg-0">
+            <div className="d-flex flex-column text-uppercase align-items-center justify-content-center bg-accent2 h-100 py-5 px-3 rounded-3">
               <FontAwesomeIcon
                 icon={faTruck}
                 className="fa-5x text-white mb-5"

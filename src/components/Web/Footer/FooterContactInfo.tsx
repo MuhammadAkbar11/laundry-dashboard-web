@@ -1,4 +1,5 @@
 import {
+  faClock,
   faEnvelope,
   faMapMarkerAlt,
   faPhoneAlt,
@@ -13,22 +14,25 @@ function FooterContactInfo({}: Props) {
   return (
     <Col lg={3} md={6} mb={5} className="mb-3">
       <h4 className="text-white mb-4">Hubungi Kami</h4>
-      {/* <p>Dolor clita stet nonumy clita diam vero, et et ipsum diam labore</p> */}
       <p>
-        Dapatkan layanan pelanggan terbaik dari kami yang siap membantu Anda
-        dengan sepenuh hati.
+        Layanan pelanggan kami siap membantu Anda dengan sepenuh hati setiap
+        hari.
       </p>
-      <p>
+      <p className="mb-2">
         <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" />
-        Indonesia
+        Jatimakmur, Indonesia
       </p>
-      <p>
+      <p className="mb-2">
         <FontAwesomeIcon icon={faPhoneAlt} className="me-2" />
         +62852 3456 6789
       </p>
-      <p>
+      <p className="mb-2">
         <FontAwesomeIcon icon={faEnvelope} className="me-2" />
         customercuciin@gmail.com
+      </p>
+      <p className="mb-0">
+        <FontAwesomeIcon icon={faClock} className="me-2" />
+        Setiap hari, 08.00 - 21.00 WIB
       </p>
     </Col>
   );

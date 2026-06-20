@@ -17,9 +17,12 @@ function Navbar() {
   const authLoading = memberAuth?.isLoading;
 
   return (
-    <Container fluid className={clsx('position-relative webnav-bar  p-0')}>
+    <Container
+      fluid
+      className={clsx('position-relative webnav-bar p-0 bg-white')}
+    >
       <div
-        className="container-lg w-100 position-relative px-0 px-lg-3 font-opensans "
+        className="container-lg w-100 position-relative px-0 px-lg-2 font-opensans "
         style={{ zIndex: 9 }}
       >
         <BsNavbar

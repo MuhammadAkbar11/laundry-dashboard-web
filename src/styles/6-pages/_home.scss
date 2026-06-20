@@ -1,5 +1,4 @@
 @media (min-width: 992px) {
-  #header-carousel,
   .page-header {
     margin-top: -42px;
   }
@@ -12,6 +11,19 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.3);
   z-index: 1;
+}
+
+.hero-split {
+  background: linear-gradient(180deg, #fff 0%, $light 100%);
+
+  // Extra bottom room so the overlapping .contact-info bar lands cleanly
+  @media (min-width: 768px) {
+    padding-bottom: 120px;
+  }
+
+  .hero-image img {
+    object-position: center;
+  }
 }
 
 // @include media-breakpoint-only(lg) {
@@ -49,3 +61,47 @@
     z-index: 1;
   }
 }
+
+.service-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.75rem 1.5rem rgba(30, 100, 190, 0.15);
+  }
+}
+
+.step-card {
+  position: relative;
+
+  .step-number {
+    position: absolute;
+    top: -8px;
+    right: calc(50% - 90px);
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: $accent2;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 0.25rem 0.75rem rgba(252, 87, 128, 0.4);
+  }
+}
+
+.testimonial-card {
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.5rem rgba(30, 100, 190, 0.12);
+  }
+}
+
+.final-cta {
+  background: linear-gradient(135deg, $accent1 0%, darken($accent1, 12%) 100%);
+}
+

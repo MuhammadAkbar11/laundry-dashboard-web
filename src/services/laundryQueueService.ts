@@ -13,6 +13,7 @@ import {
   uTranformAxiosError,
 } from '@utils/utils';
 import { CreateCustomerInputTypes } from '@utils/schema/customerSchema';
+import downloadCsvFile from '@utils/downloadCsv';
 
 export async function getLaundryQueueService(
   queryOpt: Interfaces.IPaginationOptions
@@ -116,6 +117,32 @@ export async function postLaundryQueueService(
   }
 }
 
+export async function exportLaundryQueueCsvService(
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<void> {
+  const sorting =
+    queryOpt?.sorting?.length !== 0
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
+      : null;
+
+  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
+    _page: 1,
+    _limit: queryOpt.pageSize,
+    _search: queryOpt.searchTerm,
+    _orderBy: sorting?.id,
+    _sortBy: sorting ? (!sorting?.desc ? 'asc' : 'desc') : null,
+  });
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/laundry/queue/export/csv?${queries}`,
+      'laundry-orders.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
 export async function deleteLaundryQueueService(
   payload: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

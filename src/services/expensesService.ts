@@ -8,6 +8,7 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
+import downloadCsvFile from '@utils/downloadCsv';
 
 export async function getExpensesService(
   queryOpt: Interfaces.IPaginationOptions
@@ -46,6 +47,32 @@ export async function getExpensesService(
   }
 }
 
+export async function exportExpensesCsvService(
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<void> {
+  const sorting =
+    queryOpt?.sorting?.length !== 0
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
+      : null;
+
+  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
+    _page: 1,
+    _limit: queryOpt.pageSize,
+    _search: queryOpt.searchTerm,
+    _orderBy: sorting?.id,
+    _sortBy: sorting ? (!sorting?.desc ? 'asc' : 'desc') : null,
+  });
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/expenses/export/csv?${queries}`,
+      'expenses.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
 export async function getExpensesByIdService(
   expensesId: string
 ): Promise<Interfaces.IExpenses | void> {

@@ -9,6 +9,7 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
+import downloadCsvFile from '@utils/downloadCsv';
 
 // const dataReportTrx: Interfaces.IReportTrx[] = [
 //   {
@@ -159,6 +160,40 @@ export async function getReportCashFlowService(_queryOpt: {
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;
+  }
+}
+
+export async function exportReportTransactionCsvService(payload: {
+  day: string;
+  year: string;
+  month: string;
+}): Promise<void> {
+  const queries = uQueriesToString({
+    day: payload.day,
+    month: payload.month,
+    year: payload.year,
+  });
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/report/transaction-full/export/csv?${queries}`,
+      'transactions.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
+
+export async function exportReportCashFlowCsvService(): Promise<void> {
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/report/transaction-cashflow/export/csv`,
+      'cashflow.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
   }
 }
 

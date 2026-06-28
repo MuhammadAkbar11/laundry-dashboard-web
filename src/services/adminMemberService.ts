@@ -5,6 +5,7 @@ import { API_URI } from '@configs/varsConfig';
 import { axiosPrivate } from '@utils/apiUtils';
 import { uQueriesToString, uTranformAxiosError } from '@utils/utils';
 import * as Interfaces from '@interfaces';
+import downloadCsvFile from '@utils/downloadCsv';
 
 export async function getAdminMembersService(
   queryOpt: Interfaces.IPaginationOptions
@@ -35,6 +36,30 @@ export async function getAdminMembersService(
   } catch (error: unknown) {
     const err = uTranformAxiosError(error);
     throw err;
+  }
+}
+
+export async function exportAdminMembersCsvService(
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<void> {
+  const sorting =
+    queryOpt?.sorting?.length !== 0
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
+      : null;
+  const queries = uQueriesToString({
+    _search: queryOpt.searchTerm,
+    _orderBy: sorting?.id,
+    _sortBy: sorting ? (!sorting?.desc ? 'asc' : 'desc') : null,
+  });
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/member/members/export/csv?${queries}`,
+      'members.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
   }
 }
 

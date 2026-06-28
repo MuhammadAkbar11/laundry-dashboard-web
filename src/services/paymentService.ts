@@ -5,6 +5,7 @@ import * as Interfaces from '@interfaces';
 
 import { runInDevAsync, uDelayAsync, uTranformAxiosError } from '@utils/utils';
 import { AxiosRequestConfig } from 'axios';
+import downloadCsvFile from '@utils/downloadCsv';
 
 export async function getPaymentInvoiceService(
   payload: string,
@@ -22,6 +23,28 @@ export async function getPaymentInvoiceService(
   }
 }
 
+export async function exportPaymentsCsvService(payload: {
+  searchTerm?: string;
+  orderBy?: string | null;
+  sortBy?: string | null;
+  type?: 'transactions' | 'histories';
+}) {
+  const params = new URLSearchParams();
+  if (payload.searchTerm) params.set('_search', payload.searchTerm);
+  if (payload.orderBy) params.set('_orderBy', payload.orderBy);
+  if (payload.sortBy) params.set('_sortBy', payload.sortBy);
+  if (payload.type) params.set('_type', payload.type);
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/payment/export/csv?${params.toString()}`,
+      'transactions.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
 export async function postPaymentService(payload: {
   paidAmount: number;
   laundryQueueId: string;

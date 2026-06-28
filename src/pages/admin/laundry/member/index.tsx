@@ -5,6 +5,7 @@ import React from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
 import { Container, Button } from 'react-bootstrap';
+import { useMutation } from '@tanstack/react-query';
 import AdminLayout from '@layouts/AdminLayout';
 import { getSessionService } from '@services/authSevices';
 import {
@@ -18,16 +19,21 @@ import {
 import { useUserAuthContext } from '@utils/context/UserAuthContext';
 import { IPageProps, IUserAuth } from '@utils/interfaces';
 import useDataQuery from '@hooks/useDataQuery';
-import { getAdminMembersService } from '@services/adminMemberService';
+import {
+  exportAdminMembersCsvService,
+  getAdminMembersService,
+} from '@services/adminMemberService';
 import AdminDataTable from '@components/Tables/AdminDataTable';
 import Link from 'next/link';
 import AppIcon from '@components/Icons/AppIcon';
+import useNotification from '@hooks/useNotification';
 
 interface Props extends IPageProps {}
 
 export default function AdminMemberListPage({ userAuth }: Props) {
   const TITLE = 'Member | Admin';
   const userAuthCtx = useUserAuthContext();
+  const notif = useNotification();
 
   React.useEffect(() => {
     userAuthCtx.onSetUser(userAuth);
@@ -50,6 +56,24 @@ export default function AdminMemberListPage({ userAuth }: Props) {
 
   const apiData = dataQuery?.data as any;
   const rows: any[] = apiData?.rows || [];
+
+  const exportMutation = useMutation(
+    () =>
+      exportAdminMembersCsvService({
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+        searchTerm: globalFilter,
+        sorting,
+      }),
+    {
+      onSuccess() {
+        notif.success('Export CSV member berhasil diunduh');
+      },
+      onError(error: any) {
+        notif.danger(error?.message || 'Gagal export CSV member');
+      },
+    }
+  );
 
   const columns = React.useMemo(
     () => [
@@ -148,6 +172,15 @@ export default function AdminMemberListPage({ userAuth }: Props) {
           onPaginationChange={setPagination}
           onGlobalFilterChange={setGlobalFilter}
           searchPlaceholder="Cari member..."
+          headerActions={
+            <Button
+              variant="success"
+              onClick={() => exportMutation.mutate()}
+              disabled={exportMutation.isLoading}
+            >
+              {exportMutation.isLoading ? 'Mengunduh...' : 'Export CSV'}
+            </Button>
+          }
         />
       </Container>
     </>

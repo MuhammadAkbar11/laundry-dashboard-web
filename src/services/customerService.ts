@@ -12,6 +12,7 @@ import {
   uQueriesToString,
   uTranformAxiosError,
 } from '@utils/utils';
+import downloadCsvFile from '@utils/downloadCsv';
 
 export async function getCustomersService(
   queryOpt: Interfaces.IPaginationOptions
@@ -107,6 +108,32 @@ export async function deleteCustomerService(
   }
 }
 
+export async function exportCustomersCsvService(
+  queryOpt: Interfaces.IPaginationOptions
+): Promise<void> {
+  const sorting =
+    queryOpt?.sorting?.length !== 0
+      ? (queryOpt?.sorting?.[0] as Interfaces.IPaginationSorting)
+      : null;
+
+  const queries = uQueriesToString<Interfaces.IQueriesOptions>({
+    _page: 1,
+    _limit: queryOpt.pageSize,
+    _search: queryOpt.searchTerm,
+    _orderBy: sorting?.id,
+    _sortBy: sorting ? (!sorting?.desc ? 'asc' : 'desc') : null,
+  });
+
+  try {
+    await downloadCsvFile(
+      axiosPrivate,
+      `${API_URI}/customer/export/csv?${queries}`,
+      'customers.csv'
+    );
+  } catch (error: unknown) {
+    throw uTranformAxiosError(error);
+  }
+}
 export async function getCustomerLevelsService(): Promise<
   Interfaces.ICustomerLevel[] | void
 > {

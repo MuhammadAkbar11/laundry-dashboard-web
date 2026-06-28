@@ -4,6 +4,7 @@ import React from 'react';
 import * as rtb from '@tanstack/react-table';
 import clsx from 'classnames';
 import { Button, Card, Form, Spinner, Table } from 'react-bootstrap';
+import { useMutation } from '@tanstack/react-query';
 import useDataQuery from '@hooks/useDataQuery';
 import { IPayment, IServiceWithPaginateReturn } from '@interfaces';
 // import useNotification from '@hooks/useNotification';
@@ -14,12 +15,15 @@ import Paginate from '@components/Paginate/Paginate';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Link from 'next/link';
 import TableLoadingRow from './TableLoadingRow';
+import { exportPaymentsCsvService } from '@services/paymentService';
+import useNotification from '@hooks/useNotification';
 
 type Props = {
   typeQueryKey: 'transactions' | 'histories';
 };
 
 function TableTransaction({ typeQueryKey }: Props) {
+  const notif = useNotification();
   const {
     sorting,
     setSorting,
@@ -125,6 +129,29 @@ function TableTransaction({ typeQueryKey }: Props) {
     debugTable: false,
   });
 
+  const exportSortBy = (() => {
+    if (sorting?.length === 0) return null;
+    return sorting?.[0]?.desc ? 'desc' : 'asc';
+  })();
+
+  const exportMutation = useMutation(
+    () =>
+      exportPaymentsCsvService({
+        searchTerm: globalFilter,
+        orderBy: sorting?.[0]?.id || null,
+        sortBy: exportSortBy,
+        type: typeQueryKey,
+      }),
+    {
+      onSuccess() {
+        notif.success('Export CSV transaksi berhasil diunduh');
+      },
+      onError(error: any) {
+        notif.danger(error?.message || 'Gagal export CSV transaksi');
+      },
+    }
+  );
+
   const tableRows = table?.getRowModel()?.rows;
   const tableHeaders = table.getFlatHeaders();
 
@@ -132,6 +159,13 @@ function TableTransaction({ typeQueryKey }: Props) {
     <Card>
       <Card.Header className="pt-4 d-flex justify-content-between align-items-center ">
         <Card.Title className=" mb-0">Semua Data Transaksi </Card.Title>
+        <Button
+          variant="success"
+          onClick={() => exportMutation.mutate()}
+          disabled={exportMutation.isLoading}
+        >
+          {exportMutation.isLoading ? 'Mengunduh...' : 'Export CSV'}
+        </Button>
       </Card.Header>
       <Card.Body className="pb-1 table-responsive">
         <div className=" d-flex justify-content-between mb-3 ">

@@ -1,4 +1,6 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import Head from 'next/head';
 import { GetServerSidePropsContext } from 'next';
@@ -21,6 +23,7 @@ import {
   postExpensesService,
   putExpensesService,
   deleteExpensesService,
+  exportExpensesCsvService,
 } from '@services/expensesService';
 import useNotification from '@hooks/useNotification';
 import TableExpenses from '@components/Tables/TableExpenses';
@@ -117,6 +120,24 @@ export default function PengeluaranPage({ userAuth }: Props) {
     },
   });
 
+  const exportMutation = useMutation(
+    () =>
+      exportExpensesCsvService({
+        pageIndex: pagination.pageIndex,
+        pageSize: pagination.pageSize,
+        searchTerm: globalFilter,
+        sorting,
+      }),
+    {
+      onSuccess() {
+        notif.success('Export CSV pengeluaran berhasil diunduh');
+      },
+      onError(error: any) {
+        notif.danger(error?.message || 'Gagal export CSV pengeluaran');
+      },
+    }
+  );
+
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description.trim()) {
@@ -187,6 +208,8 @@ export default function PengeluaranPage({ userAuth }: Props) {
           onGlobalFilterChange={setGlobalFilter}
           onEdit={openEditModal}
           onDelete={openDeleteModal}
+          onExport={() => exportMutation.mutate()}
+          exportLoading={exportMutation.isLoading}
         />
       </Container>
 

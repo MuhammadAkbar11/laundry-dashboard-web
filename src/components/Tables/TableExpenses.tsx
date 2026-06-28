@@ -1,5 +1,4 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import * as rtb from '@tanstack/react-table';
@@ -10,7 +9,7 @@ import { uRupiah } from '@utils/utils';
 type Props = {
   rows: IExpenses[];
   isLoading: boolean;
-  isError?: boolean;
+  isError: boolean;
   pageCount: number;
   pageIndex: number;
   pageSize: number;
@@ -22,6 +21,8 @@ type Props = {
   onGlobalFilterChange: (value: string) => void;
   onEdit: (row: IExpenses) => void;
   onDelete: (row: IExpenses) => void;
+  onExport: () => void;
+  exportLoading: boolean;
 };
 
 function TableExpenses({
@@ -39,6 +40,8 @@ function TableExpenses({
   onGlobalFilterChange,
   onEdit,
   onDelete,
+  onExport,
+  exportLoading,
 }: Props) {
   const columns = React.useMemo<rtb.ColumnDef<IExpenses>[]>(
     () => [
@@ -120,6 +123,11 @@ function TableExpenses({
       onPaginationChange={onPaginationChange}
       onGlobalFilterChange={onGlobalFilterChange}
       searchPlaceholder="Cari data pengeluaran"
+      headerActions={
+        <Button variant="success" onClick={onExport} disabled={exportLoading}>
+          {exportLoading ? 'Mengunduh...' : 'Export CSV'}
+        </Button>
+      }
     />
   );
 }

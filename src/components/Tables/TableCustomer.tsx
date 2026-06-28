@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-nested-ternary */
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   ColumnDef,
   PaginationState,
@@ -25,7 +25,10 @@ import {
   Tooltip,
 } from 'react-bootstrap';
 import clsx from 'classnames';
-import { getCustomersService } from '@services/customerService';
+import {
+  exportCustomersCsvService,
+  getCustomersService,
+} from '@services/customerService';
 import AppIcon from '@components/Icons/AppIcon';
 import DebouncedInput from '@components/Inputs/DebouncedInput';
 import Paginate from '@components/Paginate/Paginate';
@@ -33,6 +36,7 @@ import { fuzzyFilter } from '@utils/utils';
 import { useCustomerPageContext } from '@utils/context/Customer/CustomerPageContext';
 import { useCustomerDeleteContext } from '@utils/context/Customer/CustomerDeleteContext';
 import { ICustomer } from '@interfaces';
+import useNotification from '@hooks/useNotification';
 
 type Props = {};
 
@@ -44,6 +48,7 @@ function TableCustomer({}: Props) {
 
   const customerPageCtx = useCustomerPageContext();
   const customerDeleteCtx = useCustomerDeleteContext();
+  const notif = useNotification();
 
   const [{ pageIndex, pageSize }, setPagination] =
     React.useState<PaginationState>({
@@ -186,6 +191,18 @@ function TableCustomer({}: Props) {
     { keepPreviousData: true }
   );
 
+  const exportMutation = useMutation(
+    () => exportCustomersCsvService(fetchDataOptions),
+    {
+      onSuccess() {
+        notif.success('Export CSV pelanggan berhasil diunduh');
+      },
+      onError(error: any) {
+        notif.danger(error?.message || 'Gagal export CSV pelanggan');
+      },
+    }
+  );
+
   const defaultData = React.useMemo(() => [], []);
 
   const pagination = React.useMemo(
@@ -235,30 +252,42 @@ function TableCustomer({}: Props) {
     <Card>
       <Card.Header className="pt-4 d-flex justify-content-between ">
         <Card.Title className=" mb-0">Data Pelanggan </Card.Title>
-        <Button
-          onClick={() => {
-            customerPageCtx.onToggleFormActionOffCanvas({
-              formType: 'create',
-              open: true,
-              data: {
-                fetchQueryKey: [
-                  'customers',
-                  {
-                    sorting: [{ id: 'customerId', desc: true }],
-                    pageIndex: 0,
-                    pageSize: 10,
-                    searchTerm: '',
-                  },
-                ],
-              },
-            });
-          }}
-        >
-          <span className="d-flex gap-2 align-items-center">
-            <AppIcon name="Plus" />
-            Tambah
-          </span>
-        </Button>
+        <div className="d-flex gap-2">
+          <Button
+            variant="success"
+            onClick={() => exportMutation.mutate()}
+            disabled={exportMutation.isLoading}
+          >
+            <span className="d-flex gap-2 align-items-center">
+              <AppIcon name="Download" />
+              {exportMutation.isLoading ? 'Mengunduh...' : 'Export CSV'}
+            </span>
+          </Button>
+          <Button
+            onClick={() => {
+              customerPageCtx.onToggleFormActionOffCanvas({
+                formType: 'create',
+                open: true,
+                data: {
+                  fetchQueryKey: [
+                    'customers',
+                    {
+                      sorting: [{ id: 'customerId', desc: true }],
+                      pageIndex: 0,
+                      pageSize: 10,
+                      searchTerm: '',
+                    },
+                  ],
+                },
+              });
+            }}
+          >
+            <span className="d-flex gap-2 align-items-center">
+              <AppIcon name="Plus" />
+              Tambah
+            </span>
+          </Button>
+        </div>
       </Card.Header>
       <Card.Body className="pb-1 table-responsive">
         <div className=" d-flex justify-content-between mb-3 ">

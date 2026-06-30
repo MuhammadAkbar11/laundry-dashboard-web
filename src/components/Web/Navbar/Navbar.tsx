@@ -49,6 +49,9 @@ function Navbar() {
               <Link passHref legacyBehavior href="/layanan">
                 <Nav.Link className="nav-item">Layanan</Nav.Link>
               </Link>
+              <Link passHref legacyBehavior href="/help">
+                <Nav.Link className="nav-item">Bantuan</Nav.Link>
+              </Link>
               <Link passHref legacyBehavior href="/kontak">
                 <Nav.Link className="nav-item">Kontak</Nav.Link>
               </Link>

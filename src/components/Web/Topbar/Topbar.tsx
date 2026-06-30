@@ -20,11 +20,11 @@ function Topbar({}: Props) {
             className="text-center text-md-start mb-2 mb-lg-0 ps-lg-4"
           >
             <div className="d-inline-flex align-items-center gap-3">
-              <a className="text-white " href="#/">
+              <a className="text-white " href="/faq">
                 FAQs
               </a>
               <span className="text-white">|</span>
-              <a className="text-white " href="#/">
+              <a className="text-white " href="/help">
                 Help
               </a>
               <span className="text-white">|</span>

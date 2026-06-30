@@ -23,6 +23,14 @@ function FooterQuickLinks({}: Props) {
           <FontAwesomeIcon icon={faAngleRight} className="me-2" />
           Layanan
         </Link>
+        <Link className="text-white mb-2" href="/faq">
+          <FontAwesomeIcon icon={faAngleRight} className="me-2" />
+          FAQ
+        </Link>
+        <Link className="text-white mb-2" href="/help">
+          <FontAwesomeIcon icon={faAngleRight} className="me-2" />
+          Bantuan
+        </Link>
         <Link className="text-white mb-2" href="/kontak">
           <FontAwesomeIcon icon={faAngleRight} className="me-2" />
           Kontak

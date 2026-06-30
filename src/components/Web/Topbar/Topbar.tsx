@@ -28,7 +28,7 @@ function Topbar({}: Props) {
                 Help
               </a>
               <span className="text-white">|</span>
-              <a className="text-white " href="#/">
+              <a className="text-white " href="/support">
                 Support
               </a>
             </div>

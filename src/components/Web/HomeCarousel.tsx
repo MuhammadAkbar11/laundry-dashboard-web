@@ -47,8 +47,8 @@ function HomeCarousel({}: Props) {
               className="text-grey mb-4 mx-auto mx-lg-0"
               style={{ fontSize: isMobile ? 16 : 20, maxWidth: '560px' }}
             >
-              Pesan laundry, pantau status cucian, dan kelola pesanan Anda dengan
-              mudah dalam satu aplikasi.
+              Pesan laundry, pantau status cucian, dan kelola pesanan Anda
+              dengan mudah dalam satu aplikasi.
             </p>
             <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
               <Link passHref legacyBehavior href="/m/pemesanan">

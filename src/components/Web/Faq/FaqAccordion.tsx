@@ -1,12 +1,13 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
-import { Accordion, Container, Row, Col, Button } from 'react-bootstrap';
+import { Accordion, Container, Row, Col } from 'react-bootstrap';
 import clsx from 'classnames';
 import Link from 'next/link';
 import AppIcon from '@components/Icons/AppIcon';
 import EmptyState from '@components/Web/EmptyState/EmptyState';
 import { FaqCategory } from '@utils/dummyData/faqs';
 import useMediaQuery from '@hooks/useMediaQuery';
+import WebButton from '@components/Buttons/WebButton';
 
 type Props = {
   categories: FaqCategory[];
@@ -76,20 +77,20 @@ function FaqAccordion({ categories }: Props) {
               </p>
               <div className="d-flex flex-wrap justify-content-center gap-2">
                 <Link href="/kontak" passHref legacyBehavior>
-                  <Button variant="accent1" size="lg" as="a">
+                  <WebButton variant="accent1" size="lg" as="a">
                     <span className="d-flex gap-2 align-items-center">
                       <AppIcon name="Mail" size={18} />
                       Hubungi Kami
                     </span>
-                  </Button>
+                  </WebButton>
                 </Link>
                 <Link href="/layanan" passHref legacyBehavior>
-                  <Button variant="outline-accent1" size="lg" as="a">
+                  <WebButton variant="outline-accent1" size="lg" as="a">
                     <span className="d-flex gap-2 align-items-center">
                       <AppIcon name="HelpCircle" size={18} />
                       Lihat Layanan
                     </span>
-                  </Button>
+                  </WebButton>
                 </Link>
               </div>
             </div>

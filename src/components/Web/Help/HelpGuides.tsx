@@ -1,12 +1,13 @@
 /* eslint-disable react/require-default-props */
 import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import clsx from 'classnames';
 import Link from 'next/link';
 import AppIcon from '@components/Icons/AppIcon';
 import EmptyState from '@components/Web/EmptyState/EmptyState';
 import { GuideSection } from '@utils/dummyData/guides';
 import useMediaQuery from '@hooks/useMediaQuery';
+import WebButton from '@components/Buttons/WebButton';
 
 type Props = {
   sections: GuideSection[];
@@ -109,20 +110,20 @@ function HelpGuides({ sections }: Props) {
           </p>
           <div className="d-flex flex-wrap justify-content-center gap-2">
             <Link href="/faq" passHref legacyBehavior>
-              <Button variant="accent1" size="lg" as="a">
+              <WebButton variant="accent1" size="lg" as="a">
                 <span className="d-flex gap-2 align-items-center">
                   <AppIcon name="HelpCircle" size={18} />
                   Lihat FAQ
                 </span>
-              </Button>
+              </WebButton>
             </Link>
             <Link href="/kontak" passHref legacyBehavior>
-              <Button variant="outline-accent1" size="lg" as="a">
+              <WebButton variant="outline-accent1" size="lg" as="a">
                 <span className="d-flex gap-2 align-items-center">
                   <AppIcon name="Mail" size={18} />
                   Hubungi Support
                 </span>
-              </Button>
+              </WebButton>
             </Link>
           </div>
         </div>

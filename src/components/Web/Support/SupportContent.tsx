@@ -12,6 +12,7 @@ import {
   SupportInfoItem,
 } from '@utils/dummyData/support';
 import useMediaQuery from '@hooks/useMediaQuery';
+import WebButton from '@components/Buttons/WebButton';
 
 function SupportInfoList({ items }: { items: SupportInfoItem[] }) {
   return (
@@ -76,7 +77,7 @@ function SupportContent() {
                   >
                     {channel.description}
                   </Card.Text>
-                  <Button
+                  <WebButton
                     href={channel.href}
                     target={channel.id === 'whatsapp' ? '_blank' : undefined}
                     rel={
@@ -88,7 +89,7 @@ function SupportContent() {
                     className="mt-3"
                   >
                     {channel.ctaLabel}
-                  </Button>
+                  </WebButton>
                 </Card.Body>
               </Card>
             </Col>

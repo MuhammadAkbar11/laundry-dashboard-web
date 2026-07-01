@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import clsx from 'classnames';
 import Link from 'next/link';
 import AppIcon from '@components/Icons/AppIcon';
@@ -196,28 +196,28 @@ function SupportContent() {
           </p>
           <div className="d-flex flex-wrap justify-content-center gap-2">
             <Link href="/faq" passHref legacyBehavior>
-              <Button variant="accent1" size="lg" as="a">
+              <WebButton variant="accent1" size="lg" as="a">
                 <span className="d-flex gap-2 align-items-center">
                   <AppIcon name="HelpCircle" size={18} />
                   FAQ
                 </span>
-              </Button>
+              </WebButton>
             </Link>
             <Link href="/help" passHref legacyBehavior>
-              <Button variant="outline-accent1" size="lg" as="a">
+              <WebButton variant="outline-accent1" size="lg" as="a">
                 <span className="d-flex gap-2 align-items-center">
                   <AppIcon name="BookOpen" size={18} />
                   Panduan
                 </span>
-              </Button>
+              </WebButton>
             </Link>
             <Link href="/kontak" passHref legacyBehavior>
-              <Button variant="outline-accent1" size="lg" as="a">
+              <WebButton variant="outline-accent1" size="lg" as="a">
                 <span className="d-flex gap-2 align-items-center">
                   <AppIcon name="MapPin" size={18} />
                   Kontak
                 </span>
-              </Button>
+              </WebButton>
             </Link>
           </div>
         </div>
